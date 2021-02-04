@@ -12,23 +12,43 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.Optional;
 
 
+/**
+ * Defines the endpoint /person.
+ * Implemented actions : Post/Put/Delete
+ */
 @RestController
 public class PersonController {
 
     @Autowired
     private PersonService personService;
-    
+
+    /**
+     * To add a new person.
+     * @param person the person to be added
+     * @return the added person
+     */
     @PostMapping(value="/person")
     public Person createPerson(@RequestBody Person person) {
         return personService.savePerson(person);
     }
 
+    /**
+     * To delete a person.
+     * @param firstName the firstname of the person to be deleted
+     * @param lastName the lastname of the person to be deleted
+     */
     @DeleteMapping(value = "/person/{firstName}:{lastName}")
     public void deletePerson(@PathVariable("firstName") String firstName,
                              @PathVariable("lastName") String lastName) {
         personService.deletePerson(new PersonId(firstName, lastName));
     }
-    
+
+    /**
+     * To update a person.
+     * @param firstName the firstname of the person to be updated
+     * @param lastName the lastname of the person to be updated
+     * @return the updated person
+     */
     @PutMapping(value="/person/{firstName}:{lastName}")
     public Person updatePerson(@PathVariable("firstName") String firstName,
                                @PathVariable("lastName") String lastName ,

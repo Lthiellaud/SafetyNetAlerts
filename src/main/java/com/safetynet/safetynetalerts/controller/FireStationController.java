@@ -5,8 +5,6 @@ import com.safetynet.safetynetalerts.service.FireStationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 /**
  * Defines the endpoint /firestation.
  * Implemented actions : Post/Put/Delete
@@ -18,7 +16,7 @@ public class FireStationController {
     private FireStationService fireStationService;
 
     /**
-     * To add a new fire station.
+     * POST - To add a new fire station.
      * @param fireStation the fire station to be added
      * @return the added fire station station
      */
@@ -28,28 +26,25 @@ public class FireStationController {
     }
 
     /**
-     * To update a station number assigned to an address.
+     * PUT - To update a station number assigned to an address.
      * @param address The address to be updated
      * @param station the new fire station number
      * @return the updated fire station
      */
     @PutMapping(value="/firestation/{address}")
-    public FireStation updateFireStation (@PathVariable("address") String address, @RequestBody Integer station) {
-        Optional<FireStation> f = fireStationService.getFireStation(address);
-        if (f.isPresent()) {
-            FireStation currentFireStation = f.get();
+    public Iterable<FireStation> updateFireStation (@PathVariable("address") String address, @RequestBody Integer station) {
+        Iterable<FireStation> fireStations = fireStationService.getFireStation(address);
+        for (FireStation currentFireStation:fireStations) {
             if (station != null) {
                 currentFireStation.setStation(station);
             }
             fireStationService.saveFireStation(currentFireStation);
-            return currentFireStation;
-        } else {
-            return null;
         }
+        return fireStations;
     }
 
     /**
-     * To delete the mapping at an address.
+     * DELETE - To delete the mapping at an address.
      * @param address the address to be remove from the entity
      */
     @DeleteMapping(value="/firestation/address={address}")
@@ -58,7 +53,7 @@ public class FireStationController {
     }
 
     /**
-     * To delete the mapping of a station.
+     * DELETE - To delete the mapping of a station.
      * @param station the station to be remove
      */
     @DeleteMapping(value="/firestation/station={station}")

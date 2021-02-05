@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.safetynetalerts.model.FireStation;
+import com.safetynet.safetynetalerts.repository.FireStationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,17 +27,15 @@ public class FireStationControllerTest {
     private MockMvc mockMvc;
     private ObjectMapper mapper = new ObjectMapper();
 
+    @Autowired
+    private FireStationRepository fireStationRepository;
     private FireStation fireStation;
-
-    @BeforeEach
-    public void setUpTest() {
-        fireStation = new FireStation();
-        fireStation.setStation(1);
-        fireStation.setAddress("1509 Culver St");
-    }
 
     @Test
     public void postFireStationTest() throws Exception {
+        fireStation = new FireStation();
+        fireStation.setStation(58000);
+        fireStation.setAddress("71 Test St");
         RequestBuilder createRequest = MockMvcRequestBuilders
                 .post("/firestation")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -43,61 +43,46 @@ public class FireStationControllerTest {
 
         mockMvc.perform(createRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("address", is("1509 Culver St")))
-                .andExpect(jsonPath("station", is(1)));
+                .andExpect(jsonPath("address", is("71 Test St")))
+                .andExpect(jsonPath("station", is(58000)));
+
+        assertThat(fireStationRepository.findByAddress("71 Test St").get(0).getStation()).isEqualTo(58000);
     }
 
     @Test
     public void updateFireStationTest() throws Exception {
         RequestBuilder Request = MockMvcRequestBuilders
-                .post("/firestation")
+                .put("/firestation/112 Steppes Pl")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(fireStation));
-        mockMvc.perform(Request);
-        Request = MockMvcRequestBuilders
-                .put("/firestation/1509 Culver St")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(String.valueOf(2));
+                .content(String.valueOf(5));
+        //2 fire stations for address 112 Steppes Pl : the request returns 2 fire stations (0&1)
         mockMvc.perform(Request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("address", is("1509 Culver St")))
-                .andExpect(jsonPath("station", is(2)));
+                .andExpect(jsonPath("$[1].address", is("112 Steppes Pl")))
+                .andExpect(jsonPath("$[1].station", is(5)));
+
+        assertThat(fireStationRepository.findByAddress("112 Steppes Pl").size()).isEqualTo(2);
+        assertThat(fireStationRepository.findByAddress("112 Steppes Pl").get(0).getStation()).isEqualTo(5);
+        assertThat(fireStationRepository.findByAddress("112 Steppes Pl").get(1).getStation()).isEqualTo(5);
+
     }
 
     @Test
     public void deleteFireStationByAddressTest() throws Exception {
-        RequestBuilder Request = MockMvcRequestBuilders
-                .post("/firestation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(fireStation));
-        mockMvc.perform(Request);
-        fireStation.setStation(1);
-        fireStation.setAddress("999 Test St");
-        Request = MockMvcRequestBuilders
-                .post("/firestation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(fireStation));
-        mockMvc.perform(Request);
-        mockMvc.perform(delete("/firestation/address=1509 Culver St"))
-                .andExpect(status().isOk());
-    }
-    @Test
-    public void deleteFireStationByAddressStation() throws Exception {
-        RequestBuilder Request = MockMvcRequestBuilders
-                .post("/firestation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(fireStation));
-        mockMvc.perform(Request);
-        fireStation.setStation(2);
-        fireStation.setAddress("999 Test St");
-        Request = MockMvcRequestBuilders
-                .post("/firestation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(fireStation));
-        mockMvc.perform(Request);
-        mockMvc.perform(delete("/firestation/station=1"))
+
+        mockMvc.perform(delete("/firestation/address=748 Townings Dr"))
                 .andExpect(status().isOk());
 
+        assertThat(fireStationRepository.findByAddress("748 Townings Dr")).isEmpty();
+
+    }
+    @Test
+    public void deleteFireStationByStation() throws Exception {
+
+        mockMvc.perform(delete("/firestation/station=2"))
+                .andExpect(status().isOk());
+
+        assertThat(fireStationRepository.findByStation(2)).isEmpty();
     }
 
 }

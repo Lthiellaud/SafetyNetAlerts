@@ -74,7 +74,7 @@ public class PersonControllerTest {
         person.setCity(null);
         person.setAddress("1508 Culver St");
         RequestBuilder request = MockMvcRequestBuilders
-                .put("/person/John:Boyd")
+                .put("/person/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(person));
         mockMvc.perform(request)

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.PersonId;
 import com.safetynet.safetynetalerts.repository.MedicalRecordRepository;
-import org.hibernate.Hibernate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +82,7 @@ public class MedicalRecordControllerTest {
         medicalRecord.setMedications(Arrays.asList("hydrapermazol:100mg"));
         medicalRecord.setAllergies(Collections.emptyList());
         RequestBuilder request = MockMvcRequestBuilders
-                .put("/medicalRecord/John:Boyd")
+                .put("/medicalRecord/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(medicalRecord));
         mockMvc.perform(request)

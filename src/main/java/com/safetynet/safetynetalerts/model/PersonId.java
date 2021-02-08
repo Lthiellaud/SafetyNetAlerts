@@ -3,6 +3,9 @@ package com.safetynet.safetynetalerts.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Defines a person by his firstname and lastname
+ */
 public class PersonId implements Serializable {
 
     private String firstName;
@@ -13,6 +16,11 @@ public class PersonId implements Serializable {
     public PersonId (String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
     }
 
     @Override

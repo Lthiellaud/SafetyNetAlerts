@@ -1,4 +1,4 @@
-package com.safetynet.safetynetalerts;
+package com.safetynet.safetynetalerts.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.safetynetalerts.model.FireStation;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -21,7 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class FireStationControllerTest {
+@ActiveProfiles("test")
+public class FireStationControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -52,18 +54,18 @@ public class FireStationControllerTest {
     @Test
     public void updateFireStationTest() throws Exception {
         RequestBuilder Request = MockMvcRequestBuilders
-                .put("/firestation/112 Steppes Pl")
+                .put("/firestation/Address attached to 2 fire station")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(String.valueOf(5));
         //2 fire stations for address 112 Steppes Pl : the request returns 2 fire stations (0&1)
         mockMvc.perform(Request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[1].address", is("112 Steppes Pl")))
+                .andExpect(jsonPath("$[1].address", is("Address attached to 2 fire station")))
                 .andExpect(jsonPath("$[1].station", is(5)));
 
-        assertThat(fireStationRepository.findByAddress("112 Steppes Pl").size()).isEqualTo(2);
-        assertThat(fireStationRepository.findByAddress("112 Steppes Pl").get(0).getStation()).isEqualTo(5);
-        assertThat(fireStationRepository.findByAddress("112 Steppes Pl").get(1).getStation()).isEqualTo(5);
+        assertThat(fireStationRepository.findByAddress("Address attached to 2 fire station").size()).isEqualTo(2);
+        assertThat(fireStationRepository.findByAddress("Address attached to 2 fire station").get(0).getStation()).isEqualTo(5);
+        assertThat(fireStationRepository.findByAddress("Address attached to 2 fire station").get(1).getStation()).isEqualTo(5);
 
     }
 

@@ -26,6 +26,7 @@ public class FireStationController {
      */
     @PostMapping(value="/firestation")
     public FireStation createFireStation (@RequestBody FireStation fireStation) {
+
         logger.info("Fire station " + fireStation.toString() + " added");
         return fireStationService.saveFireStation(fireStation);
     }
@@ -38,6 +39,7 @@ public class FireStationController {
      */
     @PutMapping(value="/firestation/{address}")
     public Iterable<FireStation> updateFireStation (@PathVariable("address") String address, @RequestBody Integer station) {
+        logger.info("Updating asked for fire station assigned to address : " + address);
         Iterable<FireStation> fireStations = fireStationService.getFireStation(address);
         int i = 0;
         if (station != null) {

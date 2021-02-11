@@ -33,9 +33,14 @@ public class PersonController {
      */
     @PostMapping(value="/person")
     public Person createPerson(@RequestBody Person person) {
-        PersonId personId= new PersonId(person.getFirstName(), person.getLastName());
-        logger.info("record for " + personId.toString() + " added");
-        return personService.savePerson(person);
+        if (person.getFirstName() != null || person.getLastName() != null) {
+            PersonId personId= new PersonId(person.getFirstName(), person.getLastName());
+            logger.info("record for " + personId.toString() + " added");
+            return personService.savePerson(person);
+        } else {
+            logger.error("post with null firstname or null lastname sent. No person added");
+            return null;
+        }
     }
 
     /**
@@ -47,8 +52,7 @@ public class PersonController {
     public void deletePerson(@PathVariable("firstName") String firstName,
                              @PathVariable("lastName") String lastName) {
         PersonId personId = new PersonId(firstName, lastName);
-        Optional<Person> p = personService.getPerson(personId);
-        if (p.isPresent()) {
+        if (personService.getPersonId(personId)) {
             logger.info("record for " + personId.toString() +" deleted");
             personService.deletePerson(personId);
         } else {
@@ -64,33 +68,12 @@ public class PersonController {
     @PutMapping(value="/person/")
     public Person updatePerson(@RequestBody Person person  ) {
         PersonId personId = new PersonId(person.getFirstName(), person.getLastName());
-        Optional<Person> p = personService.getPerson(personId);
+        Optional<Person> p = personService.updatePerson(person);
         if (p.isPresent()) {
-            Person currentPerson = p.get();
-
-            String address = person.getAddress();
-            if (address != null) {
-                currentPerson.setAddress(address);
-            }
-            String city = person.getCity();
-            if (city != null) {
-                currentPerson.setCity(city);
-            }
-            Integer zip = person.getZip();
-            if (zip != null) {
-                currentPerson.setZip(zip);
-            }
-            String phone = person.getPhone();
-            if (phone != null) {
-                currentPerson.setPhone(phone);
-            }
-            String email = person.getEmail();
-            if (email != null) {
-                currentPerson.setEmail(email);
-            }
-            personService.savePerson(currentPerson);
+            Person updatedPerson = p.get();
+            personService.savePerson(updatedPerson);
             logger.info("record for " + personId.toString() + " updated");
-            return currentPerson;
+            return updatedPerson;
         } else {
             logger.error("record for " + personId.toString() + " does not exist");
             return null;

@@ -9,7 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  * Defines the endpoint /medicalrecord.
@@ -40,7 +44,7 @@ public class MedicalRecordController {
      * @param firstName the firstname of the person whose medical record must be deleted
      * @param lastName the lastname of the person whose medical record must be deleted
      */
-    @DeleteMapping(value = "/medicalRecord/{firstName}:{lastName}")
+    @DeleteMapping("/medicalRecord/{firstName}:{lastName}")
     public void deleteMedicalRecord(@PathVariable("firstName") String firstName,
                                     @PathVariable("lastName") String lastName) {
         PersonId personId = new PersonId(firstName, lastName);
@@ -57,25 +61,23 @@ public class MedicalRecordController {
      * To update a medical record.
      * @return the updated medical record
      */
-    @PutMapping(value="/medicalRecord/")
+    @PutMapping("/medicalRecord/")
     public MedicalRecord updateMedicalRecord(@RequestBody MedicalRecord medicalRecord  ) {
         PersonId personId = new PersonId(medicalRecord.getFirstName(), medicalRecord.getLastName());
-        Optional<MedicalRecord> m = medicalRecordService.getMedicalRecord(personId);
+        Optional<MedicalRecord> m = medicalRecordService.updateMedicalRecord(medicalRecord);
         if (m.isPresent()) {
-            MedicalRecord currentMedicalRecord = m.get();
-
-            Date birthdate = medicalRecord.getBirthdate();
-            if (birthdate != null) {
-                currentMedicalRecord.setBirthdate(birthdate);
-            }
-            currentMedicalRecord.setMedications(medicalRecord.getMedications());
-            currentMedicalRecord.setAllergies(medicalRecord.getAllergies());
-            medicalRecordService.saveMedicalRecord(currentMedicalRecord);
-            logger.info("medical record og " + personId.toString() + " updated");
-            return currentMedicalRecord;
+            medicalRecordService.saveMedicalRecord(m.get());
+            logger.info("medical record of " + personId.toString() + " updated");
+            return m.get();
         } else {
             logger.error("The medical record of " + personId.toString() + " does not exists");
             return null;
         }
     }
+    
+    @GetMapping("/medicalRecords")
+    public Iterable<MedicalRecord> getMedicalRecords(){
+        return medicalRecordService.getMedicalRecords();
+    }
+    
 }

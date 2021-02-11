@@ -1,4 +1,4 @@
-package com.safetynet.safetynetalerts.controller;
+package com.safetynet.safetynetalerts.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.safetynetalerts.model.Person;

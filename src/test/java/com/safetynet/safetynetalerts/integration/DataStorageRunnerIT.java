@@ -13,7 +13,7 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest(properties = "command.line.runner.enabled=true")
 @ActiveProfiles("test")
-public class DataStorageRunnerTest {
+public class DataStorageRunnerIT {
 
     @SpyBean
     DataStorageRunner dataStorageRunner;

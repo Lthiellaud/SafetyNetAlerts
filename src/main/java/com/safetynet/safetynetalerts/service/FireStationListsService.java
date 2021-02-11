@@ -20,24 +20,14 @@ public class FireStationListsService {
     @Autowired
     PersonRepository personRepository;
 
-    /*public Iterable<String> getPhone(Integer firestation) {
-        Iterable<String> addresses = getAddresses(firestation);
-        List<Person> persons = personRepository.findAllDistinctByAddressIsIn(addresses);
-        List<String> phones = new ArrayList<>();
-        if (persons != null) {
-            phones = persons.stream().map(Person::getPhone).distinct()
-                    .collect(Collectors.toList());
-        }
-        return phones;
-    }
-*/
-    public Iterable<IPersonPhone> getPhones(Integer firestation) {
-        Iterable<String> addresses = getAddresses(firestation);
+
+    public List<IPersonPhone> getPhones(Integer firestation) {
+        List<String> addresses = getAddresses(firestation);
 
         return personRepository.findAllDistinctPhoneByAddressIsIn(addresses);
     }
 
-    public Iterable<String> getAddresses(Integer firestation) {
+    public List<String> getAddresses(Integer firestation) {
         List<FireStation> fireStations = fireStationRepository.findDistinctByStation(firestation);
         List<String> addresses = new ArrayList<>();
         if (fireStations != null) {

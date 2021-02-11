@@ -1,5 +1,6 @@
 package com.safetynet.safetynetalerts.repository;
 
+import com.safetynet.safetynetalerts.model.IPersonEmail;
 import com.safetynet.safetynetalerts.model.IPersonPhone;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
@@ -15,4 +16,5 @@ public interface PersonRepository extends CrudRepository <Person, PersonId> {
     //<T> List<T> findByStation(Integer station, Class<T> type);
 
     List<IPersonPhone> findAllDistinctPhoneByAddressIsIn(Iterable<String> addresses);
+    List<IPersonEmail> findAllDistinctEmailByCity(String city);
 }

@@ -1,5 +1,6 @@
 package com.safetynet.safetynetalerts.controller;
 
+import com.safetynet.safetynetalerts.model.PersonDto;
 import com.safetynet.safetynetalerts.model.IPersonEmail;
 import com.safetynet.safetynetalerts.service.PersonListsService;
 
@@ -36,4 +37,10 @@ public class PersonListsController {
             return null;
         }
     }
+
+    @GetMapping("/fire")
+    public List<PersonDto> getFirePersons(@RequestParam("address") String address) {
+        return personListsService.getFirePersonList(address);
+    }
+
 }

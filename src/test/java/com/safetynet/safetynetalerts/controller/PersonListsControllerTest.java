@@ -25,4 +25,9 @@ public class PersonListsControllerTest {
         mockMvc.perform(get("/communityEmail").param("city", "City"))
                 .andExpect(status().isOk());
     }
+    @Test
+    public void getFirePersonsTest() throws Exception {
+        mockMvc.perform(get("/fire").param("address", "Given Address"))
+                .andExpect(status().isOk());
+    }
 }

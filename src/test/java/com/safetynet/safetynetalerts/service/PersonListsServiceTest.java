@@ -39,7 +39,6 @@ public class PersonListsServiceTest {
     private static Person person2;
     private static Person person3;
     private static Person person4;
-    private static List<PersonDto> firePersons;
 
     private static FireStation fireStation1;
     private static FireStation fireStation2;

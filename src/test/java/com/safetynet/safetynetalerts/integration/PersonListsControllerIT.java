@@ -1,5 +1,6 @@
 package com.safetynet.safetynetalerts.integration;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest()
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class FirePersonListsControllerIT {
+public class PersonListsControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -35,6 +36,7 @@ public class FirePersonListsControllerIT {
     }
 
     @Test
+    @Disabled
     public void getFirePersonsForAddress_shouldReturnData() throws Exception {
         mockMvc.perform(get("/fire").param("address", "address3-1"))
                 .andExpect(status().isOk())
@@ -45,6 +47,7 @@ public class FirePersonListsControllerIT {
     public void getFirePersonsForGivenAddress_shouldReturnEmptyBody() throws Exception {
         mockMvc.perform(get("/fire").param("address", "Given Address"))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(jsonPath("firstName").doesNotExist());
     }
 

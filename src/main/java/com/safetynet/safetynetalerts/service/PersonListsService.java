@@ -1,6 +1,9 @@
 package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.*;
+import com.safetynet.safetynetalerts.model.DTO.FirePersonDTO;
+import com.safetynet.safetynetalerts.model.DTO.IPersonEmailDTO;
+import com.safetynet.safetynetalerts.model.DTO.PersonWithPhoneDTO;
 import com.safetynet.safetynetalerts.repository.FireStationRepository;
 import com.safetynet.safetynetalerts.repository.MedicalRecordRepository;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
@@ -33,25 +36,26 @@ public class PersonListsService {
      * @param city The city for which an email list is needed
      * @return the email list
      */
-    public List<IPersonEmail> getEmailList(String city){
+    public List<IPersonEmailDTO> getEmailList(String city){
         return personRepository.findAllDistinctEmailByCity(city);
     }
 
-    public List<PersonDto> getFirePersonList(String address) {
-        List<PersonDto> firePersons = personRepository.findAllByAddress(address);
+    public FirePersonDTO getFirePersonList(String address) {
+        List<PersonWithPhoneDTO> persons = personRepository.findAllByAddress(address);
         dateUtil = new DateUtil();
-        firePersons.forEach(firePersonDto -> {
-            firePersonDto.setStations(getStations(address));
-            personId = new PersonId(firePersonDto.getFirstName(), firePersonDto.getLastName());
+        persons.forEach(person -> {
+            personId = new PersonId(person.getFirstName(), person.getLastName());
             Optional<MedicalRecord> m = getPersonMedicalRecord(personId);
             if (m.isPresent()) {
                 MedicalRecord medicalRecord = m.get();
-                firePersonDto.setAge(dateUtil.age(medicalRecord.getBirthdate())); //dateUtil.age(medicalRecord.getBirthdate())
-                firePersonDto.setMedications(medicalRecord.getMedications());
-                firePersonDto.setAllergies(medicalRecord.getAllergies());
+                person.setAge(dateUtil.age(medicalRecord.getBirthdate()));
+                person.setMedications(medicalRecord.getMedications());
+                person.setAllergies(medicalRecord.getAllergies());
             }
         });
-        return firePersons;
+        FirePersonDTO firePersonDTO = new FirePersonDTO(getStations(address), persons);
+
+        return firePersonDTO;
     }
 
     private Optional<MedicalRecord> getPersonMedicalRecord(PersonId personId) {

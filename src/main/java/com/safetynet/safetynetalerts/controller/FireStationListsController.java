@@ -1,6 +1,6 @@
 package com.safetynet.safetynetalerts.controller;
 
-import com.safetynet.safetynetalerts.model.IPersonPhone;
+import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
 import com.safetynet.safetynetalerts.service.FireStationListsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +19,8 @@ public class FireStationListsController {
     private FireStationListsService fireStationListsService;
 
     @GetMapping("/phoneAlert")
-    public Iterable<IPersonPhone> getPhoneList(@RequestParam("firestation") Integer fireStation) {
-        List<IPersonPhone> phones = fireStationListsService.getPhones(fireStation);
+    public Iterable<IPersonPhoneDTO> getPhoneList(@RequestParam("firestation") Integer fireStation) {
+        List<IPersonPhoneDTO> phones = fireStationListsService.getPhones(fireStation);
         if (phones.size() != 0) {
             logger.info("URL /phoneAlert : List of inhabitants phone for fire station " +
                     + fireStation + " sent");

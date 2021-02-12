@@ -1,12 +1,13 @@
-package com.safetynet.safetynetalerts.model;
+package com.safetynet.safetynetalerts.model.DTO;
 
+import com.safetynet.safetynetalerts.model.PersonId;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class MedicalRecordDto {
+public class MedicalRecordDTO {
 
     /*private String firstName;
     private String lastName;*/
@@ -16,8 +17,8 @@ public class MedicalRecordDto {
     private List<String> medications;
     private List<String> allergies;
 
-    public MedicalRecordDto(PersonId personId, //String firstName, String lastName,
-                            Date birthdate,List<String> medications, List<String> allergies) {
+    public MedicalRecordDTO(PersonId personId, //String firstName, String lastName,
+                            Date birthdate, List<String> medications, List<String> allergies) {
 //        this.firstName = firstName;
 //        this.lastName = lastName;
         this.personId = personId;

@@ -1,7 +1,7 @@
 package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.FireStation;
-import com.safetynet.safetynetalerts.model.IPersonPhone;
+import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
 import com.safetynet.safetynetalerts.repository.FireStationRepository;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class FireStationListsService {
     PersonRepository personRepository;
 
 
-    public List<IPersonPhone> getPhones(Integer firestation) {
+    public List<IPersonPhoneDTO> getPhones(Integer firestation) {
         List<String> addresses = getAddresses(firestation);
 
         return personRepository.findAllDistinctPhoneByAddressIsIn(addresses);

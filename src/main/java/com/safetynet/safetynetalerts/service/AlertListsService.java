@@ -35,11 +35,22 @@ public class AlertListsService {
         return personService.getEmailList(city);
     }
 
+    /**
+     * To get the list of the inhabitants living at an address and the attached fire station.
+     * @param address the address for which we need the inhabitants list
+     * @return the list of inhabitants at the given address including phone and medical record
+     * and the fire stations attached to this address
+     */
     public FirePersonDTO getFirePersonList(String address) {
         return new FirePersonDTO(fireStationService.getStations(address),
                 getPersonPhoneMedicalRecordDTO(address));
     }
 
+    /**
+     * To get the list of the inhabitants living at an address.
+     * @param address the address for which we need the inhabitants list
+     * @return the list of inhabitants at the given address including phone and medical record
+     */
     private List<PersonPhoneMedicalRecordDTO> getPersonPhoneMedicalRecordDTO(String address) {
         List<PersonPhoneMedicalRecordDTO> persons = personService.getAllByAddress(address);
         dateUtil = new DateUtil();
@@ -56,6 +67,12 @@ public class AlertListsService {
         return persons;
     }
 
+    /**
+     * to get the list of the households attached to the given fire stations.
+     * @param stations the list of fire stations for which we need the list
+     * @return the list of households by address including name, phone, age
+     * medical record of each member
+     */
     public List<FloodListByStationDTO> getFloodList(List<Integer> stations) {
         List<FloodListByStationDTO> floodList = new ArrayList<>();
         for (Integer station : stations) {
@@ -72,9 +89,36 @@ public class AlertListsService {
         return floodList;
     }
 
+    /**
+     * To get the phone list of the inhabitants attached to a given fire station.
+     * @param station the station number of the fire station
+     * @return the phone list of the inhabitants attached to a given fire station
+     */
     public List<IPersonPhoneDTO> getPhones(Integer station) {
         List<String> addresses = fireStationService.getAddresses(station);
         return personService.getPhones(addresses);
+    }
+
+    /**
+     * To get the inhabitants by firstname and lastname.
+     * @param firstName the firstname sought
+     * @param lastName the last name sought
+     * @return the list including address, age, email, medical record
+     */
+    public List<PersonEmailMedicalRecordDTO> getPersonEmailMedicalRecord(String firstName, String lastName) {
+        List<PersonEmailMedicalRecordDTO> persons =
+                personService.getAllByFirstAndLastName(firstName, lastName);
+        persons.forEach(person -> {
+            personId = new PersonId(person.getFirstName(), person.getLastName());
+            Optional<MedicalRecord> m = medicalRecordService.getPersonMedicalRecord(personId);
+            if (m.isPresent()) {
+                MedicalRecord medicalRecord = m.get();
+                person.setAge(dateUtil.age(medicalRecord.getBirthdate()));
+                person.setMedications(medicalRecord.getMedications());
+                person.setAllergies(medicalRecord.getAllergies());
+            }
+        });
+        return persons;
     }
 
 }

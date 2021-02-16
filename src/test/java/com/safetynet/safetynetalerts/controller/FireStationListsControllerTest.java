@@ -21,9 +21,5 @@ public class FireStationListsControllerTest {
     @Autowired
     private FireStationListsController fireStationListsController;
 
-    @Test
-    public void getPhoneListTest() throws Exception {
-        mockMvc.perform(get("/phoneAlert").param("firestation", "2"))
-                .andExpect(status().isOk());
-    }
+
 }

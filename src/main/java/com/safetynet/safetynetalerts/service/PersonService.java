@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.DTO.IPersonEmailDTO;
 import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
+import com.safetynet.safetynetalerts.model.DTO.PersonEmailMedicalRecordDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonPhoneMedicalRecordDTO;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
@@ -117,5 +118,9 @@ public class PersonService {
      */
     public List<PersonPhoneMedicalRecordDTO> getAllByAddress(String address) {
         return personRepository.findAllByAddress(address);
+    }
+
+    public List<PersonEmailMedicalRecordDTO> getAllByFirstAndLastName(String firstName, String lastName) {
+        return personRepository.findAllByFirstNameAndLastName(firstName, lastName);
     }
 }

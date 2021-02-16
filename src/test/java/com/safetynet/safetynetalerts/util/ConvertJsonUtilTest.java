@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.safetynet.safetynetalerts.model.DTO.FirePersonDTO;
 import com.safetynet.safetynetalerts.model.Person;
-import com.safetynet.safetynetalerts.model.DTO.PersonWithPhoneDTO;
+import com.safetynet.safetynetalerts.model.DTO.PersonPhoneMedicalRecordDTO;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -36,8 +36,8 @@ public class ConvertJsonUtilTest {
         person1.setPhone("phone1");
         person1.setEmail("mail.test1@email.com");
 
-        PersonWithPhoneDTO personWithPhoneDTO = new PersonWithPhoneDTO("P1", "N1", "Ph1");
-        FirePersonDTO firePersonDTO = new FirePersonDTO(Arrays.asList(1,2), Arrays.asList(personWithPhoneDTO));
+        PersonPhoneMedicalRecordDTO personPhoneMedicalRecordDTO = new PersonPhoneMedicalRecordDTO("P1", "N1", "Ph1");
+        FirePersonDTO firePersonDTO = new FirePersonDTO(Arrays.asList(1,2), Arrays.asList(personPhoneMedicalRecordDTO));
 
         System.out.println(writer.writeValueAsString(firePersonDTO));
         //String result = convertJsonUtil.ConvertClassToJson(firePersonDTO);

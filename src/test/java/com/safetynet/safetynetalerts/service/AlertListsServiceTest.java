@@ -1,19 +1,19 @@
 package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.*;
+import com.safetynet.safetynetalerts.model.DTO.FirePersonDTO;
 import com.safetynet.safetynetalerts.repository.FireStationRepository;
 import com.safetynet.safetynetalerts.repository.MedicalRecordRepository;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 
 
 import static java.util.Calendar.*;
@@ -21,19 +21,19 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest(properties = "command.line.runner.enabled=false")
 @ActiveProfiles("test")
-public class PersonListsServiceTest {
+public class AlertListsServiceTest {
 
-    @Mock
+    @MockBean
     private PersonRepository personRepository;
 
-    @Mock
+    @MockBean
     private FireStationRepository fireStationRepository;
 
-    @Mock
+    @MockBean
     private MedicalRecordRepository medicalRecordRepository;
 
-    @InjectMocks
-    private static PersonListsService personListsService;
+    @Autowired
+    private AlertListsService alertListsService;
 
     private static Person person1;
     private static Person person2;
@@ -51,7 +51,7 @@ public class PersonListsServiceTest {
 
     private Calendar calendar = Calendar.getInstance();
 
-    public void InitDtoTest(){
+    public void initDtoTest(){
         fireStation1 = new FireStation();
         fireStation2 = new FireStation();
         fireStation3 = new FireStation();
@@ -104,6 +104,11 @@ public class PersonListsServiceTest {
         person4.setPhone("phone4" );
         person4.setEmail("mail.test4@email.com");
 
+        medicalRecord1 = new MedicalRecord();
+        medicalRecord2 = new MedicalRecord();
+        medicalRecord3 = new MedicalRecord();
+        medicalRecord4 = new MedicalRecord();
+
         calendar.set(2021, JANUARY, 17);
         medicalRecord1.setFirstName("Baby");
         medicalRecord1.setLastName("Family12");
@@ -140,7 +145,7 @@ public class PersonListsServiceTest {
         when(personRepository.findAllDistinctEmailByCity("City")).thenReturn(anyList());
 
         //WHEN
-        personListsService.getEmailList("City");
+        alertListsService.getEmailList("City");
 
         //THEN
         verify(personRepository, times(1)).findAllDistinctEmailByCity("City");
@@ -148,6 +153,13 @@ public class PersonListsServiceTest {
     }
     @Test
     public void getFirePersonListTest(){
+        //GIVEN
+        initDtoTest();
+        FirePersonDTO firePersonDTO = alertListsService.getFirePersonList("address 12");
+
+
+
+
         /*//GIVEN
         when(personRepository.findAllByAddress("address1")).thenReturn(anyList());
         when(fireStationRepository.findAllByAddress("address1")).thenReturn(anyList());
@@ -159,4 +171,5 @@ public class PersonListsServiceTest {
         verify(personRepository, times(1)).findAllDistinctEmailByCity("City");
 */
     }
+
 }

@@ -6,7 +6,9 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Data
@@ -57,4 +59,32 @@ public class FireStationService {
     public void deleteFireStation(Integer station) {
         fireStationRepository.deleteAll(fireStationRepository.findByStation(station));
     }
+
+    /**
+     * To get the list of fire stations assigned for an address
+     * @param address the address for which we need a list of station number
+     * @return the list of fire station number for this address
+     */
+    public List<Integer> getStations(String address) {
+        List<FireStation> fireStations = fireStationRepository.findAllByAddress(address);
+        List<Integer> stations = new ArrayList<>();
+        if (fireStations.size() > 0) {
+            stations = fireStations.stream().map(FireStation::getStation)
+                    .collect(Collectors.toList());
+        }
+        return stations;
+    }
+
+    public List<String> getAddresses(Integer station) {
+        List<FireStation> fireStations = fireStationRepository.findByStation(station);
+        List<String> addresses = new ArrayList<>();
+        if (fireStations != null) {
+            addresses = fireStations.stream().map(FireStation::getAddress)
+                    .distinct().collect(Collectors.toList());
+        }
+        return addresses;
+    }
+
+
+
 }

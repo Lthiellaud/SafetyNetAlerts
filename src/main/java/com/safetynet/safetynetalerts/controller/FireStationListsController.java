@@ -18,7 +18,7 @@ public class FireStationListsController {
     @Autowired
     private FireStationListsService fireStationListsService;
 
-    @GetMapping("/phoneAlert")
+/*    @GetMapping("/phoneAlert")
     public Iterable<IPersonPhoneDTO> getPhoneList(@RequestParam("firestation") Integer fireStation) {
         List<IPersonPhoneDTO> phones = fireStationListsService.getPhones(fireStation);
         if (phones.size() != 0) {
@@ -30,5 +30,5 @@ public class FireStationListsController {
                     fireStation);
             return null;
         }
-    }
+    }*/
 }

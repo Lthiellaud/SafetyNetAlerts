@@ -36,11 +36,10 @@ public class PersonController {
         if (person.getFirstName() != null || person.getLastName() != null) {
             PersonId personId= new PersonId(person.getFirstName(), person.getLastName());
             logger.info("record for " + personId.toString() + " added");
-            return personService.savePerson(person);
         } else {
             logger.error("post with null firstname or null lastname sent. No person added");
-            return null;
         }
+        return personService.savePerson(person);
     }
 
     /**

@@ -8,9 +8,9 @@ import java.util.List;
 public class FirePersonDTO {
 
     private List<Integer> stations;
-    private List<PersonWithPhoneDTO> persons;
+    private List<PersonPhoneMedicalRecordDTO> persons;
 
-    public FirePersonDTO(List<Integer> stations, List<PersonWithPhoneDTO> persons) {
+    public FirePersonDTO(List<Integer> stations, List<PersonPhoneMedicalRecordDTO> persons) {
         this.stations = stations;
         this.persons = persons;
     }

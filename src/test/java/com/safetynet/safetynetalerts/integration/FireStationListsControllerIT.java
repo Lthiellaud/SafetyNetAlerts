@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest()
@@ -29,20 +30,21 @@ public class FireStationListsControllerIT {
     private MockMvc mockMvc;
 
     @Test
-    public void getPhoneAlert_station6_shouldReturnEmptyBody() throws Exception {
-        mockMvc.perform(get("/phoneAlert").param("firestation", "6"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("phone").doesNotExist());
-    }
-
-    @Test
     public void getPhoneAlert_station1_shouldReturnPhoneNumber() throws Exception {
         mockMvc.perform(get("/phoneAlert").param("firestation", "1"))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(content().string(containsString("\"phone\":\"phone3-1\"")))
                 .andExpect(content().string(containsString("\"phone\":\"phone2-1-1\"")))
                 .andExpect(content().string(containsString("\"phone\":\"phone2-1-2\"")))
                 .andExpect(content().string(containsString("\"phone\":\"phone1-1\"")));
+    }
+
+    @Test
+    public void getPhoneAlert_station6_shouldReturnEmptyBody() throws Exception {
+        mockMvc.perform(get("/phoneAlert").param("firestation", "6"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("phone").doesNotExist());
     }
 
 }

@@ -1,7 +1,7 @@
 package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.FireStation;
-import com.safetynet.safetynetalerts.model.IPersonPhone;
+import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
 import com.safetynet.safetynetalerts.repository.FireStationRepository;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,9 +34,9 @@ public class FireStationListsServiceTest {
     private static FireStation fireStation1;
     private static FireStation fireStation2;
 
-    private static List<IPersonPhone> personPhones;
-    private static IPersonPhone phone1;
-    private static IPersonPhone phone4;
+    private static List<IPersonPhoneDTO> personPhones;
+    private static IPersonPhoneDTO phone1;
+    private static IPersonPhoneDTO phone4;
 
 
     @BeforeEach
@@ -74,7 +74,7 @@ public class FireStationListsServiceTest {
         when(personRepository.findAllDistinctPhoneByAddressIsIn(any())).thenReturn(anyList());
 
         //WHEN
-        List<IPersonPhone> phones = fireStationListsService.getPhones(1);
+        List<IPersonPhoneDTO> phones = fireStationListsService.getPhones(1);
 
         //THEN
         verify(personRepository, times(1)).findAllDistinctPhoneByAddressIsIn(any());

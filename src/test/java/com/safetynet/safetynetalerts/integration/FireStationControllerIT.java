@@ -3,7 +3,6 @@ package com.safetynet.safetynetalerts.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.safetynetalerts.model.FireStation;
 import com.safetynet.safetynetalerts.repository.FireStationRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -54,37 +53,40 @@ public class FireStationControllerIT {
     @Test
     public void updateFireStationTest() throws Exception {
         RequestBuilder Request = MockMvcRequestBuilders
-                .put("/firestation/Address attached to 2 fire station")
+                .put("/firestation/Station to be updated-A1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(String.valueOf(5));
-        //2 fire stations for address 112 Steppes Pl : the request returns 2 fire stations (0&1)
+                .content(String.valueOf(10));
+        //2 fire stations for address "Station to be updated-A1" : the request returns 2 fire stations (0&1)
         mockMvc.perform(Request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[1].address", is("Address attached to 2 fire station")))
-                .andExpect(jsonPath("$[1].station", is(5)));
+                .andExpect(jsonPath("$[1].address", is("Station to be updated-A1")))
+                .andExpect(jsonPath("$[1].station", is(10)));
 
-        assertThat(fireStationRepository.findByAddress("Address attached to 2 fire station").size()).isEqualTo(2);
-        assertThat(fireStationRepository.findByAddress("Address attached to 2 fire station").get(0).getStation()).isEqualTo(5);
-        assertThat(fireStationRepository.findByAddress("Address attached to 2 fire station").get(1).getStation()).isEqualTo(5);
+        assertThat(fireStationRepository.findByAddress("Station to be updated-A1")
+                .size()).isEqualTo(2);
+        assertThat(fireStationRepository.findByAddress("Station to be updated-A1")
+                .get(0).getStation()).isEqualTo(10);
+        assertThat(fireStationRepository.findByAddress("Station to be updated-A1")
+                .get(1).getStation()).isEqualTo(10);
 
     }
 
     @Test
     public void deleteFireStationByAddressTest() throws Exception {
 
-        mockMvc.perform(delete("/firestation/address=748 Townings Dr"))
+        mockMvc.perform(delete("/firestation/address=Address to be deleted"))
                 .andExpect(status().isOk());
 
-        assertThat(fireStationRepository.findByAddress("748 Townings Dr")).isEmpty();
+        assertThat(fireStationRepository.findByAddress("Address to be deleted")).isEmpty();
 
     }
     @Test
     public void deleteFireStationByStation() throws Exception {
 
-        mockMvc.perform(delete("/firestation/station=2"))
+        mockMvc.perform(delete("/firestation/station=80"))
                 .andExpect(status().isOk());
 
-        assertThat(fireStationRepository.findByStation(2)).isEmpty();
+        assertThat(fireStationRepository.findByStation(80)).isEmpty();
     }
 
 }

@@ -91,7 +91,7 @@ public class AlertListsController {
     public List<FloodListByStationDTO> getFloodList
             (@RequestParam ("stations") List<Integer> stations) {
         List<FloodListByStationDTO> floodList = alertListsService.getFloodList(stations);
-        if (floodList != null) {
+        if (floodList != null && floodList.size() > 0) {
             logger.info("URL /flood/stations request: List sent for stations " + stations);
         } else {
             logger.error("URL /flood/stations request: No data found");
@@ -109,12 +109,16 @@ public class AlertListsController {
     public List<PersonEmailMedicalRecordDTO> getPersonInfoList
             (@RequestParam("firstName") String firstName,
              @RequestParam("lastName") String lastName) {
+        if (lastName.equals("")) {
+            logger.error("URL /personInfo request: value for lastName is mandatory");
+            return null;
+        }
         List<PersonEmailMedicalRecordDTO> persons =
                 alertListsService.getPersonEmailMedicalRecord(firstName, lastName);
-        if (persons != null) {
-            logger.info("URL /personInfo: List for " + firstName + " " + lastName + " sent");
+        if (persons != null && persons.size() > 0) {
+            logger.info("URL /personInfo request: List for " + firstName + " " + lastName + " sent");
         } else {
-            logger.error("URL /personInfo: nobody found with name " + firstName + " " + lastName);
+            logger.error("URL /personInfo request: nobody found with name " + firstName + " " + lastName);
         }
         return persons;
     }

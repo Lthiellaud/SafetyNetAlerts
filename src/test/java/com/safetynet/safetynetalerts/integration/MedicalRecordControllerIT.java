@@ -92,7 +92,7 @@ public class MedicalRecordControllerIT {
                 .andExpect(jsonPath("firstName", is("John")))
                 .andExpect(jsonPath("birthdate", is("03/06/1984")))
                 .andExpect(jsonPath("medications[0]", is("hydrapermazol:100mg")))
-                .andExpect(content().string(containsString("\"allergies\":[]")))
+                .andExpect(content().string(containsString("\"allergies\" : [ ]")))
         ;
 
         assertThat(medicalRecordRepository.existsById(personJohnId)).isTrue();

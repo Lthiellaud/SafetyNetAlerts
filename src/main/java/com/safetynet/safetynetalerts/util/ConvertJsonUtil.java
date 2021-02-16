@@ -27,7 +27,7 @@ public class ConvertJsonUtil {
                 .with(pp);
     }
 
-    public String ConvertClassToJson(Object obj) {
+    public String convertClassToJson(Object obj) {
         try {
             return writer.writeValueAsString(obj);
         } catch (Exception e) {

@@ -26,7 +26,7 @@ public class AlertListsControllerIT {
         mockMvc.perform(get("/communityEmail").param("city", "Culver"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().string(containsString("\"email\":\"email1.test1-1")));
+                .andExpect(content().string(containsString("\"email\" : \"email1.test1-1")));
     }
 
     @Test

@@ -20,5 +20,6 @@ public interface PersonRepository extends CrudRepository <Person, PersonId> {
     List<IPersonEmailDTO> findAllDistinctEmailByCity(String city);
     List<PersonPhoneMedicalRecordDTO> findAllByAddress(String address);
     List<PersonEmailMedicalRecordDTO> findAllByFirstNameAndLastName(String firstName, String lastName);
+    List<PersonEmailMedicalRecordDTO> findAllByLastName(String lastName);
     //<T> List<T> findAllByAddress(String address, Class<T> type);
 }

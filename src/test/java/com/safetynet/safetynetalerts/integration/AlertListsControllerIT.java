@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest()
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class PersonListsControllerIT {
+public class AlertListsControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -25,6 +25,7 @@ public class PersonListsControllerIT {
     public void getEmailsForCityCulver_shouldReturnEmails() throws Exception {
         mockMvc.perform(get("/communityEmail").param("city", "Culver"))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(content().string(containsString("\"email\":\"email1.test1-1")));
     }
 
@@ -32,6 +33,7 @@ public class PersonListsControllerIT {
     public void getEmailsForCityCity_shouldReturnEmptyBody() throws Exception {
         mockMvc.perform(get("/communityEmail").param("city", "City"))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(jsonPath("email").doesNotExist());
     }
 

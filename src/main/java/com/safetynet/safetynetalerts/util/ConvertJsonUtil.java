@@ -1,6 +1,7 @@
 package com.safetynet.safetynetalerts.util;
 
 
+import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -16,8 +17,9 @@ public class ConvertJsonUtil {
     private ObjectWriter writer;
 
     DefaultPrettyPrinter pp = new DefaultPrettyPrinter()
-            .withoutSpacesInObjectEntries()
-            .withArrayIndenter(new DefaultPrettyPrinter.NopIndenter());
+            .withoutSpacesInObjectEntries();
+           // .withObjectIndenter(new DefaultIndenter("  ", "\n"));
+            //.withArrayIndenter(new DefaultPrettyPrinter.NopIndenter());
 
     public ConvertJsonUtil() {
         this.writer = new ObjectMapper()

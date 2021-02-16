@@ -1,6 +1,9 @@
 package com.safetynet.safetynetalerts.controller;
 
-import com.safetynet.safetynetalerts.service.PersonListsService;
+import com.safetynet.safetynetalerts.service.FireStationService;
+import com.safetynet.safetynetalerts.service.MedicalRecordService;
+import com.safetynet.safetynetalerts.service.AlertListsService;
+import com.safetynet.safetynetalerts.service.PersonService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -9,16 +12,25 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@WebMvcTest(controllers = PersonListsController.class)
-public class PersonListsControllerTest {
+@WebMvcTest(controllers = AlertListsController.class)
+public class AlertListsControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private PersonListsService personListsService;
+    private AlertListsService alertListsService;
+
+    @MockBean
+    private PersonService personService;
+
+    @MockBean
+    private FireStationService fireStationService;
+
+    @MockBean
+    private MedicalRecordService medicalRecordService;
 
     @Autowired
-    private PersonListsController personListsController;
+    private AlertListsController alertListsController;
 
     @Test
     public void getEmailsTest() throws Exception {

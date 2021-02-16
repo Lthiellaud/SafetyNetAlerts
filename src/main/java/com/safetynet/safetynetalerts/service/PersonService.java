@@ -1,5 +1,8 @@
 package com.safetynet.safetynetalerts.service;
 
+import com.safetynet.safetynetalerts.model.DTO.IPersonEmailDTO;
+import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
+import com.safetynet.safetynetalerts.model.DTO.PersonPhoneMedicalRecordDTO;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
@@ -89,4 +92,30 @@ public class PersonService {
         personRepository.deleteById(personId);
     }
 
+    /**
+     * To get the email list of all the inhabitants of a city.
+     * @param city The city for which an email list is needed
+     * @return the email list
+     */
+    public List<IPersonEmailDTO> getEmailList(String city){
+        return personRepository.findAllDistinctEmailByCity(city);
+    }
+
+    /**
+     * To get all the phone numbers of corresponding to a list of address
+     * @param addresses the list of addresses for which we need the phone number
+     * @return the list of phone number
+     */
+    public List<IPersonPhoneDTO> getPhones(List<String> addresses) {
+        return personRepository.findAllDistinctPhoneByAddressIsIn(addresses);
+    }
+
+    /**
+     * to get the list of the inhabitants at the given address
+     * @param address The address for which we need the inhabitants list
+     * @return the inhabitants list in PersonWitPhoneDTO projection
+     */
+    public List<PersonPhoneMedicalRecordDTO> getAllByAddress(String address) {
+        return personRepository.findAllByAddress(address);
+    }
 }

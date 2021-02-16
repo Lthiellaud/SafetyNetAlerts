@@ -3,7 +3,7 @@ package com.safetynet.safetynetalerts.repository;
 import com.safetynet.safetynetalerts.model.*;
 import com.safetynet.safetynetalerts.model.DTO.IPersonEmailDTO;
 import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
-import com.safetynet.safetynetalerts.model.DTO.PersonWithPhoneDTO;
+import com.safetynet.safetynetalerts.model.DTO.PersonPhoneMedicalRecordDTO;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +17,6 @@ public interface PersonRepository extends CrudRepository <Person, PersonId> {
 
     List<IPersonPhoneDTO> findAllDistinctPhoneByAddressIsIn(Iterable<String> addresses);
     List<IPersonEmailDTO> findAllDistinctEmailByCity(String city);
-    List<PersonWithPhoneDTO> findAllByAddress(String address);
+    List<PersonPhoneMedicalRecordDTO> findAllByAddress(String address);
     //<T> List<T> findAllByAddress(String address, Class<T> type);
 }

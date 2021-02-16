@@ -81,4 +81,9 @@ public class MedicalRecordService {
     public Iterable<MedicalRecord> getMedicalRecords() {
         return medicalRecordRepository.findAll();
     }
+    public Optional<MedicalRecord> getPersonMedicalRecord(PersonId personId) {
+        return  medicalRecordRepository.findById(personId);
+    }
+
+
 }

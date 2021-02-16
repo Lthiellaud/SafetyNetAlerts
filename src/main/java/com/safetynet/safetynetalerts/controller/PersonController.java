@@ -70,7 +70,7 @@ public class PersonController {
         Optional<Person> p = personService.updatePerson(person);
         if (p.isPresent()) {
             Person updatedPerson = p.get();
-            personService.savePerson(updatedPerson);
+            //personService.savePerson(updatedPerson);
             logger.info("record for " + personId.toString() + " updated");
             return updatedPerson;
         } else {

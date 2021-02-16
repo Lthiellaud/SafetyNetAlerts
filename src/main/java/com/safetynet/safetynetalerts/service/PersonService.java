@@ -53,6 +53,7 @@ public class PersonService {
             if (email != null) {
                 currentPerson.setEmail(email);
             }
+            savePerson(currentPerson);
             return Optional.of(currentPerson);
         } else {
             return p;

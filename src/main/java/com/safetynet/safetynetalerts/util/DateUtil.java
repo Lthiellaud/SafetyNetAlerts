@@ -19,7 +19,7 @@ public class DateUtil {
             int d2 = Integer.parseInt(format.format(now));
             return (d2 - d1) / 10000;
         } else {
-            return null;
+            return -1;
         }
     }
 

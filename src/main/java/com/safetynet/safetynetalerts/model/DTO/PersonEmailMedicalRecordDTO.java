@@ -1,20 +1,25 @@
 package com.safetynet.safetynetalerts.model.DTO;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
-public class PersonMedicalRecordDTO {
+@Getter
+@Setter
+public class PersonEmailMedicalRecordDTO {
     private String firstName;
     private String lastName;
-    private String phone;
-    private String email;
+    private String address;
     private int age;
+    private String email;
     private List<String> medications;
     private List<String> allergies;
 
-    public PersonMedicalRecordDTO(String firstName, String lastName, String phone, String email) {
+    public PersonEmailMedicalRecordDTO(String firstName, String lastName, String address, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phone = phone;
+        this.address = address;
         this.email = email;
     }
 

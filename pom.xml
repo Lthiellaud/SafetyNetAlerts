@@ -13,7 +13,7 @@
     <artifactId>safetynetalerts</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>safetynetalerts</name>
-    <description>Application to send informations to emergency service</description>
+    <description>Application to send information to emergency service</description>
     <properties>
         <java.version>1.8</java.version>
         <dep.jacoco.version>0.8.6</dep.jacoco.version>
@@ -202,11 +202,6 @@
                     <threshold>Low</threshold>
                     <effort>Max</effort>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.1.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

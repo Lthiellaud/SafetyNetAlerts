@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.DTO.IPersonEmailDTO;
 import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
+import com.safetynet.safetynetalerts.model.DTO.PersonEmailMedicalRecordDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonPhoneMedicalRecordDTO;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
@@ -10,8 +11,10 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Data
 @Service
@@ -117,5 +120,25 @@ public class PersonService {
      */
     public List<PersonPhoneMedicalRecordDTO> getAllByAddress(String address) {
         return personRepository.findAllByAddress(address);
+    }
+
+    /**
+     * To get the list of persons with the given firstName and lastName.
+     * If firstName value is omitted, all persons with the given lastName will be sent
+     * @param firstName firstName value is optional
+     * @param lastName lastName value is mandatory
+     * @return the list of persons including address, age, email and medical information
+     */
+    public List<PersonEmailMedicalRecordDTO> getAllByFirstAndLastName(String firstName, String lastName) {
+        List<PersonEmailMedicalRecordDTO> personsByLastName =
+                personRepository.findAllByLastName(lastName);
+        List<PersonEmailMedicalRecordDTO> personsByFirstAndLastName;
+        if (firstName.equals("")) {
+            personsByFirstAndLastName = personsByLastName;
+        } else {
+            personsByFirstAndLastName = personsByLastName.stream()
+                    .filter(p -> p.getFirstName().matches(firstName)).collect(Collectors.toList());
+        }
+        return personsByFirstAndLastName;
     }
 }

@@ -1,9 +1,6 @@
 package com.safetynet.safetynetalerts.controller;
 
-import com.safetynet.safetynetalerts.model.DTO.FirePersonDTO;
-import com.safetynet.safetynetalerts.model.DTO.FloodListByStationDTO;
-import com.safetynet.safetynetalerts.model.DTO.IPersonEmailDTO;
-import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
+import com.safetynet.safetynetalerts.model.DTO.*;
 import com.safetynet.safetynetalerts.service.AlertListsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,15 +28,14 @@ public class AlertListsController {
     @GetMapping("/communityEmail")
     public List<IPersonEmailDTO> getEmails(@RequestParam("city") String city) {
         if (city.equals("")) {
-            logger.error("URL /communityEmail Request : a parameter \"city\" is needed");
+            logger.error("URL /communityEmail Request: a parameter \"city\" is needed");
             return null;
         }
         List<IPersonEmailDTO> emailList = alertListsService.getEmailList(city);
         if (emailList.size() > 0){
-            logger.info("URL /communityEmail Request : Email of all inhabitants of " + city + " sent");
-
+            logger.info("URL /communityEmail request: Email of all inhabitants of " + city + " sent");
         } else {
-            logger.error("URL /communityEmail Request : no inhabitants found for city " +
+            logger.error("URL /communityEmail request: no inhabitants found for city " +
                      city);
 
         }
@@ -55,15 +51,15 @@ public class AlertListsController {
     @GetMapping("/fire")
     public FirePersonDTO getFirePersons(@RequestParam("address") String address) {
         if (address.equals("")) {
-            logger.error("URL /fire Request : a parameter \"address\" is needed");
+            logger.error("URL /fire Request: a parameter \"address\" is needed");
             return null;
         }
         FirePersonDTO firePersonDTO = alertListsService.getFirePersonList(address);
-        /*if (firePersonDTO.getStations().size() > 0) {
-            logger.info("URL /fire : fire list for address " + address + " sent");
+        if (firePersonDTO != null && firePersonDTO.getPersons().size() > 0) {
+            logger.info("URL /fire request: fire list for address " + address + " sent");
         } else {
-            logger.info("URL /fire : empty fire list for address " + address + " sent");
-        }*/
+            logger.info("URL /fire request: empty fire list for address " + address + " sent");
+        }
         return firePersonDTO;
     }
 
@@ -76,25 +72,54 @@ public class AlertListsController {
     public Iterable<IPersonPhoneDTO> getPhoneList(@RequestParam("firestation") Integer fireStation) {
         List<IPersonPhoneDTO> phones = alertListsService.getPhones(fireStation);
         if (phones.size() != 0) {
-            logger.info("URL /phoneAlert : List of inhabitants phone for fire station " +
+            logger.info("URL /phoneAlert request: List of inhabitants phone for fire station " +
                     + fireStation + " sent");
             return phones;
         } else {
-            logger.error("URL /phoneAlert : no inhabitants found for fire station " +
+            logger.error("URL /phoneAlert request: no inhabitants found for fire station " +
                     fireStation);
             return null;
         }
     }
 
     /**
-     * URL 1-	http://localhost:9090/flood/stations?stations=2 3
-     * @param stations the list of station for which we need the list
+     * URL http://localhost:9090/flood/stations?stations=<a list of station_numbers>.
+     * @param stations the list of station for which we need the list (integers separated by comma)
      * @return a list of the households attached to the given stations
      */
     @GetMapping("/flood/stations")
-    public List<FloodListByStationDTO> getFloodList (@RequestParam ("stations") List<Integer> stations) {
-        return alertListsService.getFloodList(stations);
+    public List<FloodListByStationDTO> getFloodList
+            (@RequestParam ("stations") List<Integer> stations) {
+        List<FloodListByStationDTO> floodList = alertListsService.getFloodList(stations);
+        if (floodList != null && floodList.size() > 0) {
+            logger.info("URL /flood/stations request: List sent for stations " + stations);
+        } else {
+            logger.error("URL /flood/stations request: No data found");
+        }
+        return floodList;
     }
 
-
+    /**
+     * URL http://localhost:9090/personInfo?firstName=<firstName>&lastName=<lastName>.
+     * @param firstName the firstname sought
+     * @param lastName the lastname sought
+     * @return the list of inhabitants including address, age, email, medical record
+     */
+    @GetMapping("/personInfo")
+    public List<PersonEmailMedicalRecordDTO> getPersonInfoList
+            (@RequestParam("firstName") String firstName,
+             @RequestParam("lastName") String lastName) {
+        if (lastName.equals("")) {
+            logger.error("URL /personInfo request: value for lastName is mandatory");
+            return null;
+        }
+        List<PersonEmailMedicalRecordDTO> persons =
+                alertListsService.getPersonEmailMedicalRecord(firstName, lastName);
+        if (persons != null && persons.size() > 0) {
+            logger.info("URL /personInfo request: List for " + firstName + " " + lastName + " sent");
+        } else {
+            logger.error("URL /personInfo request: nobody found with name " + firstName + " " + lastName);
+        }
+        return persons;
+    }
 }

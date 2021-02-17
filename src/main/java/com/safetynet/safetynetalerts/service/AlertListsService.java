@@ -24,7 +24,7 @@ public class AlertListsService {
     FireStationService fireStationService;
 
     private static PersonId personId;
-    private static DateUtil dateUtil = new DateUtil();;
+    private static DateUtil dateUtil = new DateUtil();
 
     /**
      * To get the email list of all the inhabitants of a city.
@@ -55,7 +55,7 @@ public class AlertListsService {
         List<PersonPhoneMedicalRecordDTO> persons = personService.getAllByAddress(address);
         persons.forEach(person -> {
             personId = new PersonId(person.getFirstName(), person.getLastName());
-            Optional<MedicalRecord> m = medicalRecordService.getPersonMedicalRecord(personId);
+            Optional<MedicalRecord> m = medicalRecordService.getMedicalRecord(personId);
             if (m.isPresent()) {
                 MedicalRecord medicalRecord = m.get();
                 person.setAge(dateUtil.age(medicalRecord.getBirthdate()));
@@ -109,7 +109,7 @@ public class AlertListsService {
                 personService.getAllByFirstAndLastName(firstName, lastName);
         persons.forEach(person -> {
             personId = new PersonId(person.getFirstName(), person.getLastName());
-            Optional<MedicalRecord> m = medicalRecordService.getPersonMedicalRecord(personId);
+            Optional<MedicalRecord> m = medicalRecordService.getMedicalRecord(personId);
             if (m.isPresent()) {
                 MedicalRecord medicalRecord = m.get();
                 person.setAge(dateUtil.age(medicalRecord.getBirthdate()));

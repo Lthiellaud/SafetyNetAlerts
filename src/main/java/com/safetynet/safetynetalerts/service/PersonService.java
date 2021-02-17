@@ -1,5 +1,6 @@
 package com.safetynet.safetynetalerts.service;
 
+import com.safetynet.safetynetalerts.controller.PersonController;
 import com.safetynet.safetynetalerts.model.DTO.IPersonEmailDTO;
 import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonEmailMedicalRecordDTO;
@@ -8,6 +9,8 @@ import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
 import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,40 +26,49 @@ public class PersonService {
     @Autowired
     private PersonRepository personRepository;
 
+    private static Logger logger = LoggerFactory.getLogger(PersonController.class);
+
     /**
      * To apply the modifications to a person. Only non null attributes will be changed.
      * @param person The modified person record to be used for updating the person
      * @return the founded person
      */
     public Optional<Person> updatePerson(Person person){
-        PersonId personId = new PersonId(person.getFirstName(), person.getLastName());
-        Optional<Person> p = personRepository.findById(personId);
-        if (p.isPresent()) {
-            Person currentPerson = p.get();
-            String address = person.getAddress();
-            if (address != null) {
-                currentPerson.setAddress(address);
+        if (person.getFirstName() != null || person.getLastName() != null) {
+            PersonId personId = new PersonId(person.getFirstName(), person.getLastName());
+            Optional<Person> p = personRepository.findById(personId);
+            if (p.isPresent()) {
+                Person currentPerson = p.get();
+                String address = person.getAddress();
+                if (address != null) {
+                    currentPerson.setAddress(address);
+                }
+                String city = person.getCity();
+                if (city != null) {
+                    currentPerson.setCity(city);
+                }
+                Integer zip = person.getZip();
+                if (zip != null) {
+                    currentPerson.setZip(zip);
+                }
+                String phone = person.getPhone();
+                if (phone != null) {
+                    currentPerson.setPhone(phone);
+                }
+                String email = person.getEmail();
+                if (email != null) {
+                    currentPerson.setEmail(email);
+                }
+                personRepository.save(currentPerson);
+                logger.info("updatePerson: record for " + personId.toString() + " updated");
+                return Optional.of(currentPerson);
+            } else {
+                logger.error("updatePerson: no record found for " + personId.toString());
+                return p;
             }
-            String city = person.getCity();
-            if (city != null) {
-                currentPerson.setCity(city);
-            }
-            Integer zip = person.getZip();
-            if (zip != null) {
-                currentPerson.setZip(zip);
-            }
-            String phone = person.getPhone();
-            if (phone != null) {
-                currentPerson.setPhone(phone);
-            }
-            String email = person.getEmail();
-            if (email != null) {
-                currentPerson.setEmail(email);
-            }
-            savePerson(currentPerson);
-            return Optional.of(currentPerson);
         } else {
-            return p;
+            logger.error("person update impossible : firstname and lastname mandatory");
+            return Optional.empty();
         }
 
 
@@ -75,8 +87,20 @@ public class PersonService {
      * @param person the person to be added
      * @return the saved person
      */
-    public Person savePerson(Person person) {
-        return personRepository.save(person);
+    public Optional<Person> createPerson(Person person) {
+        if (person.getFirstName() != null  && person.getLastName() != null) {
+            PersonId personId = new PersonId(person.getFirstName(), person.getLastName());
+            if (!getPersonId(personId)) {
+                logger.info("createPerson: record for " + personId.toString() + " created");
+                personRepository.save(person);
+                return Optional.of(person);
+            } else {
+                logger.error("createPerson: " + personId.toString() + " already existing");
+            }
+        } else {
+            logger.error("person creation impossible : firstname and lastname mandatory");
+        }
+        return Optional.empty();
     }
 
     /**
@@ -90,10 +114,22 @@ public class PersonService {
 
     /**
      * To delete a person from his firstname and lastname.
-     * @param personId defines firstname and lastname of the person
+     * @param firstName defines firstname of the person
+     * @param lastName defines lastname of the person
      */
-    public void deletePerson(PersonId personId) {
-        personRepository.deleteById(personId);
+    public void deletePerson(String firstName, String lastName) {
+        if (firstName != null  && lastName != null) {
+            PersonId personId = new PersonId(firstName, lastName);
+            if (getPersonId(personId)) {
+                logger.info("record for " + personId.toString() +" deleted");
+                personRepository.deleteById(personId);
+            } else {
+                logger.error("deletePerson: " + personId.toString() + " does not exists. " +
+                        "Nothing done");
+            }
+        } else {
+            logger.error("deletePerson: firstname and lastname mandatory");
+        }
     }
 
     /**
@@ -131,15 +167,20 @@ public class PersonService {
      * @return the list of persons including address, age, email and medical information
      */
     public List<PersonEmailMedicalRecordDTO> getAllByFirstAndLastName(String firstName, String lastName) {
-        List<PersonEmailMedicalRecordDTO> personsByLastName =
-                personRepository.findAllByLastName(lastName);
-        List<PersonEmailMedicalRecordDTO> personsByFirstAndLastName;
-        if (firstName.equals("")) {
-            personsByFirstAndLastName = personsByLastName;
+        if (lastName != null) {
+            List<PersonEmailMedicalRecordDTO> personsByLastName =
+                    personRepository.findAllByLastName(lastName);
+            List<PersonEmailMedicalRecordDTO> personsByFirstAndLastName;
+            if (firstName == null || firstName.equals("")) {
+                personsByFirstAndLastName = personsByLastName;
+            } else {
+                personsByFirstAndLastName = personsByLastName.stream()
+                        .filter(p -> p.getFirstName().matches(firstName)).collect(Collectors.toList());
+            }
+            return personsByFirstAndLastName;
         } else {
-            personsByFirstAndLastName = personsByLastName.stream()
-                    .filter(p -> p.getFirstName().matches(firstName)).collect(Collectors.toList());
+            logger.error("last name is mandatory");
+            return new ArrayList<>();
         }
-        return personsByFirstAndLastName;
     }
 }

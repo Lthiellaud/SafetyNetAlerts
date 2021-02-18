@@ -24,16 +24,7 @@ public class AlertListsService {
     FireStationService fireStationService;
 
     private static PersonId personId;
-    private static DateUtil dateUtil = new DateUtil();;
-
-    /**
-     * To get the email list of all the inhabitants of a city.
-     * @param city The city for which an email list is needed
-     * @return the email list
-     */
-    public List<IPersonEmailDTO> getEmailList(String city){
-        return personService.getEmailList(city);
-    }
+    private static DateUtil dateUtil = new DateUtil();
 
     /**
      * To get the list of the inhabitants living at an address and the attached fire station.
@@ -51,11 +42,18 @@ public class AlertListsService {
      * @param address the address for which we need the inhabitants list
      * @return the list of inhabitants at the given address including phone and medical record
      */
-    private List<PersonPhoneMedicalRecordDTO> getPersonPhoneMedicalRecordDTO(String address) {
-        List<PersonPhoneMedicalRecordDTO> persons = personService.getAllByAddress(address);
+    public List<PersonPhoneMedicalRecordDTO> getPersonPhoneMedicalRecordDTO(String address) {
+        List<PersonMedicalRecordDTO> persons = personService.getAllByAddress(address);
+        getMedicalRecord(persons);
+        List<PersonPhoneMedicalRecordDTO> personList = new ArrayList<>();
+        persons.forEach(person -> personList.add(new PersonPhoneMedicalRecordDTO(person)));
+        return personList;
+    }
+
+    public void getMedicalRecord(List<PersonMedicalRecordDTO> persons) {
         persons.forEach(person -> {
             personId = new PersonId(person.getFirstName(), person.getLastName());
-            Optional<MedicalRecord> m = medicalRecordService.getPersonMedicalRecord(personId);
+            Optional<MedicalRecord> m = medicalRecordService.getMedicalRecord(personId);
             if (m.isPresent()) {
                 MedicalRecord medicalRecord = m.get();
                 person.setAge(dateUtil.age(medicalRecord.getBirthdate()));
@@ -63,9 +61,7 @@ public class AlertListsService {
                 person.setAllergies(medicalRecord.getAllergies());
             }
         });
-        return persons;
     }
-
     /**
      * to get the list of the households attached to the given fire stations.
      * @param stations the list of fire stations for which we need the list
@@ -105,19 +101,12 @@ public class AlertListsService {
      * @return the list including address, age, email, medical record
      */
     public List<PersonEmailMedicalRecordDTO> getPersonEmailMedicalRecord(String firstName, String lastName) {
-        List<PersonEmailMedicalRecordDTO> persons =
+        List<PersonMedicalRecordDTO> persons =
                 personService.getAllByFirstAndLastName(firstName, lastName);
-        persons.forEach(person -> {
-            personId = new PersonId(person.getFirstName(), person.getLastName());
-            Optional<MedicalRecord> m = medicalRecordService.getPersonMedicalRecord(personId);
-            if (m.isPresent()) {
-                MedicalRecord medicalRecord = m.get();
-                person.setAge(dateUtil.age(medicalRecord.getBirthdate()));
-                person.setMedications(medicalRecord.getMedications());
-                person.setAllergies(medicalRecord.getAllergies());
-            }
-        });
-        return persons;
+        getMedicalRecord(persons);
+        List<PersonEmailMedicalRecordDTO> personList = new ArrayList<>();
+        persons.forEach(person -> personList.add(new PersonEmailMedicalRecordDTO(person)));
+        return personList;
     }
 
 }

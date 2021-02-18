@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 /**
  * Defines the endpoint /firestation.
  * Implemented actions : Post/Put/Delete
@@ -17,7 +19,7 @@ public class FireStationController {
     @Autowired
     private FireStationService fireStationService;
 
-    private static Logger logger = LoggerFactory.getLogger(FireStationController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FireStationController.class);
 
     /**
      * POST - To add a new fire station.
@@ -25,10 +27,9 @@ public class FireStationController {
      * @return the added fire station station
      */
     @PostMapping(value="/firestation")
-    public FireStation createFireStation (@RequestBody FireStation fireStation) {
-
-        logger.info("Fire station " + fireStation.toString() + " added");
-        return fireStationService.saveFireStation(fireStation);
+    public Optional<FireStation> createFireStation (@RequestBody FireStation fireStation) {
+        LOGGER.info("Endpoint /firestation: Creation of record " + fireStation.toString() + " asked");
+        return fireStationService.createFireStation(fireStation);
     }
 
     /**
@@ -39,22 +40,8 @@ public class FireStationController {
      */
     @PutMapping(value="/firestation/{address}")
     public Iterable<FireStation> updateFireStation (@PathVariable("address") String address, @RequestBody Integer station) {
-        logger.info("Updating asked for fire station assigned to address : " + address);
-        Iterable<FireStation> fireStations = fireStationService.getFireStation(address);
-        int i = 0;
-        if (station != null) {
-            for (FireStation currentFireStation:fireStations) {
-                currentFireStation.setStation(station);
-                fireStationService.saveFireStation(currentFireStation);
-                i++;
-            }
-        }
-        if (i>0) {
-            logger.info(i + " record(s) fire station updated for the address : " + address);
-        } else {
-            logger.info("no fire station for this address");
-        }
-        return fireStations;
+        LOGGER.info("Updating asked for fire station assigned to address : " + address);
+        return fireStationService.updateFireStation(address, station);
     }
 
     /**
@@ -63,7 +50,8 @@ public class FireStationController {
      */
     @DeleteMapping(value="/firestation/address={address}")
     public void deleteFireStationByAddress (@PathVariable("address") String address) {
-        logger.info("records fire station for the address " + address + " deleted");
+        LOGGER.info("Endpoint /firestation/address={address}: deletion asked for records " +
+                "FireStation for the address " + address);
         fireStationService.deleteFireStation(address);
     }
 
@@ -73,7 +61,8 @@ public class FireStationController {
      */
     @DeleteMapping(value="/firestation/station={station}")
     public void deleteFireStation (@PathVariable("station") Integer station) {
-        logger.info("records for fire station number " + station + " deleted");
+        LOGGER.info("Endpoint /firestation/station={station}: deletion of the records for " +
+                "fire station number " + station + " asked");
         fireStationService.deleteFireStation(station);
     }
 }

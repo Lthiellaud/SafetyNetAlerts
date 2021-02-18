@@ -8,11 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 /**
@@ -33,10 +30,11 @@ public class MedicalRecordController {
      * @return the added medical record
      */
     @PostMapping(value="/medicalRecord")
-    public MedicalRecord createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        PersonId personId = new PersonId(medicalRecord.getFirstName(), medicalRecord.getLastName());
-        logger.info("medical record of " + personId.toString() + " saved");
-        return medicalRecordService.saveMedicalRecord(medicalRecord);
+    public Optional<MedicalRecord> createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+        logger.info("Endpoint /medicalRecord: Creation of medical record for " +
+                medicalRecord.getFirstName() + " " + medicalRecord.getLastName() + " asked");
+        return medicalRecordService.createMedicalRecord(medicalRecord);
+
     }
 
     /**
@@ -44,17 +42,13 @@ public class MedicalRecordController {
      * @param firstName the firstname of the person whose medical record must be deleted
      * @param lastName the lastname of the person whose medical record must be deleted
      */
+
     @DeleteMapping("/medicalRecord/{firstName}:{lastName}")
     public void deleteMedicalRecord(@PathVariable("firstName") String firstName,
                                     @PathVariable("lastName") String lastName) {
-        PersonId personId = new PersonId(firstName, lastName);
-        Optional<MedicalRecord> m = medicalRecordService.getMedicalRecord(personId);
-        if (m.isPresent()) {
-            logger.info("medical record of " + personId.toString() + " deleted");
-            medicalRecordService.deleteMedicalRecord(personId);
-        } else {
-            logger.error("The medical record of " + personId.toString() + " does not exists");
-        }
+        logger.info("Endpoint /medicalRecord/{firstName}:{lastName}: Deletion of medical record for " +
+                firstName + " " + lastName + " asked");
+        medicalRecordService.deleteMedicalRecord(firstName, lastName);
     }
 
     /**
@@ -62,21 +56,15 @@ public class MedicalRecordController {
      * @return the updated medical record
      */
     @PutMapping("/medicalRecord/")
-    public MedicalRecord updateMedicalRecord(@RequestBody MedicalRecord medicalRecord  ) {
-        PersonId personId = new PersonId(medicalRecord.getFirstName(), medicalRecord.getLastName());
-        Optional<MedicalRecord> m = medicalRecordService.updateMedicalRecord(medicalRecord);
-        if (m.isPresent()) {
-            medicalRecordService.saveMedicalRecord(m.get());
-            logger.info("medical record of " + personId.toString() + " updated");
-            return m.get();
-        } else {
-            logger.error("The medical record of " + personId.toString() + " does not exists");
-            return null;
-        }
+    public Optional<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord  ) {
+        logger.info("Endpoint /medicalRecord: update asked for medicale record of " +
+                medicalRecord.getFirstName() + " " + medicalRecord.getLastName());
+        return medicalRecordService.updateMedicalRecord(medicalRecord);
     }
     
     @GetMapping("/medicalRecords")
-    public Iterable<MedicalRecord> getMedicalRecords(){
+    public Iterable<MedicalRecord> getMedicalRecords() {
+        logger.info("Endpoint /medicalRecords: list of all medical records asked");
         return medicalRecordService.getMedicalRecords();
     }
     

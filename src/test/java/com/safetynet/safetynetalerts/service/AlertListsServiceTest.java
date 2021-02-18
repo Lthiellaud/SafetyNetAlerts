@@ -140,18 +140,6 @@ public class AlertListsServiceTest {
 
     }
     @Test
-    public void getEmailListTest(){
-        //GIVEN
-        when(personRepository.findAllDistinctEmailByCity("City")).thenReturn(anyList());
-
-        //WHEN
-        alertListsService.getEmailList("City");
-
-        //THEN
-        verify(personRepository, times(1)).findAllDistinctEmailByCity("City");
-
-    }
-    @Test
     public void getFirePersonListTest(){
         //GIVEN
         initDtoTest();

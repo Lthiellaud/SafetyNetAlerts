@@ -18,6 +18,14 @@ public class PersonId implements Serializable {
         this.lastName = lastName;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     @Override
     public String toString() {
         return firstName + " " + lastName;

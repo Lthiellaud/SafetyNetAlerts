@@ -32,14 +32,10 @@ public class PersonController {
      * @return the added person
      */
     @PostMapping(value="/person")
-    public Person createPerson(@RequestBody Person person) {
-        if (person.getFirstName() != null || person.getLastName() != null) {
-            PersonId personId= new PersonId(person.getFirstName(), person.getLastName());
-            logger.info("record for " + personId.toString() + " added");
-        } else {
-            logger.error("post with null firstname or null lastname sent. No person added");
-        }
-        return personService.savePerson(person);
+    public Optional<Person> createPerson(@RequestBody Person person) {
+        logger.info("Endpoint /person: creation request Person record for " + person.getFirstName() +
+                  " " + person.getLastName() + " received");
+        return personService.createPerson(person);
     }
 
     /**
@@ -50,13 +46,10 @@ public class PersonController {
     @DeleteMapping(value = "/person/{firstName}:{lastName}")
     public void deletePerson(@PathVariable("firstName") String firstName,
                              @PathVariable("lastName") String lastName) {
-        PersonId personId = new PersonId(firstName, lastName);
-        if (personService.getPersonId(personId)) {
-            logger.info("record for " + personId.toString() +" deleted");
-            personService.deletePerson(personId);
-        } else {
-            logger.error(personId.toString() + " : This person does not exists");
-        }
+        logger.info("Endpoint /person: deletion request for record Person " + firstName +
+                " " + lastName + " received");
+        personService.deletePerson(firstName, lastName);
+
     }
 
     /**
@@ -64,18 +57,10 @@ public class PersonController {
      * The person to be updated is in the request body
      * @return the updated person
      */
-    @PutMapping(value="/person/")
-    public Person updatePerson(@RequestBody Person person  ) {
-        PersonId personId = new PersonId(person.getFirstName(), person.getLastName());
-        Optional<Person> p = personService.updatePerson(person);
-        if (p.isPresent()) {
-            Person updatedPerson = p.get();
-            personService.savePerson(updatedPerson);
-            logger.info("record for " + personId.toString() + " updated");
-            return updatedPerson;
-        } else {
-            logger.error("record for " + personId.toString() + " does not exist");
-            return null;
-        }
+    @PutMapping(value="/person")
+    public Optional<Person> updatePerson(@RequestBody Person person  ) {
+        logger.info("Endpoint /person: creation request for " +
+                person.getFirstName() + " " + person.getLastName() + " received");
+        return personService.updatePerson(person);
     }
 }

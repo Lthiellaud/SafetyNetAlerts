@@ -1,6 +1,6 @@
 package com.safetynet.safetynetalerts.model.DTO;
 
-import lombok.Data;
+import com.safetynet.safetynetalerts.model.Person;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,28 +8,29 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PersonPhoneMedicalRecordDTO {
+public class PersonMedicalRecordDTO {
     private String firstName;
     private String lastName;
+    private String address;
     private String phone;
+    private String email;
     private int age;
     private List<String> medications;
     private List<String> allergies;
 
-    public PersonPhoneMedicalRecordDTO(String firstName, String lastName, String phone) {
+    public PersonMedicalRecordDTO(String firstName, String lastName, String address, String email, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.address = address;
         this.phone = phone;
+        this.email = email;
     }
 
-    public PersonPhoneMedicalRecordDTO(PersonMedicalRecordDTO person) {
+    public PersonMedicalRecordDTO(Person person) {
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
-        this.phone = person.getPhone();
-        this.age = person.getAge();
-        this.medications = person.getMedications();
-        this.allergies = person.getAllergies();
+        this.address = person.getAddress();
+        this.email = person.getEmail();
     }
-
 
 }

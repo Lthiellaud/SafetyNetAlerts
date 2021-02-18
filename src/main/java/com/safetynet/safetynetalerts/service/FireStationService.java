@@ -117,9 +117,13 @@ public class FireStationService {
     public List<Integer> getStations(String address) {
         List<FireStation> fireStations = fireStationRepository.findByAddress(address);
         List<Integer> stations = new ArrayList<>();
-        if (fireStations.size() > 0) {
+        int i = fireStations.size();
+        if (i > 0) {
+            LOGGER.info("getStations: " + i + "fire station found for the address " + address);
             stations = fireStations.stream().map(FireStation::getStation)
                     .collect(Collectors.toList());
+        } else {
+            LOGGER.error("getStations: No fire station found for the address " + address);
         }
         return stations;
     }
@@ -127,13 +131,14 @@ public class FireStationService {
     public List<String> getAddresses(Integer station) {
         List<FireStation> fireStations = fireStationRepository.findByStation(station);
         List<String> addresses = new ArrayList<>();
-        if (fireStations != null) {
+        int i = fireStations.size();
+        if (i > 0) {
+            LOGGER.info("getAddresses: " + i + "addresses found for fire station " + station);
             addresses = fireStations.stream().map(FireStation::getAddress)
                     .distinct().collect(Collectors.toList());
+        } else {
+            LOGGER.error("getAddresses:  no address found for fire station " + station);
         }
         return addresses;
     }
-
-
-
 }

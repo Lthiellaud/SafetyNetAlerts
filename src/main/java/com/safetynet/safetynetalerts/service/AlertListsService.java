@@ -44,9 +44,11 @@ public class AlertListsService {
      */
     public List<PersonPhoneMedicalRecordDTO> getPersonPhoneMedicalRecordDTO(String address) {
         List<PersonMedicalRecordDTO> persons = personService.getAllByAddress(address);
-        getMedicalRecord(persons);
         List<PersonPhoneMedicalRecordDTO> personList = new ArrayList<>();
-        persons.forEach(person -> personList.add(new PersonPhoneMedicalRecordDTO(person)));
+        if (persons.size() > 0) {
+            getMedicalRecord(persons);
+            persons.forEach(person -> personList.add(new PersonPhoneMedicalRecordDTO(person)));
+        }
         return personList;
     }
 
@@ -71,14 +73,16 @@ public class AlertListsService {
     public List<FloodListByStationDTO> getFloodList(List<Integer> stations) {
         List<FloodListByStationDTO> floodList = new ArrayList<>();
         for (Integer station : stations) {
-            List<String> addresses = fireStationService.getAddresses(station);
             List<PersonByAddressDTO> personByAddressList = new ArrayList<>();
-            addresses.forEach(address -> {
-                PersonByAddressDTO p = new PersonByAddressDTO();
-                p.setAddress(address);
-                p.setPersons(getPersonPhoneMedicalRecordDTO(address));
-                personByAddressList.add(p);
-            });
+            List<String> addresses = fireStationService.getAddresses(station);
+            if (addresses.size() > 0) {
+                addresses.forEach(address -> {
+                    PersonByAddressDTO p = new PersonByAddressDTO();
+                    p.setAddress(address);
+                    p.setPersons(getPersonPhoneMedicalRecordDTO(address));
+                    personByAddressList.add(p);
+                });
+            }
             floodList.add(new FloodListByStationDTO(station, personByAddressList));
         }
         return floodList;

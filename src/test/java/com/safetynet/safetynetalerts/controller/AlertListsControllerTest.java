@@ -21,12 +21,7 @@ public class AlertListsControllerTest {
     @Autowired
     private AlertListsController alertListsController;
 
-    @Test
-    public void getFirePersonsTest() throws Exception {
-        mockMvc.perform(get("/fire").param("address", "Given Address"))
-                .andExpect(status().isOk());
-    }
-    @Test
+   @Test
     public void getPhoneListTest() throws Exception {
         mockMvc.perform(get("/phoneAlert").param("firestation", "2"))
                 .andExpect(status().isOk());

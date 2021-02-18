@@ -15,11 +15,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -36,7 +38,7 @@ public class PersonControllerIT {
     private Person person;
     private PersonId personBabyId = new PersonId("Baby", "Boyd");
     private PersonId personJohnId = new PersonId("John", "Boyd");
-    private PersonId personTenleyId = new PersonId("Tenley", "Boyd");
+    private PersonId personDeleteId = new PersonId("Tenley", "Boyd");
 
 
     @BeforeEach
@@ -67,6 +69,28 @@ public class PersonControllerIT {
     }
 
     @Test
+    public void createExistingPersonTest() throws Exception {
+        Optional<Person> person2 = personRepository.findById(personJohnId);
+        person.setFirstName("John");
+        person.setLastName("Boyd");
+        person.setAddress("1509 Marinland St");
+        person.setCity("Culver");
+        person.setZip(97451);
+        person.setPhone("841-874-0000" );
+        person.setEmail("jaboyd@email.com");
+        RequestBuilder createRequest = MockMvcRequestBuilders
+                .post("/person")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(person));
+        mockMvc.perform(createRequest)
+                .andExpect(status().isOk())
+                .andExpect(content().string("null"));
+
+        // To verify that John Culver has been updated;
+        assertThat(personRepository.findById(personJohnId)).isEqualTo(person2);
+    }
+
+    @Test
     public void updatePersonTest() throws Exception {
         person.setFirstName("John");
         person.setLastName("Boyd");
@@ -93,12 +117,30 @@ public class PersonControllerIT {
     }
 
     @Test
+    public void updateNonExistingPersonTest() throws Exception {
+        person.setFirstName("Unknown");
+        person.setLastName("Boyd");
+        person.setEmail("test.update@email.com");
+        person.setPhone(null);
+        person.setZip(null);
+        person.setCity(null);
+        person.setAddress("1508 Culver St");
+        RequestBuilder request = MockMvcRequestBuilders
+                .put("/person/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(person));
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string("null"));
+    }
+
+    @Test
     public void deletePersonTest() throws Exception {
 
-        mockMvc.perform(delete("/person/Tenley:Boyd"))
+        mockMvc.perform(delete("/person/Delete:Boyd"))
                 .andExpect(status().isOk());
 
-        assertThat(personRepository.existsById(personTenleyId)).isFalse();
+        assertThat(personRepository.existsById(personDeleteId)).isFalse();
 
     }
 }

@@ -18,7 +18,8 @@ public class PersonMedicalRecordDTO {
     private List<String> medications;
     private List<String> allergies;
 
-    public PersonMedicalRecordDTO(String firstName, String lastName, String address, String email, String phone) {
+    public PersonMedicalRecordDTO(String firstName, String lastName,
+                                  String address, String phone, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -30,6 +31,7 @@ public class PersonMedicalRecordDTO {
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
         this.address = person.getAddress();
+        this.phone = person.getPhone();
         this.email = person.getEmail();
     }
 

@@ -113,7 +113,7 @@ public class PersonServiceTest {
         //THEN
         verify(personRepository, times(0)).findById(personId);
         verify(personRepository, times(0)).save(any(Person.class));
-        assertThat(person.isPresent()).isFalse();
+        assertThat(person).isEqualTo(Optional.of(new Person()));
 
     }
 
@@ -145,7 +145,7 @@ public class PersonServiceTest {
         //THEN
         verify(personRepository, times(1)).findById(personId);
         verify(personRepository, times(0)).save(any(Person.class));
-        assertThat(person.isPresent()).isFalse();
+        assertThat(person).isEqualTo(Optional.empty());
     }
 
     @Test
@@ -156,7 +156,7 @@ public class PersonServiceTest {
         //THEN
         verify(personRepository, times(0)).findById(any(PersonId.class));
         verify(personRepository, times(0)).save(any(Person.class));
-        assertThat(person.isPresent()).isFalse();
+        assertThat(person).isEqualTo(Optional.empty());
     }
 
     @Test

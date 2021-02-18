@@ -1,15 +1,11 @@
 package com.safetynet.safetynetalerts.controller;
 
 import com.safetynet.safetynetalerts.model.Person;
-import com.safetynet.safetynetalerts.model.PersonId;
 import com.safetynet.safetynetalerts.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
@@ -59,7 +55,7 @@ public class PersonController {
      */
     @PutMapping(value="/person")
     public Optional<Person> updatePerson(@RequestBody Person person  ) {
-        logger.info("Endpoint /person: creation request for " +
+        logger.info("Endpoint /person: update request for " +
                 person.getFirstName() + " " + person.getLastName() + " received");
         return personService.updatePerson(person);
     }

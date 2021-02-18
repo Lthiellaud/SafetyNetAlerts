@@ -65,10 +65,8 @@ public class PersonService {
             }
         } else {
             logger.error("person update impossible : firstname and lastname mandatory");
-            return Optional.empty();
+            return Optional.of(new Person());
         }
-
-
     }
 
     /**
@@ -134,16 +132,17 @@ public class PersonService {
      * @param city The city for which an email list is needed
      * @return the email list
      */
-    public List<IPersonEmailDTO> getEmailList(String city){
-
+    public List<IPersonEmailDTO> getEmailList(String city) {
         List<IPersonEmailDTO> persons = personRepository.findAllDistinctEmailByCity(city);
         int i = persons.size();
         if (i > 0) {
             logger.info("getEmailList: List of " + i + " email sent for the city " + city);
+            return persons;
         } else {
             logger.error("getEmailList:nobody found for the city " + city);
+            return new ArrayList<>();
         }
-        return persons;
+
     }
 
     /**
@@ -156,10 +155,11 @@ public class PersonService {
         int i = persons.size();
         if (i > 0) {
             logger.info("getPhones: List of " + i + " email sent for the addresses " + addresses);
+            return persons;
         } else {
             logger.error("getPhones:nobody found for the addresses " + addresses);
+            return new ArrayList<>();
         }
-        return persons;
     }
 
     /**
@@ -172,10 +172,11 @@ public class PersonService {
         int i = persons.size();
         if (i > 0) {
             logger.info("getAllByAddress: List of " + i + " email sent for the address " + address);
+            return persons;
         } else {
             logger.error("getAllByAddress:nobody found for the address " + address);
+            return new ArrayList<>();
         }
-        return persons;
     }
 
     /**

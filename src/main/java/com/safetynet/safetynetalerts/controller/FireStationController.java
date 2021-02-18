@@ -39,6 +39,7 @@ public class FireStationController {
      * @return the updated fire station
      */
     @PutMapping(value="/firestation/{address}")
+    @ResponseBody
     public Iterable<FireStation> updateFireStation (@PathVariable("address") String address, @RequestBody Integer station) {
         LOGGER.info("Updating asked for fire station assigned to address : " + address);
         return fireStationService.updateFireStation(address, station);

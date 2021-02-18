@@ -1,6 +1,5 @@
 package com.safetynet.safetynetalerts.model.DTO;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,12 +14,6 @@ public class PersonPhoneMedicalRecordDTO {
     private int age;
     private List<String> medications;
     private List<String> allergies;
-
-    public PersonPhoneMedicalRecordDTO(String firstName, String lastName, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-    }
 
     public PersonPhoneMedicalRecordDTO(PersonMedicalRecordDTO person) {
         this.firstName = person.getFirstName();

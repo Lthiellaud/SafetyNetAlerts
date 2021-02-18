@@ -12,6 +12,10 @@ public class DateUtil {
         this.now = new Date();
     }
 
+    public Date getNow() {
+        return now;
+    }
+
     public Integer age(Date birthdate) {
         DateFormat format = new SimpleDateFormat("yyyyMMdd");
         if (birthdate !=null) {

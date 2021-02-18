@@ -26,6 +26,7 @@ public class AlertListsController {
      * @return fire station number attached to the given address and list of the persons
      * living at this address including phone, age, medical record
      */
+/*
     @GetMapping("/fire")
     public FirePersonDTO getFirePersons(@RequestParam("address") String address) {
         if (address.equals("")) {
@@ -40,6 +41,7 @@ public class AlertListsController {
         }
         return firePersonDTO;
     }
+*/
 
     /**
      * URL http://localhost:9090/phoneAlert?firestation=<firestation_number>.

@@ -20,29 +20,7 @@ public class AlertListsController {
     AlertListsService alertListsService;
 
 
-    /**
-     * Response to url http://localhost:9090/communityEmail?city=<city>.
-     * @param city the city for which we need all the inhabitants email
-     * @return the email list of the city inhabitants
-     */
-    @GetMapping("/communityEmail")
-    public List<IPersonEmailDTO> getEmails(@RequestParam("city") String city) {
-        if (city.equals("")) {
-            logger.error("URL /communityEmail Request: a parameter \"city\" is needed");
-            return null;
-        }
-        List<IPersonEmailDTO> emailList = alertListsService.getEmailList(city);
-        if (emailList.size() > 0){
-            logger.info("URL /communityEmail request: Email of all inhabitants of " + city + " sent");
-        } else {
-            logger.error("URL /communityEmail request: no inhabitants found for city " +
-                     city);
-
-        }
-        return emailList;
-    }
-
-    /**
+     /**
      * Response to URL http://localhost:9090/fire?address=<address>.
      * @param address the address for which we need information
      * @return fire station number attached to the given address and list of the persons

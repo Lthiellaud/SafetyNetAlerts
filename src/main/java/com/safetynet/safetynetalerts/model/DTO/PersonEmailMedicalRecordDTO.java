@@ -31,4 +31,15 @@ public class PersonEmailMedicalRecordDTO {
         this.email = person.getEmail();
     }
 
+    public PersonEmailMedicalRecordDTO(PersonMedicalRecordDTO person) {
+        this.firstName = person.getFirstName();
+        this.lastName = person.getLastName();
+        this.address = person.getAddress();
+        this.email = person.getEmail();
+        this.age = person.getAge();
+        this.medications = person.getMedications();
+        this.allergies = person.getAllergies();
+    }
+
+
 }

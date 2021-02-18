@@ -1,6 +1,6 @@
 package com.safetynet.safetynetalerts.service;
 
-import com.safetynet.safetynetalerts.model.DTO.PersonEmailMedicalRecordDTO;
+import com.safetynet.safetynetalerts.model.DTO.*;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
@@ -236,52 +236,108 @@ public class PersonServiceTest {
     @Test
     public void getEmailListTest(){
         //GIVEN
+        IPersonEmailDTO email1 = () -> "email1";
+        IPersonEmailDTO email2 = () -> "email2";
+        List<IPersonEmailDTO> emails = Arrays.asList(email1, email2);
+        when(personRepository.findAllDistinctEmailByCity("Culver"))
+                .thenReturn(emails);
+
+        //WHEN
+        List<IPersonEmailDTO> emailDTOList = personService.getEmailList("Culver");
+
+        //THEN
+        verify(personRepository,times(1)).findAllDistinctEmailByCity("Culver");
+        assertThat(emailDTOList).containsExactlyInAnyOrder(email1, email2);
+    }
+
+    @Test
+    public void getEmailList_nothingFoundTest(){
+        //GIVEN
         when(personRepository.findAllDistinctEmailByCity("Paris"))
                 .thenReturn(new ArrayList<>());
 
         //WHEN
-        personService.getEmailList("Paris");
+        List<IPersonEmailDTO> emailDTOList = personService.getEmailList("Paris");
 
         //THEN
         verify(personRepository,times(1)).findAllDistinctEmailByCity("Paris");
+        assertThat(emailDTOList.size()).isEqualTo(0);
     }
 
     @Test
     public void getPhonesTest(){
         //GIVEN
-        when(personRepository.findAllDistinctPhoneByAddressIsIn(anyList()))
-                .thenReturn(new ArrayList<>());
+        List<String> addresses = Arrays.asList("address12", "address3");
+        IPersonPhoneDTO phone1 = () -> "phone1";
+        IPersonPhoneDTO phone2 = () -> "phone2";
+        List<IPersonPhoneDTO> phones = Arrays.asList(phone1, phone2);
+        when(personRepository.findAllDistinctPhoneByAddressIsIn(addresses))
+                .thenReturn(phones);
 
         //WHEN
-        personService.getPhones(new ArrayList<>());
+        List<IPersonPhoneDTO> phonesFound = personService.getPhones(addresses);
 
         //THEN
         verify(personRepository,times(1))
                 .findAllDistinctPhoneByAddressIsIn(anyList());
+        assertThat(phonesFound).containsExactlyInAnyOrder(phone1, phone2);
+    }
+
+    @Test
+    public void getPhones_nothingFoundTest(){
+        //GIVEN
+        List<String> addresses = Arrays.asList("address1", "address2");
+        when(personRepository.findAllDistinctPhoneByAddressIsIn(addresses))
+                .thenReturn(new ArrayList<>());
+
+        //WHEN
+        List<IPersonPhoneDTO> phones = personService.getPhones(new ArrayList<>());
+
+        //THEN
+        verify(personRepository,times(1))
+                .findAllDistinctPhoneByAddressIsIn(anyList());
+        assertThat(phones.size()).isEqualTo(0);
     }
 
     @Test
     public void getAllByAddressTest(){
         //GIVEN
-        when(personRepository.findAllByAddress("address 1")).thenReturn(new ArrayList<>());
+        PersonMedicalRecordDTO p1 = new PersonMedicalRecordDTO(person1);
+        PersonMedicalRecordDTO p2 = new PersonMedicalRecordDTO(person2);
+        List<PersonMedicalRecordDTO> persons = Arrays.asList(p1, p2);
+        when(personRepository.findAllByAddress("address12")).thenReturn(persons);
 
         //WHEN
-        personService.getAllByAddress("address 1");
+        List<PersonMedicalRecordDTO> personsFound = personService.getAllByAddress("address12");
 
         //THEN
-        verify(personRepository,times(1)).findAllByAddress("address 1");
+        verify(personRepository,times(1)).findAllByAddress("address12");
+        assertThat(persons.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void getAllByAddress_nothingFoundTest(){
+        //GIVEN
+        when(personRepository.findAllByAddress("address new")).thenReturn(new ArrayList<>());
+
+        //WHEN
+        List<PersonMedicalRecordDTO> persons = personService.getAllByAddress("address new");
+
+        //THEN
+        verify(personRepository,times(1)).findAllByAddress("address new");
+        assertThat(persons.size()).isEqualTo(0);
     }
 
     @Test
     public void getAllByFirstAndLastName_firstNameGiven_shouldReturn_onePerson() {
         //GIVEN
-        PersonEmailMedicalRecordDTO p1 = new PersonEmailMedicalRecordDTO(person1);
-        PersonEmailMedicalRecordDTO p2 = new PersonEmailMedicalRecordDTO(person2);
-        List<PersonEmailMedicalRecordDTO> persons = Arrays.asList(p1, p2);
+        PersonMedicalRecordDTO p1 = new PersonMedicalRecordDTO(person1);
+        PersonMedicalRecordDTO p2 = new PersonMedicalRecordDTO(person2);
+        List<PersonMedicalRecordDTO> persons = Arrays.asList(p1, p2);
         when(personRepository.findAllByLastName("Family12")).thenReturn(persons);
 
         //WHEN
-        List<PersonEmailMedicalRecordDTO> result =
+        List<PersonMedicalRecordDTO> result =
                 personService.getAllByFirstAndLastName("Baby", "Family12");
 
         //THEN
@@ -289,15 +345,15 @@ public class PersonServiceTest {
         assertThat(result).containsExactly(p1);
     }
     @Test
-    public void getAllByFirstAndLastName_NullFirstNameGiven_shouldReturn_onePerson() {
+    public void getAllByFirstAndLastName_NullFirstNameGiven_shouldReturn_twoPerson() {
         //GIVEN
-        PersonEmailMedicalRecordDTO p1 = new PersonEmailMedicalRecordDTO(person1);
-        PersonEmailMedicalRecordDTO p2 = new PersonEmailMedicalRecordDTO(person2);
-        List<PersonEmailMedicalRecordDTO> persons = Arrays.asList(p1, p2);
+        PersonMedicalRecordDTO p1 = new PersonMedicalRecordDTO(person1);
+        PersonMedicalRecordDTO p2 = new PersonMedicalRecordDTO(person2);
+        List<PersonMedicalRecordDTO> persons = Arrays.asList(p1, p2);
         when(personRepository.findAllByLastName("Family12")).thenReturn(persons);
 
         //WHEN
-        List<PersonEmailMedicalRecordDTO> result =
+        List<PersonMedicalRecordDTO> result =
                 personService.getAllByFirstAndLastName(null, "Family12");
 
         //THEN
@@ -306,15 +362,15 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void getAllByFirstAndLastName_EmptyFirstNameGiven_shouldReturn_onePerson() {
+    public void getAllByFirstAndLastName_EmptyFirstNameGiven_shouldReturn_twoPerson() {
         //GIVEN
-        PersonEmailMedicalRecordDTO p1 = new PersonEmailMedicalRecordDTO(person1);
-        PersonEmailMedicalRecordDTO p2 = new PersonEmailMedicalRecordDTO(person2);
-        List<PersonEmailMedicalRecordDTO> persons = Arrays.asList(p1, p2);
+        PersonMedicalRecordDTO p1 = new PersonMedicalRecordDTO(person1);
+        PersonMedicalRecordDTO p2 = new PersonMedicalRecordDTO(person2);
+        List<PersonMedicalRecordDTO> persons = Arrays.asList(p1, p2);
         when(personRepository.findAllByLastName("Family12")).thenReturn(persons);
 
         //WHEN
-        List<PersonEmailMedicalRecordDTO> result =
+        List<PersonMedicalRecordDTO> result =
                 personService.getAllByFirstAndLastName("", "Family12");
 
         //THEN
@@ -323,19 +379,30 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void getAllByFirstAndLastName_NullLastNameGiven_shouldReturn_onePerson() {
-        //GIVEN
-        PersonEmailMedicalRecordDTO p1 = new PersonEmailMedicalRecordDTO(person1);
-        PersonEmailMedicalRecordDTO p2 = new PersonEmailMedicalRecordDTO(person2);
-        List<PersonEmailMedicalRecordDTO> persons = Arrays.asList(p1, p2);
-        when(personRepository.findAllByLastName("Family12")).thenReturn(persons);
-
+    public void getAllByFirstAndLastName_NullLastNameGiven_shouldReturnNothing() {
         //WHEN
-        List<PersonEmailMedicalRecordDTO> result =
+        List<PersonMedicalRecordDTO> result =
                 personService.getAllByFirstAndLastName("Baby", null);
 
         //THEN
         verify(personRepository, times(0)).findAllByLastName(anyString());
+        assertThat(result).isNullOrEmpty();
+    }
+
+    @Test
+    public void getAllByFirstAndLastName_unknownFirstNameGiven_shouldReturnNothing() {
+        //GIVEN
+        PersonMedicalRecordDTO p1 = new PersonMedicalRecordDTO(person1);
+        PersonMedicalRecordDTO p2 = new PersonMedicalRecordDTO(person2);
+        List<PersonMedicalRecordDTO> persons = Arrays.asList(p1, p2);
+        when(personRepository.findAllByLastName("Family12")).thenReturn(persons);
+
+        //WHEN
+        List<PersonMedicalRecordDTO> result =
+                personService.getAllByFirstAndLastName("Jason", "Family12");
+
+        //THEN
+        verify(personRepository, times(1)).findAllByLastName("Family12");
         assertThat(result).isNullOrEmpty();
     }
 

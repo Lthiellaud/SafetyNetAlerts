@@ -3,12 +3,10 @@ package com.safetynet.safetynetalerts.service;
 import com.safetynet.safetynetalerts.controller.PersonController;
 import com.safetynet.safetynetalerts.model.DTO.IPersonEmailDTO;
 import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
-import com.safetynet.safetynetalerts.model.DTO.PersonEmailMedicalRecordDTO;
-import com.safetynet.safetynetalerts.model.DTO.PersonPhoneMedicalRecordDTO;
+import com.safetynet.safetynetalerts.model.DTO.PersonMedicalRecordDTO;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
-import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Data
 @Service
 public class PersonService {
 
@@ -138,7 +135,15 @@ public class PersonService {
      * @return the email list
      */
     public List<IPersonEmailDTO> getEmailList(String city){
-        return personRepository.findAllDistinctEmailByCity(city);
+
+        List<IPersonEmailDTO> persons = personRepository.findAllDistinctEmailByCity(city);
+        int i = persons.size();
+        if (i > 0) {
+            logger.info("getEmailList: List of " + i + " email sent for the city " + city);
+        } else {
+            logger.error("getEmailList:nobody found for the city " + city);
+        }
+        return persons;
     }
 
     /**
@@ -147,16 +152,30 @@ public class PersonService {
      * @return the list of phone number
      */
     public List<IPersonPhoneDTO> getPhones(List<String> addresses) {
-        return personRepository.findAllDistinctPhoneByAddressIsIn(addresses);
+        List<IPersonPhoneDTO> persons = personRepository.findAllDistinctPhoneByAddressIsIn(addresses);
+        int i = persons.size();
+        if (i > 0) {
+            logger.info("getPhones: List of " + i + " email sent for the addresses " + addresses);
+        } else {
+            logger.error("getPhones:nobody found for the addresses " + addresses);
+        }
+        return persons;
     }
 
     /**
      * to get the list of the inhabitants at the given address
      * @param address The address for which we need the inhabitants list
-     * @return the inhabitants list in PersonWitPhoneDTO projection
+     * @return the inhabitants list in PersonMedicalRecordDTO projection
      */
-    public List<PersonPhoneMedicalRecordDTO> getAllByAddress(String address) {
-        return personRepository.findAllByAddress(address);
+    public List<PersonMedicalRecordDTO> getAllByAddress(String address) {
+        List<PersonMedicalRecordDTO> persons = personRepository.findAllByAddress(address);
+        int i = persons.size();
+        if (i > 0) {
+            logger.info("getAllByAddress: List of " + i + " email sent for the address " + address);
+        } else {
+            logger.error("getAllByAddress:nobody found for the address " + address);
+        }
+        return persons;
     }
 
     /**
@@ -166,21 +185,34 @@ public class PersonService {
      * @param lastName lastName value is mandatory
      * @return the list of persons including address, age, email and medical information
      */
-    public List<PersonEmailMedicalRecordDTO> getAllByFirstAndLastName(String firstName, String lastName) {
+    public List<PersonMedicalRecordDTO> getAllByFirstAndLastName(String firstName, String lastName) {
         if (lastName != null) {
-            List<PersonEmailMedicalRecordDTO> personsByLastName =
+            List<PersonMedicalRecordDTO> personsByLastName =
                     personRepository.findAllByLastName(lastName);
-            List<PersonEmailMedicalRecordDTO> personsByFirstAndLastName;
-            if (firstName == null || firstName.equals("")) {
-                personsByFirstAndLastName = personsByLastName;
-            } else {
-                personsByFirstAndLastName = personsByLastName.stream()
-                        .filter(p -> p.getFirstName().matches(firstName)).collect(Collectors.toList());
+            int i = personsByLastName.size();
+            if (i > 0) {
+                if (firstName == null || firstName.equals("")) {
+                    logger.info("getAllByFirstAndLastName: List of " + i + " persons with lastname " +
+                            lastName + " send");
+                    return personsByLastName;
+                } else {
+                    List<PersonMedicalRecordDTO> personsByFirstAndLastName = personsByLastName.stream()
+                            .filter(p -> p.getFirstName().matches(firstName)).collect(Collectors.toList());
+                    i = personsByFirstAndLastName.size();
+                    if (i > 0) {
+                        logger.info("getAllByFirstAndLastName: List of " + i + " persons with name " +
+                                firstName + " " + lastName + " send");
+                        return personsByFirstAndLastName;
+                    }
+                }
             }
-            return personsByFirstAndLastName;
         } else {
             logger.error("last name is mandatory");
             return new ArrayList<>();
         }
+        logger.info("getAllByFirstAndLastName: nobody with lastname " +
+                firstName + " " + lastName + " found");
+        return new ArrayList<>();
     }
+
 }

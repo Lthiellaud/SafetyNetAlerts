@@ -1,7 +1,10 @@
 package com.safetynet.safetynetalerts.model.DTO;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public class ChildAlertDTO {
 
     private List<PersonAlertDTO> children;

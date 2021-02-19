@@ -18,6 +18,8 @@ public class PersonMedicalRecordDTO {
     private List<String> medications;
     private List<String> allergies;
 
+    //enable to use the class as a projection of Person class
+    //Implicitly use in PersonRepository
     public PersonMedicalRecordDTO(String firstName, String lastName,
                                   String address, String phone, String email) {
         this.firstName = firstName;
@@ -35,4 +37,5 @@ public class PersonMedicalRecordDTO {
         this.email = person.getEmail();
     }
 
+    public PersonMedicalRecordDTO() {}
 }

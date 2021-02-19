@@ -47,5 +47,13 @@ public class DateUtilTest {
         assertThat(age).isEqualTo(2);
 
     }
+    @Test
+    public void ageCalculate_birthdateNotGiven() {
+        int age = dateUtil.age(null);
+
+        //THEN
+        assertThat(age).isEqualTo(-1);
+
+    }
 
 }

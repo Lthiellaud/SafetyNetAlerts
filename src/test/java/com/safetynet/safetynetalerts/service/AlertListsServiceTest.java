@@ -1,163 +1,179 @@
 package com.safetynet.safetynetalerts.service;
 
-import com.safetynet.safetynetalerts.model.*;
-import com.safetynet.safetynetalerts.model.DTO.FirePersonDTO;
-import com.safetynet.safetynetalerts.repository.FireStationRepository;
-import com.safetynet.safetynetalerts.repository.MedicalRecordRepository;
-import com.safetynet.safetynetalerts.repository.PersonRepository;
+import com.safetynet.safetynetalerts.model.DTO.PersonMedicalRecordDTO;
+import com.safetynet.safetynetalerts.model.MedicalRecord;
+import com.safetynet.safetynetalerts.model.Person;
+import com.safetynet.safetynetalerts.model.PersonId;
+import com.safetynet.safetynetalerts.util.DateUtil;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
+import java.util.*;
 
-
-import static java.util.Calendar.*;
-import static org.mockito.Mockito.*;
+import static java.util.Calendar.JANUARY;
+import static java.util.Calendar.MARCH;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(properties = "command.line.runner.enabled=false")
 @ActiveProfiles("test")
 public class AlertListsServiceTest {
 
     @MockBean
-    private PersonRepository personRepository;
+    private PersonService personService;
 
     @MockBean
-    private FireStationRepository fireStationRepository;
-
-    @MockBean
-    private MedicalRecordRepository medicalRecordRepository;
+    private MedicalRecordService medicalRecordService;
 
     @Autowired
     private AlertListsService alertListsService;
 
-    private static Person person1;
-    private static Person person2;
-    private static Person person3;
-    private static Person person4;
-
-    private static FireStation fireStation1;
-    private static FireStation fireStation2;
-    private static FireStation fireStation3;
+    private static PersonId personId1;
+    private static PersonId personId2;
 
     private static MedicalRecord medicalRecord1;
     private static MedicalRecord medicalRecord2;
-    private static MedicalRecord medicalRecord3;
-    private static MedicalRecord medicalRecord4;
 
-    private Calendar calendar = Calendar.getInstance();
+    private static PersonMedicalRecordDTO personMedicalRecord1;
+    private static PersonMedicalRecordDTO personMedicalRecord2;
 
-    public void initDtoTest(){
-        fireStation1 = new FireStation();
-        fireStation2 = new FireStation();
-        fireStation3 = new FireStation();
-        fireStation1.setAddress("address12");
-        fireStation1.setStation(12);
-        fireStation1.setId((long) 1);
+    private static Date birthdate1;
+    private static Date birthdate2;
 
-        fireStation2.setAddress("address3");
-        fireStation2.setStation(3);
-        fireStation2.setId((long) 2);
+    private static DateUtil dateUtil;
 
-        fireStation3.setAddress("address4");
-        fireStation3.setStation(4);
-        fireStation3.setId((long) 3);
 
-        person1 = new Person();
-        person2 = new Person();
-        person3 = new Person();
-        person4 = new Person();
+    private static Calendar calendar = Calendar.getInstance();
 
-        person1.setFirstName("Baby");
-        person1.setLastName("Family12");
-        person1.setAddress("address12");
-        person1.setCity("Culver");
-        person1.setZip(97451);
-        person1.setPhone("phone1" );
-        person1.setEmail("mail.test1@email.com");
-
-        person2.setFirstName("Dad");
-        person2.setLastName("Family12");
-        person2.setAddress("address12");
-        person2.setCity("Culver");
-        person2.setZip(97458);
-        person2.setPhone("phone1" );
-        person2.setEmail("mail.test1@email.com");
-
-        person3.setFirstName("John");
-        person3.setLastName("Family3");
-        person3.setAddress("address3");
-        person3.setCity("Culver");
-        person3.setZip(97458);
-        person3.setPhone("phone3" );
-        person3.setEmail("mail.test3@email.com");
-
-        person4.setFirstName("Suzan");
-        person4.setLastName("Family4");
-        person4.setAddress("address4");
-        person4.setCity("Culver");
-        person4.setZip(97458);
-        person4.setPhone("phone4" );
-        person4.setEmail("mail.test4@email.com");
+    @BeforeAll
+    public static void init() {
+        personId1 = new PersonId("Baby", "Family12");
+        personId2 = new PersonId("Dad", "Family12");
 
         medicalRecord1 = new MedicalRecord();
         medicalRecord2 = new MedicalRecord();
-        medicalRecord3 = new MedicalRecord();
-        medicalRecord4 = new MedicalRecord();
 
         calendar.set(2021, JANUARY, 17);
+        birthdate1 = calendar.getTime();
         medicalRecord1.setFirstName("Baby");
         medicalRecord1.setLastName("Family12");
-        medicalRecord1.setBirthdate(calendar.getTime());
+        medicalRecord1.setBirthdate(birthdate1);
         medicalRecord1.setMedications(new ArrayList<>());
         medicalRecord1.setAllergies(new ArrayList<>());
 
         calendar.set(1985, MARCH, 17);
+        birthdate2 = calendar.getTime();
         medicalRecord2.setFirstName("Dad");
         medicalRecord2.setLastName("Family12");
-        medicalRecord2.setBirthdate(calendar.getTime());
+        medicalRecord2.setBirthdate(birthdate2);
         medicalRecord2.setMedications(Arrays.asList("med1", "med2"));
         medicalRecord2.setAllergies(Arrays.asList("allergie2"));
+    }
 
-        calendar.set(2003, FEBRUARY, 11);
-        medicalRecord3.setFirstName("John");
-        medicalRecord3.setLastName("Family3");
-        medicalRecord3.setBirthdate(calendar.getTime());
-        medicalRecord3.setMedications(Arrays.asList("med3"));
-        medicalRecord3.setAllergies(new ArrayList<>());
+    @BeforeEach
+    public void initDtoTest() {
+        dateUtil = new DateUtil();
 
-        calendar.set(2003, FEBRUARY, 12);
-        medicalRecord4.setFirstName("Suzan");
-        medicalRecord4.setLastName("Family4");
-        medicalRecord4.setBirthdate(calendar.getTime());
-        medicalRecord4.setMedications(new ArrayList<>());
-        medicalRecord4.setAllergies(Arrays.asList("allergie4", "allergie5"));
+        personMedicalRecord1 = new PersonMedicalRecordDTO();
+        personMedicalRecord2 = new PersonMedicalRecordDTO();
+
+        personMedicalRecord1.setFirstName("Baby");
+        personMedicalRecord1.setLastName("Family12");
+        personMedicalRecord1.setAddress("address12");
+        personMedicalRecord1.setPhone("phone1" );
+        personMedicalRecord1.setEmail("mail.test1@email.com");
+
+        personMedicalRecord2.setFirstName("Dad");
+        personMedicalRecord2.setLastName("Family12");
+        personMedicalRecord2.setAddress("address12");
+        personMedicalRecord2.setPhone("phone1" );
+        personMedicalRecord2.setEmail("mail.test1@email.com");
 
 
     }
+
     @Test
-    public void getFirePersonListTest(){
+    public void getMedicalRecordTest(){
         //GIVEN
-        initDtoTest();
-        FirePersonDTO firePersonDTO = alertListsService.getFirePersonList("address 12");
-
-
-
-
-        /*//GIVEN
-        when(personRepository.findAllByAddress("address1")).thenReturn(anyList());
-        when(fireStationRepository.findAllByAddress("address1")).thenReturn(anyList());
+        List<PersonMedicalRecordDTO> personMedicalRecords = Arrays.asList(personMedicalRecord1, personMedicalRecord2);
+        when(medicalRecordService.getMedicalRecord(personId1)).thenReturn(Optional.of(medicalRecord1));
+        when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.of(medicalRecord2));
 
         //WHEN
-        personListsService.getEmailList("City");
+        alertListsService.getMedicalRecord(personMedicalRecords);
 
         //THEN
-        verify(personRepository, times(1)).findAllDistinctEmailByCity("City");
-*/
+        assertThat(personMedicalRecords.size()).isEqualTo(2);
+        assertThat(personMedicalRecords.get(0).getAge()).isEqualTo(dateUtil.age(birthdate1));
+        assertThat(personMedicalRecords.get(0).getAllergies()).isNullOrEmpty();
+        assertThat(personMedicalRecords.get(0).getMedications()).isNullOrEmpty();
+        assertThat(personMedicalRecords.get(1).getAge()).isEqualTo(dateUtil.age(birthdate2));
+        assertThat(personMedicalRecords.get(1).getAllergies()).containsExactly("allergie2");
+        assertThat(personMedicalRecords.get(1).getMedications()).containsExactly("med1", "med2");
+
     }
 
+    @Test
+    public void TryToGetNonExistingMedicalRecordTest(){
+        //GIVEN
+        List<PersonMedicalRecordDTO> personMedicalRecords = Arrays.asList(personMedicalRecord1, personMedicalRecord2);
+        when(medicalRecordService.getMedicalRecord(personId1)).thenReturn(Optional.empty());
+        when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.empty());
+
+        //WHEN
+        alertListsService.getMedicalRecord(personMedicalRecords);
+
+        //THEN
+        assertThat(personMedicalRecords.size()).isEqualTo(2);
+        assertThat(personMedicalRecords.get(0).getAge()).isEqualTo(0);
+        assertThat(personMedicalRecords.get(0).getAllergies()).isNullOrEmpty();
+        assertThat(personMedicalRecords.get(0).getMedications()).isNullOrEmpty();
+        assertThat(personMedicalRecords.get(1).getAge()).isEqualTo(0);
+        assertThat(personMedicalRecords.get(1).getAllergies()).isNullOrEmpty();
+        assertThat(personMedicalRecords.get(1).getMedications()).isNullOrEmpty();
+
+    }
+
+    @Test
+    public void getMedicalRecordByAddressTest() {
+        //GIVEN
+        List<PersonMedicalRecordDTO> personMedicalRecords = Arrays.asList(personMedicalRecord1, personMedicalRecord2);
+        when(personService.getAllByAddress("address12")).thenReturn(personMedicalRecords);
+        when(medicalRecordService.getMedicalRecord(personId1)).thenReturn(Optional.of(medicalRecord1));
+        when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.of(medicalRecord2));
+
+        //WHEN
+        List<PersonMedicalRecordDTO> persons = alertListsService.getMedicalRecordByAddress("address12");
+
+        //THEN
+        assertThat(persons.size()).isEqualTo(2);
+        assertThat(persons.get(0).getAge()).isEqualTo(dateUtil.age(birthdate1));
+        assertThat(persons.get(0).getAllergies()).isNullOrEmpty();
+        assertThat(persons.get(0).getMedications()).isNullOrEmpty();
+        assertThat(persons.get(1).getAge()).isEqualTo(dateUtil.age(birthdate2));
+        assertThat(persons.get(1).getAllergies()).containsExactly("allergie2");
+        assertThat(persons.get(1).getMedications()).containsExactly("med1", "med2");
+    }
+
+    @Test
+    public void getMedicalRecordByFirstAndLastTest() {
+        //GIVEN
+        List<PersonMedicalRecordDTO> personMedicalRecords = Arrays.asList(personMedicalRecord2);
+        when(personService.getAllByFirstAndLastName("Dad", "Boyd")).thenReturn(personMedicalRecords);
+        when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.of(medicalRecord2));
+
+        //WHEN
+        List<PersonMedicalRecordDTO> persons = alertListsService.getMedicalRecordByFirstAndLastName("Dad", "Boyd");
+
+        //THEN
+        assertThat(persons.size()).isEqualTo(1);
+        assertThat(persons.get(0).getAge()).isEqualTo(dateUtil.age(birthdate2));
+        assertThat(persons.get(0).getAllergies()).containsExactly("allergie2");
+        assertThat(persons.get(0).getMedications()).containsExactly("med1", "med2");
+    }
 }

@@ -43,10 +43,9 @@ public class AlertListsService {
      * @return the list of inhabitants at the given address including phone and medical record
      */
     public List<PersonPhoneMedicalRecordDTO> getPersonPhoneMedicalRecordDTO(String address) {
-        List<PersonMedicalRecordDTO> persons = personService.getAllByAddress(address);
+        List<PersonMedicalRecordDTO> persons = getMedicalRecordByAddress(address);
         List<PersonPhoneMedicalRecordDTO> personList = new ArrayList<>();
         if (persons.size() > 0) {
-            getMedicalRecord(persons);
             persons.forEach(person -> personList.add(new PersonPhoneMedicalRecordDTO(person)));
         }
         return personList;
@@ -106,11 +105,22 @@ public class AlertListsService {
      */
     public List<PersonEmailMedicalRecordDTO> getPersonEmailMedicalRecord(String firstName, String lastName) {
         List<PersonMedicalRecordDTO> persons =
-                personService.getAllByFirstAndLastName(firstName, lastName);
-        getMedicalRecord(persons);
+                getMedicalRecordByFirstAndLastName(firstName, lastName);
         List<PersonEmailMedicalRecordDTO> personList = new ArrayList<>();
         persons.forEach(person -> personList.add(new PersonEmailMedicalRecordDTO(person)));
         return personList;
     }
 
+    public List<PersonMedicalRecordDTO> getMedicalRecordByAddress(String address) {
+        List<PersonMedicalRecordDTO> persons =
+                personService.getAllByAddress(address);
+        getMedicalRecord(persons);
+        return persons;
+    }
+    public List<PersonMedicalRecordDTO> getMedicalRecordByFirstAndLastName(String firstName, String lastName) {
+        List<PersonMedicalRecordDTO> persons =
+                personService.getAllByFirstAndLastName(firstName, lastName);
+        getMedicalRecord(persons);
+        return persons;
+    }
 }

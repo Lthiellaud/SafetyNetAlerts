@@ -43,26 +43,12 @@ public class AlertListsService {
      * @return the list of inhabitants at the given address including phone and medical record
      */
     public List<PersonPhoneMedicalRecordDTO> getPersonPhoneMedicalRecordDTO(String address) {
-        List<PersonMedicalRecordDTO> persons = personService.getAllByAddress(address);
+        List<PersonMedicalRecordDTO> persons = getMedicalRecordByAddress(address);
         List<PersonPhoneMedicalRecordDTO> personList = new ArrayList<>();
         if (persons.size() > 0) {
-            getMedicalRecord(persons);
             persons.forEach(person -> personList.add(new PersonPhoneMedicalRecordDTO(person)));
         }
         return personList;
-    }
-
-    public void getMedicalRecord(List<PersonMedicalRecordDTO> persons) {
-        persons.forEach(person -> {
-            personId = new PersonId(person.getFirstName(), person.getLastName());
-            Optional<MedicalRecord> m = medicalRecordService.getMedicalRecord(personId);
-            if (m.isPresent()) {
-                MedicalRecord medicalRecord = m.get();
-                person.setAge(dateUtil.age(medicalRecord.getBirthdate()));
-                person.setMedications(medicalRecord.getMedications());
-                person.setAllergies(medicalRecord.getAllergies());
-            }
-        });
     }
     /**
      * to get the list of the households attached to the given fire stations.
@@ -106,11 +92,51 @@ public class AlertListsService {
      */
     public List<PersonEmailMedicalRecordDTO> getPersonEmailMedicalRecord(String firstName, String lastName) {
         List<PersonMedicalRecordDTO> persons =
-                personService.getAllByFirstAndLastName(firstName, lastName);
-        getMedicalRecord(persons);
+                getMedicalRecordByFirstAndLastName(firstName, lastName);
         List<PersonEmailMedicalRecordDTO> personList = new ArrayList<>();
         persons.forEach(person -> personList.add(new PersonEmailMedicalRecordDTO(person)));
         return personList;
     }
 
+    /**
+     * To complete PersonMedicalRecordDTO with medical record information
+     * @param persons the list of PersonMedicalRecordDTO to be completed
+     */
+    public void getMedicalRecord(List<PersonMedicalRecordDTO> persons) {
+        persons.forEach(person -> {
+            personId = new PersonId(person.getFirstName(), person.getLastName());
+            Optional<MedicalRecord> m = medicalRecordService.getMedicalRecord(personId);
+            if (m.isPresent()) {
+                MedicalRecord medicalRecord = m.get();
+                person.setAge(dateUtil.age(medicalRecord.getBirthdate()));
+                person.setMedications(medicalRecord.getMedications());
+                person.setAllergies(medicalRecord.getAllergies());
+            }
+        });
+    }
+
+    /**
+     * To get a complete PersonMedicalRecordDTO list of the persons living at a given address
+     * @param address the address for which the PersonMedicalRecordDTO are needed
+     * @return the list of PersonMedicalRecordDTO
+     */
+    public List<PersonMedicalRecordDTO> getMedicalRecordByAddress(String address) {
+        List<PersonMedicalRecordDTO> persons =
+                personService.getAllByAddress(address);
+        getMedicalRecord(persons);
+        return persons;
+    }
+
+    /**
+     * To get a complete PersonMedicalRecordDTO list of a person
+     * @param firstName the first name of the person for which the PersonMedicalRecordDTO is needed
+     * @param lastName the last name of the person for which the PersonMedicalRecordDTO is needed
+     * @return the list of PersonMedicalRecordDTO
+     */
+    public List<PersonMedicalRecordDTO> getMedicalRecordByFirstAndLastName(String firstName, String lastName) {
+        List<PersonMedicalRecordDTO> persons =
+                personService.getAllByFirstAndLastName(firstName, lastName);
+        getMedicalRecord(persons);
+        return persons;
+    }
 }

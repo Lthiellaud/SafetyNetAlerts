@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 public class CommunityEmailController {
 
-    private Logger logger = LoggerFactory.getLogger(AlertListsController.class);
+    private Logger logger = LoggerFactory.getLogger(CommunityEmailController.class);
 
     @Autowired
     private PersonService personService;

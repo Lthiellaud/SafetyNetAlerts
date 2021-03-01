@@ -44,7 +44,7 @@ public class LoadFileService {
             if (path == null) {
                 throw new Exception("Missing Required Property : [dataPath]");
             } else {
-                try (InputStream inputStream = TypeReference.class.getResourceAsStream(env.getProperty("dataPath"))) {
+                try (InputStream inputStream = TypeReference.class.getResourceAsStream(path)) {
                     String data = mapper.readTree(inputStream).toString();
 
                     // Save persons node from data.json to Person entity
@@ -53,7 +53,7 @@ public class LoadFileService {
                     JsonNode personNode = mapper.readTree(data).get("persons");
                     List<Person> persons = mapper.readValue(personNode.toString(), typeRefperson);
                     personService.savePersonList(persons);
-                    logger.info("data persons saved !");
+                    logger.info("data persons saved from file "+ path + " !");
 
                     // Save firestations node from data.json to Firestation entity
                     TypeReference<List<FireStation>> typeRefFireStation = new TypeReference<List<FireStation>>() {
@@ -61,7 +61,7 @@ public class LoadFileService {
                     JsonNode fireStationNode = mapper.readTree(data).get("firestations");
                     List<FireStation> fireStations = mapper.readValue(fireStationNode.toString(), typeRefFireStation);
                     fireStationService.saveFireStationList(fireStations);
-                    logger.info("data fire stations saved !");
+                    logger.info("data fire stations from file "+ path + " !");
 
                     // Save medicalrecords node from data.json to MedicalRecord entity
                     TypeReference<List<MedicalRecord>> typeRefMedicalRecord = new TypeReference<List<MedicalRecord>>() {
@@ -69,9 +69,9 @@ public class LoadFileService {
                     JsonNode medicalRecordNode = mapper.readTree(data).get("medicalrecords");
                     List<MedicalRecord> medicalRecords = mapper.readValue(medicalRecordNode.toString(), typeRefMedicalRecord);
                     medicalRecordService.saveMedicalRecordList(medicalRecords);
-                    logger.info("data medical records saved !");
+                    logger.info("data medical records from file "+ path + " !");
                 } catch (IOException e) {
-                    logger.error("error while reading data.json", e);
+                    logger.error("error while reading " + path, e);
                 }
             }
         } catch (Exception e) {

@@ -51,7 +51,7 @@ public class PersonAndCountByFireStationService {
                     .filter(p -> p.getAge() > 18).count());
             personsWithAge.forEach(p -> personByFireStationList.add(new PersonByFireStationDTO(p)));
             personAndCountByFireStation.setPersonsByFireStation(personByFireStationList);
-            LOGGER.info("getPersonAndCountByFireStation: " + i + "persons found for fire station" +
+            LOGGER.info("getPersonAndCountByFireStation: " + i + " persons found for fire station" +
                     " number " + stationNumber);
         } else {
             LOGGER.error("getPersonAndCountByFireStation: nobody found for fire station"

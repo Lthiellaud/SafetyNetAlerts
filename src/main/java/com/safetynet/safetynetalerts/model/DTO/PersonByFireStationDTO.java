@@ -1,5 +1,8 @@
 package com.safetynet.safetynetalerts.model.DTO;
 
+import lombok.Getter;
+
+@Getter
 public class PersonByFireStationDTO {
     private String firstName;
     private String lastName;

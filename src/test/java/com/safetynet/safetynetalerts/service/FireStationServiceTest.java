@@ -111,7 +111,7 @@ public class FireStationServiceTest {
     }
 
     @Test
-    public void savePersonListTest(){
+    public void saveFireStationListTest(){
         //GIVEN
         List<FireStation> fireStations = Arrays.asList(fireStation1, fireStation2);
         when(fireStationRepository.saveAll(fireStations)).thenReturn(fireStations);

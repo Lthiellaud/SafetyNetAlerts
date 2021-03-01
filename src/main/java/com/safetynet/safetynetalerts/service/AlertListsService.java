@@ -43,7 +43,7 @@ public class AlertListsService {
      * @return the list of inhabitants at the given address including phone and medical record
      */
     public List<PersonPhoneMedicalRecordDTO> getPersonPhoneMedicalRecordDTO(String address) {
-        List<PersonMedicalRecordDTO> persons = getMedicalRecordByAddress(address);
+        List<PersonMedicalRecordDTO> persons = getMedicalRecordByAddress(address, false);
         List<PersonPhoneMedicalRecordDTO> personList = new ArrayList<>();
         if (persons.size() > 0) {
             persons.forEach(person -> personList.add(new PersonPhoneMedicalRecordDTO(person)));
@@ -99,36 +99,41 @@ public class AlertListsService {
     }
 
     /**
-     * To complete PersonMedicalRecordDTO with medical record information
+     * To complete PersonMedicalRecordDTO with medical record information (ageOnly false) and age.
      * @param persons the list of PersonMedicalRecordDTO to be completed
+     * @param ageOnly true if only age is needed, false if allergies and medications are also needed
      */
-    public void getMedicalRecord(List<PersonMedicalRecordDTO> persons) {
+    public void getMedicalRecord(List<PersonMedicalRecordDTO> persons, boolean ageOnly) {
         persons.forEach(person -> {
             personId = new PersonId(person.getFirstName(), person.getLastName());
             Optional<MedicalRecord> m = medicalRecordService.getMedicalRecord(personId);
             if (m.isPresent()) {
                 MedicalRecord medicalRecord = m.get();
                 person.setAge(dateUtil.age(medicalRecord.getBirthdate()));
-                person.setMedications(medicalRecord.getMedications());
-                person.setAllergies(medicalRecord.getAllergies());
+                if (!ageOnly) {
+                    person.setMedications(medicalRecord.getMedications());
+                    person.setAllergies(medicalRecord.getAllergies());
+                }
             }
         });
     }
 
     /**
-     * To get a complete PersonMedicalRecordDTO list of the persons living at a given address
+     * To complete PersonMedicalRecordDTO list of the persons living at a given address with age or
+     * age, medications and allergies.
      * @param address the address for which the PersonMedicalRecordDTO are needed
+     * @param ageOnly true if only age is needed, false if allergies and medications are also needed
      * @return the list of PersonMedicalRecordDTO
      */
-    public List<PersonMedicalRecordDTO> getMedicalRecordByAddress(String address) {
+    public List<PersonMedicalRecordDTO> getMedicalRecordByAddress(String address, boolean ageOnly) {
         List<PersonMedicalRecordDTO> persons =
                 personService.getAllByAddress(address);
-        getMedicalRecord(persons);
+        getMedicalRecord(persons, ageOnly);
         return persons;
     }
 
     /**
-     * To get a complete PersonMedicalRecordDTO list of a person
+     * To get a complete PersonMedicalRecordDTO list of a person.
      * @param firstName the first name of the person for which the PersonMedicalRecordDTO is needed
      * @param lastName the last name of the person for which the PersonMedicalRecordDTO is needed
      * @return the list of PersonMedicalRecordDTO
@@ -136,7 +141,7 @@ public class AlertListsService {
     public List<PersonMedicalRecordDTO> getMedicalRecordByFirstAndLastName(String firstName, String lastName) {
         List<PersonMedicalRecordDTO> persons =
                 personService.getAllByFirstAndLastName(firstName, lastName);
-        getMedicalRecord(persons);
+        getMedicalRecord(persons, false);
         return persons;
     }
 }

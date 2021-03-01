@@ -128,7 +128,7 @@ public class ChildAlertServiceTest {
         //GIVEN
         List<PersonMedicalRecordDTO> persons = Arrays.asList(personMedicalRecord1,
                 personMedicalRecord2, personMedicalRecord3, personMedicalRecord4);
-        when(alertListsService.getMedicalRecordByAddress("address12")).thenReturn(persons);
+        when(alertListsService.getMedicalRecordByAddress("address12", false)).thenReturn(persons);
 
         //WHEN
         List<ChildAlertDTO> childAlertList = childAlertService.getChildAlertList("address12");
@@ -148,7 +148,7 @@ public class ChildAlertServiceTest {
     public void getChildAlertListWithNoChildAtAddress_shouldReturnEmptyList() {
         //GIVEN
         List<PersonMedicalRecordDTO> persons = Arrays.asList(personMedicalRecord2, personMedicalRecord4);
-        when(alertListsService.getMedicalRecordByAddress("address12")).thenReturn(persons);
+        when(alertListsService.getMedicalRecordByAddress("address12", false)).thenReturn(persons);
 
         //WHEN
         List<ChildAlertDTO> childAlertList = childAlertService.getChildAlertList("address12");
@@ -162,7 +162,7 @@ public class ChildAlertServiceTest {
         //GIVEN
         List<PersonMedicalRecordDTO> persons = Arrays.asList(personMedicalRecord1,
                 personMedicalRecord3);
-        when(alertListsService.getMedicalRecordByAddress("address12")).thenReturn(persons);
+        when(alertListsService.getMedicalRecordByAddress("address12", false)).thenReturn(persons);
 
         //WHEN
         List<ChildAlertDTO> childAlertList = childAlertService.getChildAlertList("address12");
@@ -182,7 +182,7 @@ public class ChildAlertServiceTest {
         List<PersonMedicalRecordDTO> persons = Arrays.asList(personMedicalRecord1,
                 personMedicalRecord2, personMedicalRecord3, personMedicalRecord4, personMedicalRecord5,
                 personMedicalRecord6);
-        when(alertListsService.getMedicalRecordByAddress("address12")).thenReturn(persons);
+        when(alertListsService.getMedicalRecordByAddress("address12", false)).thenReturn(persons);
 
         //WHEN
         List<ChildAlertDTO> childAlertList = childAlertService.getChildAlertList("address12");

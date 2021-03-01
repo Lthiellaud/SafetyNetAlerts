@@ -105,7 +105,7 @@ public class AlertListsServiceTest {
         when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.of(medicalRecord2));
 
         //WHEN
-        alertListsService.getMedicalRecord(personMedicalRecords);
+        alertListsService.getMedicalRecord(personMedicalRecords, false);
 
         //THEN
         assertThat(personMedicalRecords.size()).isEqualTo(2);
@@ -126,7 +126,7 @@ public class AlertListsServiceTest {
         when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.empty());
 
         //WHEN
-        alertListsService.getMedicalRecord(personMedicalRecords);
+        alertListsService.getMedicalRecord(personMedicalRecords, false);
 
         //THEN
         assertThat(personMedicalRecords.size()).isEqualTo(2);
@@ -148,7 +148,7 @@ public class AlertListsServiceTest {
         when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.of(medicalRecord2));
 
         //WHEN
-        List<PersonMedicalRecordDTO> persons = alertListsService.getMedicalRecordByAddress("address12");
+        List<PersonMedicalRecordDTO> persons = alertListsService.getMedicalRecordByAddress("address12", false);
 
         //THEN
         assertThat(persons.size()).isEqualTo(2);

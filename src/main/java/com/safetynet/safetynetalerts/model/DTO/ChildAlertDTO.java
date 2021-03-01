@@ -7,10 +7,12 @@ import java.util.List;
 @Getter
 public class ChildAlertDTO {
 
+    private String homehood;
     private List<PersonAlertDTO> children;
     private List<PersonAlertDTO> adults;
 
-    public ChildAlertDTO(List<PersonAlertDTO> children, List<PersonAlertDTO> adults) {
+    public ChildAlertDTO(String homehood, List<PersonAlertDTO> children, List<PersonAlertDTO> adults) {
+        this.homehood = homehood;
         this.children = children;
         this.adults = adults;
     }

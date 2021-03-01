@@ -10,7 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public class ChildAlertService {
@@ -27,22 +31,37 @@ public class ChildAlertService {
         List<PersonMedicalRecordDTO> personMedicalRecordList =
                 alertListsService.getMedicalRecordByAddress(address);
 
-        //filter to get the children
-        List<PersonMedicalRecordDTO> children = personMedicalRecordList.stream()
-                .filter(p -> p.getAge() <= 18).collect(Collectors.toList());
+        String message = "";
 
-        int i = children.size();
-        if (i > 0) {
-            List<PersonAlertDTO> childList = new ArrayList<>();
-            children.forEach(c -> childList.add(new PersonAlertDTO(c)));
-            List<PersonMedicalRecordDTO> adults = personMedicalRecordList.stream()
-                    .filter(p -> p.getAge() > 18).collect(Collectors.toList());
-            List<PersonAlertDTO> adultList = new ArrayList<>();
-            adults.forEach(a -> adultList.add(new PersonAlertDTO(a)));
-            childAlertList.add(new ChildAlertDTO(childList, adultList));
-            LOGGER.info("getChilAlertList: childAlertList constructed with " + i +
-                    " child(ren) and " + adultList.size() + " adult(s)");
+        //group by homehood
+        Map<String, List<PersonMedicalRecordDTO>> homeHoodList1 = personMedicalRecordList.stream()
+                .collect(groupingBy(PersonMedicalRecordDTO::getLastName));
+
+        Map<String, List<PersonMedicalRecordDTO>> homeHoodList = new TreeMap<>(homeHoodList1);
+
+        //for each homehood, filter to get the children
+        for (Map.Entry<String, List<PersonMedicalRecordDTO>> entry : homeHoodList.entrySet()) {
+            String name = entry.getKey();
+            List<PersonMedicalRecordDTO> list = entry.getValue();
+            List<PersonMedicalRecordDTO> children = list.stream()
+                    .filter(p -> p.getAge() <= 18).collect(Collectors.toList());
+
+            int i = children.size();
+            if (i > 0) {
+                List<PersonAlertDTO> childList = new ArrayList<>();
+                children.forEach(c -> childList.add(new PersonAlertDTO(c)));
+                List<PersonMedicalRecordDTO> adults = list.stream()
+                        .filter(p -> p.getAge() > 18).collect(Collectors.toList());
+                List<PersonAlertDTO> adultList = new ArrayList<>();
+                adults.forEach(a -> adultList.add(new PersonAlertDTO(a)));
+                childAlertList.add(new ChildAlertDTO(name, childList, adultList));
+                message += "homehood " + name + ": " + i +
+                        " child(ren) and " + adultList.size() + " adult(s)\n";
+            } else {
+                message += "homehood " + name + ": no child";
+            }
         }
+        LOGGER.info("getChildAlertList: " + address + " \n" + message);
         return childAlertList;
     }
 }

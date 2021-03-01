@@ -86,7 +86,7 @@ public class PersonControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string("null"));
 
-        // To verify that John Culver has been updated;
+        // To verify that John Culver has not been updated;
         assertThat(personRepository.findById(personJohnId)).isEqualTo(person2);
     }
 
@@ -136,7 +136,7 @@ public class PersonControllerIT {
 
     @Test
     public void deletePersonTest() throws Exception {
-
+        //deleting M. Delete Boyd
         mockMvc.perform(delete("/person/Delete:Boyd"))
                 .andExpect(status().isOk());
 

@@ -40,6 +40,8 @@ public class ChildAlertServiceTest {
     private static PersonMedicalRecordDTO personMedicalRecord2;
     private static PersonMedicalRecordDTO personMedicalRecord3;
     private static PersonMedicalRecordDTO personMedicalRecord4;
+    private static PersonMedicalRecordDTO personMedicalRecord5;
+    private static PersonMedicalRecordDTO personMedicalRecord6;
 
     private static ChildAlertDTO childAlertDTO;
 
@@ -56,6 +58,9 @@ public class ChildAlertServiceTest {
 
         personMedicalRecord3 = new PersonMedicalRecordDTO();
         personMedicalRecord4 = new PersonMedicalRecordDTO();
+
+        personMedicalRecord5 = new PersonMedicalRecordDTO();
+        personMedicalRecord6 = new PersonMedicalRecordDTO();
 
         personMedicalRecord1.setFirstName("Baby");
         personMedicalRecord1.setLastName("Family12");
@@ -93,6 +98,24 @@ public class ChildAlertServiceTest {
         personMedicalRecord4.setMedications(new ArrayList<>());
         personMedicalRecord4.setAllergies(Arrays.asList("allergie4"));
 
+        personMedicalRecord5.setFirstName("Mum");
+        personMedicalRecord5.setLastName("OtherFamilyAddress12");
+        personMedicalRecord5.setAddress("address12");
+        personMedicalRecord5.setPhone("phone5" );
+        personMedicalRecord5.setEmail("mail.test5@email.com");
+        personMedicalRecord5.setAge(50);
+        personMedicalRecord5.setMedications(new ArrayList<>());
+        personMedicalRecord5.setAllergies(Arrays.asList("allergie5"));
+
+        personMedicalRecord6.setFirstName("Babe");
+        personMedicalRecord6.setLastName("OtherFamilyAddress12");
+        personMedicalRecord6.setAddress("address12");
+        personMedicalRecord6.setPhone("phone6" );
+        personMedicalRecord6.setEmail("mail.test6@email.com");
+        personMedicalRecord6.setAge(0);
+        personMedicalRecord6.setMedications(new ArrayList<>());
+        personMedicalRecord6.setAllergies(new ArrayList<>());
+
     }
 
     @BeforeEach
@@ -111,6 +134,7 @@ public class ChildAlertServiceTest {
         List<ChildAlertDTO> childAlertList = childAlertService.getChildAlertList("address12");
 
         //THEN
+        assertThat(childAlertList.get(0).getHomehood()).isEqualTo("Family12");
         assertThat(childAlertList.get(0).getChildren().size()).isEqualTo(2);
         assertThat(childAlertList.get(0).getAdults().size()).isEqualTo(2);
         assertThat(childAlertList.get(0).getChildren().get(0).getAge()).isLessThan(19);
@@ -144,10 +168,37 @@ public class ChildAlertServiceTest {
         List<ChildAlertDTO> childAlertList = childAlertService.getChildAlertList("address12");
 
         //THEN
+        assertThat(childAlertList.get(0).getHomehood()).isEqualTo("Family12");
         assertThat(childAlertList.get(0).getChildren().size()).isEqualTo(2);
         assertThat(childAlertList.get(0).getAdults().size()).isEqualTo(0);
         assertThat(childAlertList.get(0).getChildren().get(0).getAge()).isLessThan(19);
         assertThat(childAlertList.get(0).getChildren().get(1).getAge()).isLessThan(19);
+
+    }
+
+    @Test
+    public void getChildAlertListWith2FamiliesAtTheSameAddressTest() {
+        //GIVEN
+        List<PersonMedicalRecordDTO> persons = Arrays.asList(personMedicalRecord1,
+                personMedicalRecord2, personMedicalRecord3, personMedicalRecord4, personMedicalRecord5,
+                personMedicalRecord6);
+        when(alertListsService.getMedicalRecordByAddress("address12")).thenReturn(persons);
+
+        //WHEN
+        List<ChildAlertDTO> childAlertList = childAlertService.getChildAlertList("address12");
+
+        //THEN
+        assertThat(childAlertList.get(0).getHomehood()).isEqualTo("Family12");
+        assertThat(childAlertList.get(0).getChildren().size()).isEqualTo(2);
+        assertThat(childAlertList.get(0).getAdults().size()).isEqualTo(2);
+        assertThat(childAlertList.get(0).getChildren().get(0).getAge()).isLessThan(19);
+        assertThat(childAlertList.get(0).getChildren().get(1).getAge()).isLessThan(19);
+
+        assertThat(childAlertList.get(1).getHomehood()).isEqualTo("OtherFamilyAddress12");
+        assertThat(childAlertList.get(1).getChildren().size()).isEqualTo(1);
+        assertThat(childAlertList.get(1).getAdults().size()).isEqualTo(1);
+        assertThat(childAlertList.get(1).getChildren().get(0).getAge()).isEqualTo(0);
+        assertThat(childAlertList.get(1).getAdults().get(0).getAge()).isEqualTo(50);
 
     }
 

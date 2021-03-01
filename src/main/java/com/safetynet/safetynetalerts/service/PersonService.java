@@ -136,7 +136,7 @@ public class PersonService {
         List<IPersonEmailDTO> persons = personRepository.findAllDistinctEmailByCity(city);
         int i = persons.size();
         if (i > 0) {
-            logger.info("getEmailList: List of " + i + " email sent for the city " + city);
+            logger.info("getEmailList: List of " + i + " person(s) found for the city " + city);
             return persons;
         } else {
             logger.error("getEmailList:nobody found for the city " + city);
@@ -154,7 +154,7 @@ public class PersonService {
         List<IPersonPhoneDTO> persons = personRepository.findAllDistinctPhoneByAddressIsIn(addresses);
         int i = persons.size();
         if (i > 0) {
-            logger.info("getPhones: List of " + i + " email sent for the addresses " + addresses);
+            logger.info("getPhones: List of " + i + " person(s) found for the addresses " + addresses);
             return persons;
         } else {
             logger.error("getPhones:nobody found for the addresses " + addresses);
@@ -171,7 +171,7 @@ public class PersonService {
         List<PersonMedicalRecordDTO> persons = personRepository.findAllByAddress(address);
         int i = persons.size();
         if (i > 0) {
-            logger.info("getAllByAddress: List of " + i + " email sent for the address " + address);
+            logger.info("getAllByAddress: List of " + i + " person(s) found for the address " + address);
             return persons;
         } else {
             logger.error("getAllByAddress:nobody found for the address " + address);
@@ -193,16 +193,16 @@ public class PersonService {
             int i = personsByLastName.size();
             if (i > 0) {
                 if (firstName == null || firstName.equals("")) {
-                    logger.info("getAllByFirstAndLastName: List of " + i + " persons with lastname " +
-                            lastName + " send");
+                    logger.info("getAllByFirstAndLastName: List of " + i + " person(s) with lastname " +
+                            lastName + " found");
                     return personsByLastName;
                 } else {
                     List<PersonMedicalRecordDTO> personsByFirstAndLastName = personsByLastName.stream()
                             .filter(p -> p.getFirstName().matches(firstName)).collect(Collectors.toList());
                     i = personsByFirstAndLastName.size();
                     if (i > 0) {
-                        logger.info("getAllByFirstAndLastName: List of " + i + " persons with name " +
-                                firstName + " " + lastName + " send");
+                        logger.info("getAllByFirstAndLastName: List of " + i + " person(s) with name " +
+                                firstName + " " + lastName + " found");
                         return personsByFirstAndLastName;
                     }
                 }

@@ -105,7 +105,7 @@ public class AlertListsServiceTest {
         when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.of(medicalRecord2));
 
         //WHEN
-        alertListsService.getMedicalRecord(personMedicalRecords);
+        alertListsService.getMedicalRecord(personMedicalRecords, false);
 
         //THEN
         assertThat(personMedicalRecords.size()).isEqualTo(2);
@@ -126,7 +126,7 @@ public class AlertListsServiceTest {
         when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.empty());
 
         //WHEN
-        alertListsService.getMedicalRecord(personMedicalRecords);
+        alertListsService.getMedicalRecord(personMedicalRecords, false);
 
         //THEN
         assertThat(personMedicalRecords.size()).isEqualTo(2);
@@ -148,7 +148,7 @@ public class AlertListsServiceTest {
         when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.of(medicalRecord2));
 
         //WHEN
-        List<PersonMedicalRecordDTO> persons = alertListsService.getMedicalRecordByAddress("address12");
+        List<PersonMedicalRecordDTO> persons = alertListsService.getMedicalRecordByAddress("address12", false);
 
         //THEN
         assertThat(persons.size()).isEqualTo(2);
@@ -158,6 +158,27 @@ public class AlertListsServiceTest {
         assertThat(persons.get(1).getAge()).isEqualTo(dateUtil.age(birthdate2));
         assertThat(persons.get(1).getAllergies()).containsExactly("allergie2");
         assertThat(persons.get(1).getMedications()).containsExactly("med1", "med2");
+    }
+
+    @Test
+    public void getMedicalRecordByAddress_ageOnlyTest() {
+        //GIVEN
+        List<PersonMedicalRecordDTO> personMedicalRecords = Arrays.asList(personMedicalRecord1, personMedicalRecord2);
+        when(personService.getAllByAddress("address12")).thenReturn(personMedicalRecords);
+        when(medicalRecordService.getMedicalRecord(personId1)).thenReturn(Optional.of(medicalRecord1));
+        when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.of(medicalRecord2));
+
+        //WHEN
+        List<PersonMedicalRecordDTO> persons = alertListsService.getMedicalRecordByAddress("address12", true);
+
+        //THEN
+        assertThat(persons.size()).isEqualTo(2);
+        assertThat(persons.get(0).getAge()).isEqualTo(dateUtil.age(birthdate1));
+        assertThat(persons.get(0).getAllergies()).isNullOrEmpty();
+        assertThat(persons.get(0).getMedications()).isNullOrEmpty();
+        assertThat(persons.get(1).getAge()).isEqualTo(dateUtil.age(birthdate2));
+        assertThat(persons.get(1).getAllergies()).isNullOrEmpty();
+        assertThat(persons.get(1).getMedications()).isNullOrEmpty();
     }
 
     @Test

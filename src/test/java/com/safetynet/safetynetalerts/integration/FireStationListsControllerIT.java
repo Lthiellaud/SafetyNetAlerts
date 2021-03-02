@@ -34,10 +34,10 @@ public class FireStationListsControllerIT {
         mockMvc.perform(get("/phoneAlert").param("firestation", "1"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().string(containsString("\"phone\" : \"phone3-1\"")))
-                .andExpect(content().string(containsString("\"phone\" : \"phone2-1-1\"")))
-                .andExpect(content().string(containsString("\"phone\" : \"phone2-1-2\"")))
-                .andExpect(content().string(containsString("\"phone\" : \"phone1-1\"")));
+                .andExpect(content().string(containsString("\"phone\" : \"phone3-st1\"")))
+                .andExpect(content().string(containsString("\"phone\" : \"phone2-1-st1\"")))
+                .andExpect(content().string(containsString("\"phone\" : \"phone2-2-st1\"")))
+                .andExpect(content().string(containsString("\"phone\" : \"phone1-st1\"")));
     }
 
     @Test

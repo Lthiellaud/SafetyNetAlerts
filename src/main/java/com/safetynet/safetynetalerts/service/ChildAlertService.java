@@ -29,7 +29,7 @@ public class ChildAlertService {
 
         //get the list of person/medical record at th given address
         List<PersonMedicalRecordDTO> personMedicalRecordList =
-                alertListsService.getMedicalRecordByAddress(address);
+                alertListsService.getMedicalRecordByAddress(address, false);
 
         String message = "";
 

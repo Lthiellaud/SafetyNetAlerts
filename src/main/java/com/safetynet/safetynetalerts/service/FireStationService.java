@@ -137,7 +137,7 @@ public class FireStationService {
             addresses = fireStations.stream().map(FireStation::getAddress)
                     .distinct().collect(Collectors.toList());
         } else {
-            LOGGER.error("getAddresses:  no address found for fire station " + station);
+            LOGGER.error("getAddresses:  no address attached to this fire station " + station);
         }
         return addresses;
     }

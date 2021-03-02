@@ -22,7 +22,7 @@ public class ChildAlertControllerIT {
 
     @Test
     public void getChildAlertListIT() throws Exception {
-        mockMvc.perform(get("/childAlert").param("address", "address3-1"))
+        mockMvc.perform(get("/childAlert").param("address", "address3-st1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].children[0].firstName", containsString("Kendrik")))
                 .andExpect(jsonPath("$[0].adults[1].firstName", containsString("Shawna")))
@@ -35,9 +35,14 @@ public class ChildAlertControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string("[ ]"))
                 .andDo(print());
-        //TODO: add other ChildAlertController Integration Test and check family above never modified by other tests
-        //TODO: check omitted pretty JSON throw tests (cf. application-test.properties)
-        //TODO: /firestation by station number list
-        //TODO: check format list for child alert
     }
+
+    @Test
+    public void getChildList_noParamIT() throws Exception {
+        mockMvc.perform(get("/childAlert").param("address", ""))
+                .andExpect(status().isOk())
+                .andExpect(content().string(""))
+                .andDo(print());
+    }
+
 }

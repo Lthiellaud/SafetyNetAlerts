@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-
 @RestController
 public class PersonAndCountByFireStationController {
+
     @Autowired
     private PersonAndCountByFireStationService personAndCountByFireStationService;
 
-    private final Logger LOGGER = LoggerFactory.getLogger(PersonAndCountByFireStationController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersonAndCountByFireStationController.class);
 
     /**
      * URL /firestation?stationNumber=<station_number>
@@ -25,15 +25,9 @@ public class PersonAndCountByFireStationController {
      * @return the list to be found
      */
     @GetMapping("/firestation")
-    public List<PersonAndCountByFireStationDTO> getPersonAndCountByFireStation(
-            @RequestParam("stationNumber") Integer station ) {
-        if (station == null) {
-            LOGGER.error("URL /firestation Request: a parameter \"stationNumber\" is needed");
-            return null;
-        } else {
-            LOGGER.info("URL /firestation: request sent for fire station " + station);
-            return personAndCountByFireStationService.getPersonAndCountByFireStation(station);
-        }
+    public List<PersonAndCountByFireStationDTO> getFireStationPerson(@RequestParam("stationNumber") Integer station) {
+        LOGGER.info("URL /firestation: request sent for fire station " + station);
+        return personAndCountByFireStationService.getPersonAndCountByFireStation(station);
     }
     
 }

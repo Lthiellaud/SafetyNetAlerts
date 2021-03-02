@@ -1,6 +1,5 @@
 package com.safetynet.safetynetalerts.integration;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,11 +23,11 @@ public class FireControllerIT {
 
     @Test
     public void getFirePersonsForAddress_shouldReturnData() throws Exception {
-        mockMvc.perform(get("/fire").param("address", "address3-1"))
+        mockMvc.perform(get("/fire").param("address", "address3-st1"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string(containsString("[ 1 ]")))
-                .andExpect(content().string(containsString("Stelzer")));
+                .andExpect(content().string(containsString("Family3-st1")));
     }
 
     @Test

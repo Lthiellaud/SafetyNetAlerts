@@ -19,7 +19,7 @@ public class MedicalRecordService {
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
 
-    private static Logger logger = LoggerFactory.getLogger(PersonController.class);
+    private static Logger logger = LoggerFactory.getLogger(MedicalRecordService.class);
 
     /**
      * To get a medical record from a firstname and a lastname.

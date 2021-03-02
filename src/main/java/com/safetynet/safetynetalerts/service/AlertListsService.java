@@ -27,24 +27,16 @@ public class AlertListsService {
     private static DateUtil dateUtil = new DateUtil();
 
     /**
-     * To get the list of the inhabitants living at an address and the attached fire station.
-     * @param address the address for which we need the inhabitants list
-     * @return the list of inhabitants at the given address including phone and medical record
-     * and the fire stations attached to this address
-     */
-    public FirePersonDTO getFirePersonList(String address) {
-        return new FirePersonDTO(fireStationService.getStations(address),
-                getPersonPhoneMedicalRecordDTO(address));
-    }
-
-    /**
      * To get the list of the inhabitants living at an address.
      * @param address the address for which we need the inhabitants list
      * @return the list of inhabitants at the given address including phone and medical record
      */
     public List<PersonPhoneMedicalRecordDTO> getPersonPhoneMedicalRecordDTO(String address) {
+        //Retrieve list of persons at the given address using PersonMedicalRecordDTO model
         List<PersonMedicalRecordDTO> persons = getMedicalRecordByAddress(address, false);
         List<PersonPhoneMedicalRecordDTO> personList = new ArrayList<>();
+
+        //Setting the list items to PersonPhoneMedicalRecordDTO model
         if (persons.size() > 0) {
             persons.forEach(person -> personList.add(new PersonPhoneMedicalRecordDTO(person)));
         }
@@ -56,6 +48,7 @@ public class AlertListsService {
      * @return the list of households by address including name, phone, age
      * medical record of each member
      */
+/*
     public List<FloodListByStationDTO> getFloodList(List<Integer> stations) {
         List<FloodListByStationDTO> floodList = new ArrayList<>();
         for (Integer station : stations) {
@@ -73,6 +66,7 @@ public class AlertListsService {
         }
         return floodList;
     }
+*/
 
     /**
      * To get the phone list of the inhabitants attached to a given fire station.
@@ -81,7 +75,17 @@ public class AlertListsService {
      */
     public List<IPersonPhoneDTO> getPhones(Integer station) {
         List<String> addresses = fireStationService.getAddresses(station);
-        return personService.getPhones(addresses);
+        List<IPersonPhoneDTO> persons = new ArrayList<>();
+        if (addresses.size() > 0) {
+            persons = personService.getPhones(addresses);
+        }
+        int i = persons.size();
+        if (i > 0) {
+            //LOGGER.info("getPhones: " + i + " found for stations number " + station);
+        } else {
+            //LOGGER.info("getPhones: nobody found for stations number " + station);
+        }
+        return persons;
     }
 
     /**

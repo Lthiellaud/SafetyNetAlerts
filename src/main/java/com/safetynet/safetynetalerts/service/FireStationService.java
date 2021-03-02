@@ -86,7 +86,7 @@ public class FireStationService {
         int i = fireStations.size();
         if (i > 0) {
             LOGGER.info("deleteFireStation(address): " + i +
-                    "fire stations deleted");
+                    " fire stations deleted");
             fireStationRepository.deleteAll(fireStations);
         } else {
             LOGGER.info("deleteFireStation(address): no fire station deleted");
@@ -102,7 +102,7 @@ public class FireStationService {
         int i = fireStations.size();
         if (i > 0) {
             LOGGER.info("deleteFireStation(station): " + i +
-                    "fire stations deleted");
+                    " fire stations deleted");
             fireStationRepository.deleteAll(fireStations);
         } else {
             LOGGER.info("deleteFireStation(station): no fire station deleted");
@@ -119,7 +119,7 @@ public class FireStationService {
         List<Integer> stations = new ArrayList<>();
         int i = fireStations.size();
         if (i > 0) {
-            LOGGER.info("getStations: " + i + "fire station found for the address " + address);
+            LOGGER.info("getStations: " + i + " fire station found for the address " + address);
             stations = fireStations.stream().map(FireStation::getStation)
                     .collect(Collectors.toList());
         } else {
@@ -133,7 +133,7 @@ public class FireStationService {
         List<String> addresses = new ArrayList<>();
         int i = fireStations.size();
         if (i > 0) {
-            LOGGER.info("getAddresses: " + i + "addresses found for fire station " + station);
+            LOGGER.info("getAddresses: " + i + " addresses found for fire station " + station);
             addresses = fireStations.stream().map(FireStation::getAddress)
                     .distinct().collect(Collectors.toList());
         } else {

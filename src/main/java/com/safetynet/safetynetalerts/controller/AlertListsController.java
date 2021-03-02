@@ -45,18 +45,18 @@ public class AlertListsController {
      * @param stations the list of station for which we need the list (integers separated by comma)
      * @return a list of the households attached to the given stations
      */
-    @GetMapping("/flood/stations")
+ /*   @GetMapping("/flood/stations")
     public List<FloodListByStationDTO> getFloodList
             (@RequestParam ("stations") List<Integer> stations) {
-        List<FloodListByStationDTO> floodList = alertListsService.getFloodList(stations);
-        if (floodList != null && floodList.size() > 0) {
+        if (stations != null && stations.size() > 0) {
             logger.info("URL /flood/stations request: List sent for stations " + stations);
+            return alertListsService.getFloodList(stations);
         } else {
-            logger.error("URL /flood/stations request: No data found");
+            logger.error("URL /flood/stations request: station list is needed");
+            return null;
         }
-        return floodList;
     }
-
+*/
     /**
      * URL /personInfo?firstName=<firstName>&lastName=<lastName>.
      * @param firstName the firstname sought

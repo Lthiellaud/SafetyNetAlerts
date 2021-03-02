@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -37,7 +36,8 @@ public class PersonControllerIT {
 
     private Person person;
     private PersonId personBabyId = new PersonId("Baby", "Boyd");
-    private PersonId personJohnId = new PersonId("John", "Boyd");
+    private PersonId personUpdateId = new PersonId("Update", "Boyd");
+    private PersonId personExistingId = new PersonId("Existing", "Boyd");
     private PersonId personDeleteId = new PersonId("Tenley", "Boyd");
 
 
@@ -70,14 +70,14 @@ public class PersonControllerIT {
 
     @Test
     public void createExistingPersonTest() throws Exception {
-        Optional<Person> person2 = personRepository.findById(personJohnId);
-        person.setFirstName("John");
+        Optional<Person> person2 = personRepository.findById(personExistingId);
+        person.setFirstName("Existing");
         person.setLastName("Boyd");
         person.setAddress("1509 Marinland St");
         person.setCity("Culver");
         person.setZip(97451);
         person.setPhone("841-874-0000" );
-        person.setEmail("jaboyd@email.com");
+        person.setEmail("existing2boyd@email.com");
         RequestBuilder createRequest = MockMvcRequestBuilders
                 .post("/person")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -86,13 +86,13 @@ public class PersonControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string("null"));
 
-        // To verify that John Culver has not been updated;
-        assertThat(personRepository.findById(personJohnId)).isEqualTo(person2);
+        // To verify that Existing Boyd has not been updated;
+        assertThat(personRepository.findById(personExistingId)).isEqualTo(person2);
     }
 
     @Test
     public void updatePersonTest() throws Exception {
-        person.setFirstName("John");
+        person.setFirstName("Update");
         person.setLastName("Boyd");
         person.setEmail("test.update@email.com");
         person.setPhone(null);
@@ -105,14 +105,14 @@ public class PersonControllerIT {
                 .content(mapper.writeValueAsString(person));
         mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("firstName", is("John")))
+                .andExpect(jsonPath("firstName", is("Update")))
                 .andExpect(jsonPath("city", is("Culver")))
                 .andExpect(jsonPath("address", is("1508 Culver St")))
                 .andExpect(jsonPath("email", is("test.update@email.com")));
 
-        assertThat(personRepository.findById(personJohnId).get().getEmail()).isEqualTo("test.update@email.com");
-        assertThat(personRepository.findById(personJohnId).get().getAddress()).isEqualTo("1508 Culver St");
-        assertThat(personRepository.findById(personJohnId).get().getPhone()).isEqualTo("841-874-6512");
+        assertThat(personRepository.findById(personUpdateId).get().getEmail()).isEqualTo("test.update@email.com");
+        assertThat(personRepository.findById(personUpdateId).get().getAddress()).isEqualTo("1508 Culver St");
+        assertThat(personRepository.findById(personUpdateId).get().getPhone()).isEqualTo("841-874-6512");
 
     }
 

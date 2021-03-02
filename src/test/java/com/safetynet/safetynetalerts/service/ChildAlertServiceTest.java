@@ -30,12 +30,6 @@ public class ChildAlertServiceTest {
     @MockBean
     private AlertListsService alertListsService;
 
-    private static Person person1;
-    private static Person person2;
-
-    private static PersonId personId1;
-    private static PersonId personId2;
-
     private static PersonMedicalRecordDTO personMedicalRecord1;
     private static PersonMedicalRecordDTO personMedicalRecord2;
     private static PersonMedicalRecordDTO personMedicalRecord3;
@@ -43,16 +37,8 @@ public class ChildAlertServiceTest {
     private static PersonMedicalRecordDTO personMedicalRecord5;
     private static PersonMedicalRecordDTO personMedicalRecord6;
 
-    private static ChildAlertDTO childAlertDTO;
-
     @BeforeAll
     public static void init() {
-        personId1 = new PersonId("Baby", "Family12");
-        personId2 = new PersonId("Dad", "Family12");
-
-        person1 = new Person();
-        person2 = new Person();
-
         personMedicalRecord1 = new PersonMedicalRecordDTO();
         personMedicalRecord2 = new PersonMedicalRecordDTO();
 

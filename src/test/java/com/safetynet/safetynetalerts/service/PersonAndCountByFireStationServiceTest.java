@@ -130,6 +130,40 @@ public class PersonAndCountByFireStationServiceTest {
         assertThat(persons.get(0).getPersonsByFireStation().size()).isEqualTo(6);
         assertThat(persons.get(0).getPersonsByFireStation().get(5).getPhone()).isEqualTo("phone6");
 
-
     }
+
+    @Test
+    public void getPersonAndCountByFireStation_NobodyAttachedToStationTest() {
+        //GIVEN
+        when(fireStationService.getAddresses(1)).thenReturn(Arrays.asList("address11"));
+        when(alertListsService.getMedicalRecordByAddress("address11", true))
+                .thenReturn(new ArrayList<>());
+
+        //WHEN
+        List<PersonAndCountByFireStationDTO> persons =
+                personAndCountByFireStationService.getPersonAndCountByFireStation(1);
+
+        //THEN
+        verify(fireStationService, times(1)).getAddresses(1);
+        verify(alertListsService,times(1)).getMedicalRecordByAddress("address11",true);
+
+        assertThat(persons.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void getPersonAndCountByFireStation_NoStationFoundTest() {
+        //GIVEN
+        when(fireStationService.getAddresses(1)).thenReturn(new ArrayList<>());
+
+        //WHEN
+        List<PersonAndCountByFireStationDTO> persons =
+                personAndCountByFireStationService.getPersonAndCountByFireStation(1);
+
+        //THEN
+        verify(fireStationService, times(1)).getAddresses(1);
+        verify(alertListsService,times(0)).getMedicalRecordByAddress("address11",true);
+
+        assertThat(persons.size()).isEqualTo(0);
+    }
+
 }

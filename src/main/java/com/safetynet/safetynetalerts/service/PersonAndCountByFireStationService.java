@@ -23,7 +23,7 @@ public class PersonAndCountByFireStationService {
 
     /**
      * To get the list of the inhabitants to a given fire station, giving children and adults count.
-     * @param stationNumber
+     * @param stationNumber The station number for which we need the list
      * @return the list to be found
      */
     public List<PersonAndCountByFireStationDTO> getPersonAndCountByFireStation(int stationNumber) {
@@ -51,13 +51,14 @@ public class PersonAndCountByFireStationService {
                     .filter(p -> p.getAge() > 18).count());
             personsWithAge.forEach(p -> personByFireStationList.add(new PersonByFireStationDTO(p)));
             personAndCountByFireStation.setPersonsByFireStation(personByFireStationList);
+            resultList.add(personAndCountByFireStation);
             LOGGER.info("getPersonAndCountByFireStation: " + i + " persons found for fire station" +
                     " number " + stationNumber);
         } else {
             LOGGER.error("getPersonAndCountByFireStation: nobody found for fire station"
                     + " number " + stationNumber);
         }
-        resultList.add(personAndCountByFireStation);
+
         return resultList;
     }
 }

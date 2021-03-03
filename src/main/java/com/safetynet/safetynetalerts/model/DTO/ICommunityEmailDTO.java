@@ -1,5 +1,5 @@
 package com.safetynet.safetynetalerts.model.DTO;
 
-public interface IPersonEmailDTO {
+public interface ICommunityEmailDTO {
     String getEmail();
 }

@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * class used in floodDTO.
+ */
 @Setter
 @Getter
 public class PersonByAddressDTO {

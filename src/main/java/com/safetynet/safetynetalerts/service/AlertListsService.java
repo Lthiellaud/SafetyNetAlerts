@@ -42,40 +42,15 @@ public class AlertListsService {
         }
         return personList;
     }
-    /**
-     * to get the list of the households attached to the given fire stations.
-     * @param stations the list of fire stations for which we need the list
-     * @return the list of households by address including name, phone, age
-     * medical record of each member
-     */
-/*
-    public List<FloodListByStationDTO> getFloodList(List<Integer> stations) {
-        List<FloodListByStationDTO> floodList = new ArrayList<>();
-        for (Integer station : stations) {
-            List<PersonByAddressDTO> personByAddressList = new ArrayList<>();
-            List<String> addresses = fireStationService.getAddresses(station);
-            if (addresses.size() > 0) {
-                addresses.forEach(address -> {
-                    PersonByAddressDTO p = new PersonByAddressDTO();
-                    p.setAddress(address);
-                    p.setPersons(getPersonPhoneMedicalRecordDTO(address));
-                    personByAddressList.add(p);
-                });
-            }
-            floodList.add(new FloodListByStationDTO(station, personByAddressList));
-        }
-        return floodList;
-    }
-*/
 
     /**
      * To get the phone list of the inhabitants attached to a given fire station.
      * @param station the station number of the fire station
      * @return the phone list of the inhabitants attached to a given fire station
      */
-    public List<IPersonPhoneDTO> getPhones(Integer station) {
+    public List<IPhoneAlertDTO> getPhones(Integer station) {
         List<String> addresses = fireStationService.getAddresses(station);
-        List<IPersonPhoneDTO> persons = new ArrayList<>();
+        List<IPhoneAlertDTO> persons = new ArrayList<>();
         if (addresses.size() > 0) {
             persons = personService.getPhones(addresses);
         }
@@ -86,20 +61,6 @@ public class AlertListsService {
             //LOGGER.info("getPhones: nobody found for stations number " + station);
         }
         return persons;
-    }
-
-    /**
-     * To get the inhabitants by firstname and lastname.
-     * @param firstName the firstname sought
-     * @param lastName the last name sought
-     * @return the list including address, age, email, medical record
-     */
-    public List<PersonEmailMedicalRecordDTO> getPersonEmailMedicalRecord(String firstName, String lastName) {
-        List<PersonMedicalRecordDTO> persons =
-                getMedicalRecordByFirstAndLastName(firstName, lastName);
-        List<PersonEmailMedicalRecordDTO> personList = new ArrayList<>();
-        persons.forEach(person -> personList.add(new PersonEmailMedicalRecordDTO(person)));
-        return personList;
     }
 
     /**
@@ -136,16 +97,4 @@ public class AlertListsService {
         return persons;
     }
 
-    /**
-     * To get a complete PersonMedicalRecordDTO list of a person.
-     * @param firstName the first name of the person for which the PersonMedicalRecordDTO is needed
-     * @param lastName the last name of the person for which the PersonMedicalRecordDTO is needed
-     * @return the list of PersonMedicalRecordDTO
-     */
-    public List<PersonMedicalRecordDTO> getMedicalRecordByFirstAndLastName(String firstName, String lastName) {
-        List<PersonMedicalRecordDTO> persons =
-                personService.getAllByFirstAndLastName(firstName, lastName);
-        getMedicalRecord(persons, false);
-        return persons;
-    }
 }

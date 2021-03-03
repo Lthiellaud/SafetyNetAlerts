@@ -1,8 +1,7 @@
 package com.safetynet.safetynetalerts.service;
 
-import com.safetynet.safetynetalerts.controller.PersonController;
-import com.safetynet.safetynetalerts.model.DTO.IPersonEmailDTO;
-import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
+import com.safetynet.safetynetalerts.model.DTO.ICommunityEmailDTO;
+import com.safetynet.safetynetalerts.model.DTO.IPhoneAlertDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonMedicalRecordDTO;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
@@ -132,8 +131,8 @@ public class PersonService {
      * @param city The city for which an email list is needed
      * @return the email list
      */
-    public List<IPersonEmailDTO> getEmailList(String city) {
-        List<IPersonEmailDTO> persons = personRepository.findAllDistinctEmailByCity(city);
+    public List<ICommunityEmailDTO> getEmailList(String city) {
+        List<ICommunityEmailDTO> persons = personRepository.findAllDistinctEmailByCity(city);
         int i = persons.size();
         if (i > 0) {
             LOGGER.info("getEmailList: List of " + i + " person(s) found for the city " + city);
@@ -150,8 +149,8 @@ public class PersonService {
      * @param addresses the list of addresses for which we need the phone number
      * @return the list of phone number
      */
-    public List<IPersonPhoneDTO> getPhones(List<String> addresses) {
-        List<IPersonPhoneDTO> persons = personRepository.findAllDistinctPhoneByAddressIsIn(addresses);
+    public List<IPhoneAlertDTO> getPhones(List<String> addresses) {
+        List<IPhoneAlertDTO> persons = personRepository.findAllDistinctPhoneByAddressIsIn(addresses);
         int i = persons.size();
         if (i > 0) {
             LOGGER.info("getPhones: List of " + i + " person(s) found for the addresses " + addresses);

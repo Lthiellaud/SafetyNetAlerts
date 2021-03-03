@@ -1,5 +1,6 @@
 package com.safetynet.safetynetalerts.model.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.safetynet.safetynetalerts.model.Person;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,13 +9,14 @@ import java.util.List;
 
 @Getter
 @Setter
+@JsonFilter("myDynamicFilter")
 public class PersonMedicalRecordDTO {
     private String firstName;
     private String lastName;
     private String address;
+    private int age;
     private String phone;
     private String email;
-    private int age;
     private List<String> medications;
     private List<String> allergies;
 

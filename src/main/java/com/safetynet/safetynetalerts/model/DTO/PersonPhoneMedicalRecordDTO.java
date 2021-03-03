@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Class used in FireDTO class and PersonByAddressDTO class.
+ */
 @Getter
 @Setter
 public class PersonPhoneMedicalRecordDTO {

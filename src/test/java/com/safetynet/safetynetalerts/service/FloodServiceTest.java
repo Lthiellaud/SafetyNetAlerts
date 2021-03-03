@@ -1,7 +1,6 @@
 package com.safetynet.safetynetalerts.service;
 
-import com.safetynet.safetynetalerts.model.DTO.FloodListByStationDTO;
-import com.safetynet.safetynetalerts.model.DTO.PersonMedicalRecordDTO;
+import com.safetynet.safetynetalerts.model.DTO.FloodDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonPhoneMedicalRecordDTO;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -94,7 +93,7 @@ public class FloodServiceTest {
         when(alertListsService.getPersonPhoneMedicalRecordDTO("address20")).thenReturn(persons3);
 
         //WHEN
-        List<FloodListByStationDTO> persons = floodService.getFloodList(Arrays.asList(1,2));
+        List<FloodDTO> persons = floodService.getFloodList(Arrays.asList(1,2));
 
         //THEN
         verify(fireStationService, times(1)).getAddresses(1);
@@ -123,7 +122,7 @@ public class FloodServiceTest {
         when(fireStationService.getAddresses(1)).thenReturn(addresses1);
 
         //WHEN
-        List<FloodListByStationDTO> persons = floodService.getFloodList(Arrays.asList(1));
+        List<FloodDTO> persons = floodService.getFloodList(Arrays.asList(1));
 
         //THEN
         verify(fireStationService, times(1)).getAddresses(1);

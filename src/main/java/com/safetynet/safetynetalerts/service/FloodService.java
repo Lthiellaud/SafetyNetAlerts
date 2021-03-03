@@ -1,6 +1,6 @@
 package com.safetynet.safetynetalerts.service;
 
-import com.safetynet.safetynetalerts.model.DTO.FloodListByStationDTO;
+import com.safetynet.safetynetalerts.model.DTO.FloodDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonByAddressDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +26,8 @@ public class FloodService {
      * @return the list of households by address including name, phone, age
      * medical record of each member
      */
-    public List<FloodListByStationDTO> getFloodList(List<Integer> stations) {
-        List<FloodListByStationDTO> floodList = new ArrayList<>();
+    public List<FloodDTO> getFloodList(List<Integer> stations) {
+        List<FloodDTO> floodList = new ArrayList<>();
         int nbPerson = 0;
         for (Integer station : stations) {
             List<PersonByAddressDTO> personByAddressList = new ArrayList<>();
@@ -45,7 +45,7 @@ public class FloodService {
             //for each station, add the list of persons by address
             LOGGER.info("getFloodList: " + nbPerson + " persons found for" +
                     " station " + station);
-            floodList.add(new FloodListByStationDTO(station, personByAddressList));
+            floodList.add(new FloodDTO(station, personByAddressList));
         }
         return floodList;
     }

@@ -1,9 +1,6 @@
 package com.safetynet.safetynetalerts.controller;
 
-import com.safetynet.safetynetalerts.model.DTO.FloodListByStationDTO;
-import com.safetynet.safetynetalerts.model.DTO.IPersonPhoneDTO;
-import com.safetynet.safetynetalerts.model.DTO.PersonEmailMedicalRecordDTO;
-import com.safetynet.safetynetalerts.service.AlertListsService;
+import com.safetynet.safetynetalerts.model.DTO.FloodDTO;
 import com.safetynet.safetynetalerts.service.FloodService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +26,7 @@ public class FloodController {
      * @return a list of the households attached to the given stations
      */
     @GetMapping("/flood/stations")
-    public List<FloodListByStationDTO> getFloodList
+    public List<FloodDTO> getFloodList
             (@RequestParam("stations") List<Integer> stations) {
         if (stations != null && stations.size() > 0) {
             LOGGER.info("URL /flood/stations request: List sent for stations " + stations);

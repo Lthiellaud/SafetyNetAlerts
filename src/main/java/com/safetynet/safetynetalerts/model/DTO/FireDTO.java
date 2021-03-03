@@ -5,12 +5,12 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class FirePersonDTO {
+public class FireDTO {
 
     private List<Integer> stations;
     private List<PersonPhoneMedicalRecordDTO> persons;
 
-    public FirePersonDTO(List<Integer> stations, List<PersonPhoneMedicalRecordDTO> persons) {
+    public FireDTO(List<Integer> stations, List<PersonPhoneMedicalRecordDTO> persons) {
         this.stations = stations;
         this.persons = persons;
     }

@@ -31,8 +31,7 @@ public class PersonController {
      */
     @PostMapping(value="/person")
     public ResponseEntity<Person> createPerson(@RequestBody Person person) {
-        if (!person.getFirstName().equals("") && !person.getLastName().equals("")
-                && person.getFirstName() != null && person.getLastName() != null) {
+        if (!person.getFirstName().equals("") && !person.getLastName().equals("")) {
             LOGGER.info("Endpoint /person: creation request Person record for " + person.getFirstName() +
                     " " + person.getLastName() + " received");
             Optional<Person> person1 = personService.createPerson(person);
@@ -82,8 +81,7 @@ public class PersonController {
      */
     @PutMapping(value="/person")
     public ResponseEntity<Person> updatePerson(@RequestBody Person person  ) {
-        if (!person.getFirstName().equals("") && !person.getLastName().equals("")
-             && person.getFirstName() != null && person.getLastName() != null) {
+        if (!person.getFirstName().equals("") && !person.getLastName().equals("")) {
             LOGGER.info("Endpoint /person: update request for " +
                     person.getFirstName() + " " + person.getLastName() + " received");
             Optional<Person> person1 = personService.updatePerson(person);

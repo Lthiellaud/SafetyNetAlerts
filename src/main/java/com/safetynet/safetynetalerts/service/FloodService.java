@@ -45,7 +45,9 @@ public class FloodService {
             //for each station, add the list of persons by address
             LOGGER.info("getFloodList: " + nbPerson + " persons found for" +
                     " station " + station);
-            floodList.add(new FloodDTO(station, personByAddressList));
+            if (nbPerson > 0) {
+                floodList.add(new FloodDTO(station, personByAddressList));
+            }
         }
         return floodList;
     }

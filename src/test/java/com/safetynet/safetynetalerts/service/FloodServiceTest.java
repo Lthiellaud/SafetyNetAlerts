@@ -124,7 +124,7 @@ public class FloodServiceTest {
         //THEN
         verify(fireStationService, times(1)).getAddresses(1);
         verify(alertListsService, times(0)).getPersonPhoneMedicalRecordDTO(anyString());
-        assertThat(persons.size()).isEqualTo(1);
-        assertThat(persons.get(0).getAddresses().size()).isEqualTo(0);
+        assertThat(persons.size()).isEqualTo(0);
+
     }
 }

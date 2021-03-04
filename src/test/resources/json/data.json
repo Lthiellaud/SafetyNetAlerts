@@ -15,6 +15,7 @@
         { "firstName":"Brian", "lastName":"Family3-st1", "address":"address3-st1", "city":"Culver", "zip":"97451", "phone":"phone3-st1", "email":"email1.test3-1@email.com" },
         { "firstName":"Shawna", "lastName":"Family3-st1", "address":"address3-st1", "city":"Culver", "zip":"97451", "phone":"phone3-st1", "email":"email2.test3-1@email.com" },
         { "firstName":"Kendrik", "lastName":"Family3-st1", "address":"address3-st1", "city":"Culver", "zip":"97451", "phone":"phone3-st1", "email":"email1.test3-1@email.com" },
+        { "firstName":"Other", "lastName":"City", "address":"Other address", "city":"Paris", "zip":"75014", "phone":"phone-Paris", "email":"email.paris@email.com" },
         { "firstName":"Max", "lastName":"NoFireStation", "address":"address without firestation", "city":"Culver", "zip":"97451", "phone":"841-874-7458", "email":"gramps@email.com" }
     ],
     "firestations": [

@@ -1,11 +1,19 @@
 package com.safetynet.safetynetalerts.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Defines a person by his firstname and lastname
  */
+@Getter
+@EqualsAndHashCode
+@AllArgsConstructor
 public class PersonId implements Serializable {
 
     private String firstName;
@@ -13,35 +21,9 @@ public class PersonId implements Serializable {
 
     public PersonId() {}
 
-    public PersonId (String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
     @Override
     public String toString() {
         return firstName + " " + lastName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PersonId personId = (PersonId) o;
-        return firstName.equals(personId.firstName) &&
-                lastName.equals(personId.lastName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName);
-    }
 }

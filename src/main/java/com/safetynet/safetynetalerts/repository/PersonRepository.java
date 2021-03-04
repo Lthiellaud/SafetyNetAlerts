@@ -13,12 +13,9 @@ import java.util.List;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, PersonId> {
 
-    //List<Person> findAllDistinctByAddressIsIn(Iterable<String> addresses);
-    //<T> List<T> findByStation(Integer station, Class<T> type);
-
     List<IPhoneAlertDTO> findAllDistinctPhoneByAddressIsIn(Iterable<String> addresses);
     List<ICommunityEmailDTO> findAllDistinctEmailByCity(String city);
     List<PersonMedicalRecordDTO> findAllByAddress(String address);
     List<PersonMedicalRecordDTO> findAllByLastName(String lastName);
-    //<T> List<T> findAllByAddress(String address, Class<T> type);
+
 }

@@ -32,8 +32,7 @@ public class MedicalRecordController {
      */
     @PostMapping(value="/medicalRecord")
     public ResponseEntity<MedicalRecord> createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        if (!medicalRecord.getFirstName().equals("") && !medicalRecord.getLastName().equals("")
-                && medicalRecord.getFirstName() != null && medicalRecord.getLastName() != null) {
+        if (!medicalRecord.getFirstName().equals("") && !medicalRecord.getLastName().equals("")) {
             LOGGER.info("Endpoint /medicalRecord: creation of Medical Record request for " + medicalRecord.getFirstName() +
                     " " + medicalRecord.getLastName() + " received");
             Optional<MedicalRecord> medicalRecord1 = medicalRecordService.createMedicalRecord(medicalRecord);
@@ -82,8 +81,7 @@ public class MedicalRecordController {
      */
     @PutMapping("/medicalRecord/")
     public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord  ) {
-        if (!medicalRecord.getFirstName().equals("") && !medicalRecord.getLastName().equals("")
-                && medicalRecord.getFirstName() != null && medicalRecord.getLastName() != null) {
+        if (!medicalRecord.getFirstName().equals("") && !medicalRecord.getLastName().equals("")) {
             LOGGER.info("Endpoint /medicalRecord: update asked for medicale record of " +
                     medicalRecord.getFirstName() + " " + medicalRecord.getLastName());
             Optional<MedicalRecord> medicalRecord1 = medicalRecordService.updateMedicalRecord(medicalRecord);

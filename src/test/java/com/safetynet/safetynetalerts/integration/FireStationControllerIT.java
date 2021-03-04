@@ -27,8 +27,6 @@ public class FireStationControllerIT {
     private MockMvc mockMvc;
     private ObjectMapper mapper = new ObjectMapper();
 
-    @Autowired
-    private FireStationRepository fireStationRepository;
     private FireStation fireStation;
 
     @Test
@@ -46,7 +44,6 @@ public class FireStationControllerIT {
                 .andExpect(jsonPath("address", is("71 Test St")))
                 .andExpect(jsonPath("station", is(58000)));
 
-        assertThat(fireStationRepository.findByAddress("71 Test St").get(0).getStation()).isEqualTo(58000);
     }
 
     @Test
@@ -111,13 +108,6 @@ public class FireStationControllerIT {
                 .andExpect(jsonPath("$[1].address", is("Station to be updated-A1")))
                 .andExpect(jsonPath("$[1].station", is(10)));
 
-        assertThat(fireStationRepository.findByAddress("Station to be updated-A1")
-                .size()).isEqualTo(2);
-        assertThat(fireStationRepository.findByAddress("Station to be updated-A1")
-                .get(0).getStation()).isEqualTo(10);
-        assertThat(fireStationRepository.findByAddress("Station to be updated-A1")
-                .get(1).getStation()).isEqualTo(10);
-
     }
 
     @Test
@@ -131,13 +121,6 @@ public class FireStationControllerIT {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(""));
 
-        assertThat(fireStationRepository.findByAddress("Station to be updated-A1")
-                .size()).isEqualTo(2);
-        assertThat(fireStationRepository.findByAddress("Station to be updated-A1")
-                .get(0).getStation()).isEqualTo(10);
-        assertThat(fireStationRepository.findByAddress("Station to be updated-A1")
-                .get(1).getStation()).isEqualTo(10);
-
     }
 
     @Test
@@ -145,8 +128,6 @@ public class FireStationControllerIT {
 
         mockMvc.perform(delete("/firestation/address=Address to be deleted"))
                 .andExpect(status().isNoContent());
-
-        assertThat(fireStationRepository.findByAddress("Address to be deleted")).isEmpty();
 
     }
 
@@ -172,7 +153,6 @@ public class FireStationControllerIT {
         mockMvc.perform(delete("/firestation/station=80"))
                 .andExpect(status().isNoContent());
 
-        assertThat(fireStationRepository.findByStation(80)).isEmpty();
     }
 
     @Test
@@ -181,7 +161,6 @@ public class FireStationControllerIT {
         mockMvc.perform(delete("/firestation/station=800"))
                 .andExpect(status().isNotFound());
 
-        assertThat(fireStationRepository.findByStation(800)).isEmpty();
     }
 
 }

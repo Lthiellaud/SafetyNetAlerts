@@ -1,6 +1,5 @@
 package com.safetynet.safetynetalerts.integration;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -8,10 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest()
 @AutoConfigureMockMvc
@@ -22,30 +21,22 @@ public class PhoneAlertControllerIT {
     private MockMvc mockMvc;
 
     @Test
-    public void getEmailsForCityCity_shouldReturnEmptyBody() throws Exception {
-        mockMvc.perform(get("/communityEmail").param("city", "City"))
+    public void getPhoneAlert_station1_shouldReturnPhoneNumber() throws Exception {
+        mockMvc.perform(get("/phoneAlert").param("firestation", "1"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(jsonPath("email").doesNotExist());
+                .andExpect(content().string(containsString("\"phone\" : \"phone3-st1\"")))
+                .andExpect(content().string(containsString("\"phone\" : \"phone2-1-st1\"")))
+                .andExpect(content().string(containsString("\"phone\" : \"phone2-2-st1\"")))
+                .andExpect(content().string(containsString("\"phone\" : \"phone1-st1\"")));
     }
 
     @Test
-    @Disabled
-    public void getFirePersonsForAddress_shouldReturnData() throws Exception {
-        mockMvc.perform(get("/fire").param("address", "address3-1"))
+    public void getPhoneAlert_station6_shouldReturnEmptyBody() throws Exception {
+        mockMvc.perform(get("/phoneAlert").param("firestation", "6"))
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(jsonPath("phone").doesNotExist());
     }
-
-    @Test
-    public void getFirePersonsForGivenAddress_shouldReturnEmptyBody() throws Exception {
-        mockMvc.perform(get("/fire").param("address", "Given Address"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("firstName").doesNotExist());
-    }
-
-
 
 }
 

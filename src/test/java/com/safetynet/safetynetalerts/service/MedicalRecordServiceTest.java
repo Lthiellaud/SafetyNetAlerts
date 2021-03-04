@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest(properties = "command.line.runner.enabled=false")
 public class MedicalRecordServiceTest {
+
     @Mock
     private MedicalRecordRepository medicalRecordRepository;
 

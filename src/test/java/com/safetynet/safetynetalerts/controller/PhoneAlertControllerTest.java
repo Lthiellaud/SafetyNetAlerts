@@ -1,6 +1,5 @@
 package com.safetynet.safetynetalerts.controller;
 
-import com.safetynet.safetynetalerts.service.AlertListsService;
 import com.safetynet.safetynetalerts.service.PhoneAlertService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

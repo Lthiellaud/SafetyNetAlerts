@@ -116,9 +116,6 @@ public class FloodServiceTest {
     public void getFloodList_noAddressFoundTest() {
         //GIVEN
         List<String> addresses1 = new ArrayList<>();
-        List<PersonPhoneMedicalRecordDTO> persons1 = Arrays.asList(personPhoneMedicalRecord1, personPhoneMedicalRecord2);
-        List<PersonPhoneMedicalRecordDTO> persons2 = Arrays.asList(personPhoneMedicalRecord3);
-        List<PersonPhoneMedicalRecordDTO> persons3 = Arrays.asList(personPhoneMedicalRecord4);
         when(fireStationService.getAddresses(1)).thenReturn(addresses1);
 
         //WHEN

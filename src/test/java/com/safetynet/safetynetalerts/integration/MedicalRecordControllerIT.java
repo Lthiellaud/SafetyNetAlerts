@@ -64,7 +64,7 @@ public class MedicalRecordControllerIT {
                 .content(mapper.writeValueAsString(medicalRecord));
 
         mockMvc.perform(createRequest)
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("firstName", is("Baby")))
                 .andExpect(jsonPath("birthdate", is("01/17/2021")))
                 .andExpect(jsonPath("medications[0]", is("aznol:350mg")))
@@ -88,8 +88,29 @@ public class MedicalRecordControllerIT {
                 .content(mapper.writeValueAsString(medicalRecord));
 
         mockMvc.perform(createRequest)
-                .andExpect(status().isOk())
-                .andExpect(content().string("null"))
+                .andExpect(status().isConflict())
+                .andExpect(content().string(""))
+                .andDo(print());
+
+    }
+
+    @Test
+    public void CreateMedicalRecordWithNoNameTest() throws Exception {
+        medicalRecord1 = medicalRecordRepository.findById(personExistingId).get();
+        calendar.set(2021,JANUARY, 17);
+        medicalRecord.setFirstName("");
+        medicalRecord.setLastName("Boyd");
+        medicalRecord.setBirthdate(calendar.getTime());
+        medicalRecord.setMedications(new ArrayList<>());
+        medicalRecord.setAllergies(new ArrayList<>());
+        RequestBuilder createRequest = MockMvcRequestBuilders
+                .post("/medicalRecord")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(medicalRecord));
+
+        mockMvc.perform(createRequest)
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(""))
                 .andDo(print());
 
     }
@@ -112,14 +133,56 @@ public class MedicalRecordControllerIT {
         ;
 
         assertThat(medicalRecordRepository.existsById(personUpdateId)).isTrue();
+    }
+
+    @Test
+    public void updateNonExistingMedicalRecordTest() throws Exception {
+        medicalRecord.setFirstName("NonExisting");
+        medicalRecord.setLastName("NonExisting");
+        RequestBuilder request = MockMvcRequestBuilders
+                .put("/medicalRecord/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(medicalRecord));
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(""));
+
+
+    }
+
+    @Test
+    public void updateMedicalRecordWithNoNameTest() throws Exception {
+        medicalRecord.setFirstName("");
+        medicalRecord.setLastName("");
+        RequestBuilder request = MockMvcRequestBuilders
+                .put("/medicalRecord/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(medicalRecord));
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(""));
 
     }
 
     @Test
     public void deleteMedicalRecordTest() throws Exception {
         mockMvc.perform(delete("/medicalRecord/Delete:Boyd"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         assertThat(medicalRecordRepository.existsById(personDeleteId)).isFalse();
+    }
+
+    @Test
+    public void deleteNonExistingMedicalRecordTest() throws Exception {
+        mockMvc.perform(delete("/medicalRecord/NonExisting:Boyd"))
+                .andExpect(status().isNotFound());
+
+        assertThat(medicalRecordRepository.existsById(personDeleteId)).isFalse();
+    }
+    @Test
+    public void deleteMedicalRecordWithNoNameTest() throws Exception {
+        mockMvc.perform(delete("/medicalRecord/John:"))
+                .andExpect(status().isBadRequest());
+
     }
 }

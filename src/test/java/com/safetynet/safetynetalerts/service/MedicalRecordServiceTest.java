@@ -107,18 +107,6 @@ public class MedicalRecordServiceTest {
     }
 
     @Test
-    public void tryToUpdateMedicalRecordWithNoNameTest() {
-        //WHEN
-        Optional<MedicalRecord> medicalRecord = medicalRecordService.updateMedicalRecord(new MedicalRecord());
-
-        //THEN
-        verify(medicalRecordRepository, times(0)).findById(personId);
-        verify(medicalRecordRepository, times(0)).save(any(MedicalRecord.class));
-        assertThat(medicalRecord.isPresent()).isFalse();
-
-    }
-
-    @Test
     public void updateNonExistingMedicalRecordTest() {
         //GIVEN
         Optional<MedicalRecord> optionalMedicalRecord = Optional.empty();
@@ -145,17 +133,6 @@ public class MedicalRecordServiceTest {
 
         //THEN
         verify(medicalRecordRepository, times(1)).findById(personId);
-        verify(medicalRecordRepository, times(0)).save(any(MedicalRecord.class));
-        assertThat(result).isEqualTo(Optional.empty());
-    }
-
-    @Test
-    public void tryToSaveMedicalRecordWithNoNameTest() {
-        //WHEN
-        Optional<MedicalRecord> result = medicalRecordService.createMedicalRecord(new MedicalRecord());
-
-        //THEN
-        verify(medicalRecordRepository, times(0)).findById(any(PersonId.class));
         verify(medicalRecordRepository, times(0)).save(any(MedicalRecord.class));
         assertThat(result).isEqualTo(Optional.empty());
     }
@@ -204,11 +181,12 @@ public class MedicalRecordServiceTest {
         when(medicalRecordRepository.findById(personId)).thenReturn(Optional.of(medicalRecord2));
 
         //WHEN
-        medicalRecordService.deleteMedicalRecord("Dad", "Family12");
+        boolean result = medicalRecordService.deleteMedicalRecord("Dad", "Family12");
 
         //THEN
         verify(medicalRecordRepository, times(1)).findById(personId);
         verify(medicalRecordRepository,times(1)).deleteById(personId);
+        assertThat(result).isTrue();
     }
 
     @Test
@@ -217,21 +195,12 @@ public class MedicalRecordServiceTest {
         when(medicalRecordRepository.findById(personId)).thenReturn(Optional.empty());
 
         //WHEN
-        medicalRecordService.deleteMedicalRecord("Dad", "Family12");
+        boolean result = medicalRecordService.deleteMedicalRecord("Dad", "Family12");
 
         //THEN
         verify(medicalRecordRepository, times(1)).findById(personId);
         verify(medicalRecordRepository,times(0)).deleteById(any(PersonId.class));
-    }
-
-    @Test
-    public void deleteMedicalRecordWithNullPersonIdTest(){
-        //WHEN
-        medicalRecordService.deleteMedicalRecord(null, null);
-
-        //THEN
-        verify(medicalRecordRepository,times(0)).findById(any(PersonId.class));
-        verify(medicalRecordRepository,times(0)).deleteById(any(PersonId.class));
+        assertThat(result).isFalse();
     }
 
 }

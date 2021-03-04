@@ -1,6 +1,6 @@
 package com.safetynet.safetynetalerts.controller;
 
-import com.safetynet.safetynetalerts.model.DTO.IPersonEmailDTO;
+import com.safetynet.safetynetalerts.model.DTO.ICommunityEmailDTO;
 import com.safetynet.safetynetalerts.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class CommunityEmailController {
      * @return the email list of the city inhabitants
      */
     @GetMapping("/communityEmail")
-    public List<IPersonEmailDTO> getEmails(@RequestParam("city") String city) {
+    public List<ICommunityEmailDTO> getEmails(@RequestParam("city") String city) {
         if (city.equals("")) {
             logger.error("URL /communityEmail Request: a parameter \"city\" is needed");
             return null;

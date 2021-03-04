@@ -1,12 +1,9 @@
 package com.safetynet.safetynetalerts.integration;
 
-import com.safetynet.safetynetalerts.controller.PersonAndCountByFireStationController;
-import com.safetynet.safetynetalerts.service.PersonAndCountByFireStationService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 

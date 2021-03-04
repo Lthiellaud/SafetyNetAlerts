@@ -10,8 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest()
 @AutoConfigureMockMvc
@@ -34,6 +33,14 @@ public class CommunityEmailControllerIT {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().string(""));
+    }
+
+    @Test
+    public void getEmailsForCityCity_shouldReturnEmptyBody() throws Exception {
+        mockMvc.perform(get("/communityEmail").param("city", "City"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("email").doesNotExist());
     }
 
 

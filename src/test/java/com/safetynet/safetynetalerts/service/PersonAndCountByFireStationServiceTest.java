@@ -43,8 +43,6 @@ public class PersonAndCountByFireStationServiceTest {
     private static PersonMedicalRecordDTO personMedicalRecord5;
     private static PersonMedicalRecordDTO personMedicalRecord6;
 
-    private static ChildAlertDTO childAlertDTO;
-
     @BeforeAll
     public static void init() {
         personId1 = new PersonId("Baby", "Family12");

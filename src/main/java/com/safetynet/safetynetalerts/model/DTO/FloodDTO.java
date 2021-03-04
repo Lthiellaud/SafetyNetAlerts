@@ -6,10 +6,9 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Setter
 @Getter
 @AllArgsConstructor
-public class FloodListByStationDTO {
+public class FloodDTO {
 
     private Integer station;
     private List<PersonByAddressDTO> addresses;

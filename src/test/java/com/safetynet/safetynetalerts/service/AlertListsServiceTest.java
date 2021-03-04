@@ -2,7 +2,6 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.DTO.PersonMedicalRecordDTO;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
-import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
 import com.safetynet.safetynetalerts.util.DateUtil;
 import org.junit.jupiter.api.BeforeAll;
@@ -181,20 +180,4 @@ public class AlertListsServiceTest {
         assertThat(persons.get(1).getMedications()).isNullOrEmpty();
     }
 
-    @Test
-    public void getMedicalRecordByFirstAndLastTest() {
-        //GIVEN
-        List<PersonMedicalRecordDTO> personMedicalRecords = Arrays.asList(personMedicalRecord2);
-        when(personService.getAllByFirstAndLastName("Dad", "Boyd")).thenReturn(personMedicalRecords);
-        when(medicalRecordService.getMedicalRecord(personId2)).thenReturn(Optional.of(medicalRecord2));
-
-        //WHEN
-        List<PersonMedicalRecordDTO> persons = alertListsService.getMedicalRecordByFirstAndLastName("Dad", "Boyd");
-
-        //THEN
-        assertThat(persons.size()).isEqualTo(1);
-        assertThat(persons.get(0).getAge()).isEqualTo(dateUtil.age(birthdate2));
-        assertThat(persons.get(0).getAllergies()).containsExactly("allergie2");
-        assertThat(persons.get(0).getMedications()).containsExactly("med1", "med2");
-    }
 }

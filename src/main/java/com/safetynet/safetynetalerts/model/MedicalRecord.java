@@ -30,4 +30,18 @@ public class MedicalRecord {
     @ElementCollection
     private List<String> allergies;
 
+    /*@Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MedicalRecord that = (MedicalRecord) o;
+        boolean result = (this.firstName == that.getFirstName())
+                && (this.lastName == that.getLastName())
+                && (this.birthdate == that.getBirthdate());
+        return result;
+    }*/
 }

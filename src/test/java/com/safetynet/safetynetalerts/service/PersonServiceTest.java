@@ -236,14 +236,14 @@ public class PersonServiceTest {
     @Test
     public void getEmailListTest(){
         //GIVEN
-        IPersonEmailDTO email1 = () -> "email1";
-        IPersonEmailDTO email2 = () -> "email2";
-        List<IPersonEmailDTO> emails = Arrays.asList(email1, email2);
+        ICommunityEmailDTO email1 = () -> "email1";
+        ICommunityEmailDTO email2 = () -> "email2";
+        List<ICommunityEmailDTO> emails = Arrays.asList(email1, email2);
         when(personRepository.findAllDistinctEmailByCity("Culver"))
                 .thenReturn(emails);
 
         //WHEN
-        List<IPersonEmailDTO> emailDTOList = personService.getEmailList("Culver");
+        List<ICommunityEmailDTO> emailDTOList = personService.getEmailList("Culver");
 
         //THEN
         verify(personRepository,times(1)).findAllDistinctEmailByCity("Culver");
@@ -257,7 +257,7 @@ public class PersonServiceTest {
                 .thenReturn(new ArrayList<>());
 
         //WHEN
-        List<IPersonEmailDTO> emailDTOList = personService.getEmailList("Paris");
+        List<ICommunityEmailDTO> emailDTOList = personService.getEmailList("Paris");
 
         //THEN
         verify(personRepository,times(1)).findAllDistinctEmailByCity("Paris");
@@ -268,14 +268,14 @@ public class PersonServiceTest {
     public void getPhonesTest(){
         //GIVEN
         List<String> addresses = Arrays.asList("address12", "address3");
-        IPersonPhoneDTO phone1 = () -> "phone1";
-        IPersonPhoneDTO phone2 = () -> "phone2";
-        List<IPersonPhoneDTO> phones = Arrays.asList(phone1, phone2);
+        IPhoneAlertDTO phone1 = () -> "phone1";
+        IPhoneAlertDTO phone2 = () -> "phone2";
+        List<IPhoneAlertDTO> phones = Arrays.asList(phone1, phone2);
         when(personRepository.findAllDistinctPhoneByAddressIsIn(addresses))
                 .thenReturn(phones);
 
         //WHEN
-        List<IPersonPhoneDTO> phonesFound = personService.getPhones(addresses);
+        List<IPhoneAlertDTO> phonesFound = personService.getPhones(addresses);
 
         //THEN
         verify(personRepository,times(1))
@@ -291,7 +291,7 @@ public class PersonServiceTest {
                 .thenReturn(new ArrayList<>());
 
         //WHEN
-        List<IPersonPhoneDTO> phones = personService.getPhones(new ArrayList<>());
+        List<IPhoneAlertDTO> phones = personService.getPhones(new ArrayList<>());
 
         //THEN
         verify(personRepository,times(1))

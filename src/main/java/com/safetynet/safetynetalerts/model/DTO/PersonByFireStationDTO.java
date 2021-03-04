@@ -2,6 +2,9 @@ package com.safetynet.safetynetalerts.model.DTO;
 
 import lombok.Getter;
 
+/**
+ * Class used in PersonAndCountByFireStationDTO Class.
+ */
 @Getter
 public class PersonByFireStationDTO {
     private String firstName;

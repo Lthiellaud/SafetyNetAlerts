@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts.controller;
 
 import com.safetynet.safetynetalerts.model.DTO.*;
 import com.safetynet.safetynetalerts.service.AlertListsService;
+import com.safetynet.safetynetalerts.service.PhoneAlertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,11 @@ import java.util.List;
 
 
 @RestController
-public class AlertListsController {
+public class PhoneAlertController {
 
-    private Logger logger = LoggerFactory.getLogger(AlertListsController.class);
+    private Logger logger = LoggerFactory.getLogger(PhoneAlertController.class);
     @Autowired
-    AlertListsService alertListsService;
+    PhoneAlertService phoneAlertService;
 
 
 
@@ -28,7 +29,7 @@ public class AlertListsController {
      */
     @GetMapping("/phoneAlert")
     public Iterable<IPhoneAlertDTO> getPhoneList(@RequestParam("firestation") Integer fireStation) {
-        List<IPhoneAlertDTO> phones = alertListsService.getPhones(fireStation);
+        List<IPhoneAlertDTO> phones = phoneAlertService.getPhones(fireStation);
         if (phones.size() != 0) {
             logger.info("URL /phoneAlert request: List of inhabitants phone for fire station " +
                     + fireStation + " sent");

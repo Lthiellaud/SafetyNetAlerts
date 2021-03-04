@@ -44,26 +44,6 @@ public class AlertListsService {
     }
 
     /**
-     * To get the phone list of the inhabitants attached to a given fire station.
-     * @param station the station number of the fire station
-     * @return the phone list of the inhabitants attached to a given fire station
-     */
-    public List<IPhoneAlertDTO> getPhones(Integer station) {
-        List<String> addresses = fireStationService.getAddresses(station);
-        List<IPhoneAlertDTO> persons = new ArrayList<>();
-        if (addresses.size() > 0) {
-            persons = personService.getPhones(addresses);
-        }
-        int i = persons.size();
-        if (i > 0) {
-            //LOGGER.info("getPhones: " + i + " found for stations number " + station);
-        } else {
-            //LOGGER.info("getPhones: nobody found for stations number " + station);
-        }
-        return persons;
-    }
-
-    /**
      * To complete PersonMedicalRecordDTO with medical record information (ageOnly false) and age.
      * @param persons the list of PersonMedicalRecordDTO to be completed
      * @param ageOnly true if only age is needed, false if allergies and medications are also needed

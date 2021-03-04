@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Setter
 @Getter
 @AllArgsConstructor
 public class FloodDTO {

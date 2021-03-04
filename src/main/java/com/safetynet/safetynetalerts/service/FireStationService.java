@@ -29,11 +29,11 @@ public class FireStationService {
         List<FireStation> fireStations = fireStationRepository
                 .findAllByAddressAndStation(fireStation.getAddress(), fireStation.getStation());
         if (fireStations.size() > 0) {
-            LOGGER.error("createFireStation: fire station already assigned to this address");
+            LOGGER.debug("createFireStation: fire station already assigned to this address");
             return Optional.empty();
         } else {
             fireStation = fireStationRepository.save(fireStation);
-            LOGGER.info("createFireStation: Fire station " + fireStation.toString() + " added");
+            LOGGER.debug("createFireStation: Fire station " + fireStation.toString() + " added");
             return Optional.of(fireStation);
         }
     }
@@ -44,28 +44,23 @@ public class FireStationService {
      * @param station th new fire station number
      * @return the updated fire station
      */
-    public Iterable<FireStation> updateFireStation(String address, Integer station) {
-        Iterable<FireStation> fireStations = new ArrayList<>();
-        if (station != null) {
-            fireStations = fireStationRepository.findByAddress(address);
-            List<FireStation> fireStationsUpdated = new ArrayList<>();
-            for (FireStation f : fireStations) {
-                f.setStation(station);
-                fireStationsUpdated.add(f);
-                fireStationRepository.save(f);
-            }
-            int i = fireStationsUpdated.size();
-            if (i > 0) {
-                LOGGER.info("updateFireStation: " + i +
-                        " record(s) fire station updated for the address : " + address);
-                fireStations = fireStationsUpdated;
-            } else {
-                LOGGER.info("updateFireStation: no fire station for this address");
-            }
-        } else {
-            LOGGER.error("updateFireStation : The station number mustn't be null");
+    public List<FireStation> updateFireStation(String address, Integer station) {
+        List<FireStation> fireStations = fireStationRepository.findByAddress(address);
+        List<FireStation> fireStationsUpdated = new ArrayList<>();
+        for (FireStation f : fireStations) {
+            f.setStation(station);
+            fireStationsUpdated.add(f);
+            fireStationRepository.save(f);
         }
-        return fireStations;
+        int i = fireStationsUpdated.size();
+        if (i > 0) {
+            LOGGER.debug("updateFireStation: " + i +
+                    " record(s) fire station updated for the address : " + address);
+        } else {
+            LOGGER.debug("updateFireStation: no fire station for this address");
+        }
+
+        return fireStationsUpdated;
     }
 
     /**
@@ -81,32 +76,34 @@ public class FireStationService {
      * To delete a fire stations from its address.
      * @param address the address of the fire station to be deleted
      */
-    public void deleteFireStation(String address) {
+    public Integer deleteFireStationByAddress(String address) {
         List<FireStation> fireStations = fireStationRepository.findByAddress(address);
         int i = fireStations.size();
         if (i > 0) {
-            LOGGER.info("deleteFireStation(address): " + i +
+            LOGGER.debug("deleteFireStation(address): " + i +
                     " fire stations deleted");
             fireStationRepository.deleteAll(fireStations);
         } else {
-            LOGGER.info("deleteFireStation(address): no fire station deleted");
+            LOGGER.debug("deleteFireStation(address): no fire station deleted");
         }
+        return i;
     }
 
     /**
      * To delete a fire stations from its address.
      * @param station the station number of the fire station to be deleted
      */
-    public void deleteFireStation(Integer station) {
+    public Integer deleteFireStationByStation(Integer station) {
         List<FireStation> fireStations = fireStationRepository.findByStation(station);
         int i = fireStations.size();
         if (i > 0) {
-            LOGGER.info("deleteFireStation(station): " + i +
+            LOGGER.debug("deleteFireStation(station): " + i +
                     " fire stations deleted");
             fireStationRepository.deleteAll(fireStations);
         } else {
-            LOGGER.info("deleteFireStation(station): no fire station deleted");
+            LOGGER.debug("deleteFireStation(station): no fire station deleted");
         }
+        return i;
     }
 
     /**

@@ -75,7 +75,7 @@ public class FireStationServiceTest {
         when(fireStationRepository.save(fireStation1)).thenReturn(any(FireStation.class));
         when(fireStationRepository.save(fireStation3)).thenReturn(any(FireStation.class));
 
-        Iterable<FireStation> result = fireStationService.updateFireStation("add 1", 10);
+        List<FireStation> result = fireStationService.updateFireStation("add 1", 10);
 
         verify(fireStationRepository, times(1)).findByAddress("add 1");
         verify(fireStationRepository, times(2)).save(any(FireStation.class));
@@ -91,21 +91,10 @@ public class FireStationServiceTest {
         when(fireStationRepository.findByAddress("add 1")).thenReturn(fireStations);
 
         //WHEN
-        Iterable<FireStation> result = fireStationService.updateFireStation("add 1", 10);
+        List<FireStation> result = fireStationService.updateFireStation("add 1", 10);
 
         //THEN
         verify(fireStationRepository, times(1)).findByAddress("add 1");
-        verify(fireStationRepository, times(0)).save(any(FireStation.class));
-        assertThat(result).isEmpty();
-    }
-
-    @Test
-    public void tryToUpdateFireStationWithNullFireStationNumber() {
-        //WHEN
-        Iterable<FireStation> result = fireStationService.updateFireStation("add 1", null);
-
-        //THEN
-        verify(fireStationRepository, times(0)).findByAddress(anyString());
         verify(fireStationRepository, times(0)).save(any(FireStation.class));
         assertThat(result).isEmpty();
     }
@@ -170,10 +159,11 @@ public class FireStationServiceTest {
         List<FireStation> fireStations = Arrays.asList(fireStation1, fireStation3);
         when(fireStationRepository.findByAddress("add 1")).thenReturn(fireStations);
 
-        fireStationService.deleteFireStation("add 1");
+        int i = fireStationService.deleteFireStationByAddress("add 1");
 
         verify(fireStationRepository, times(1)).findByAddress("add 1");
         verify(fireStationRepository, times(1)).deleteAll(fireStations);
+        assertThat(i).isEqualTo(2);
     }
 
     @Test
@@ -181,10 +171,11 @@ public class FireStationServiceTest {
         List<FireStation> fireStations = new ArrayList<>();
         when(fireStationRepository.findByAddress("add new")).thenReturn(fireStations);
 
-        fireStationService.deleteFireStation("add new");
+        int i = fireStationService.deleteFireStationByAddress("add new");
 
         verify(fireStationRepository, times(1)).findByAddress("add new");
         verify(fireStationRepository, times(0)).deleteAll(fireStations);
+        assertThat(i).isEqualTo(0);
     }
 
     @Test
@@ -192,10 +183,11 @@ public class FireStationServiceTest {
         List<FireStation> fireStations = Arrays.asList(fireStation1, fireStation2);
         when(fireStationRepository.findByStation(1)).thenReturn(fireStations);
 
-        fireStationService.deleteFireStation(1);
+        int i = fireStationService.deleteFireStationByStation(1);
 
         verify(fireStationRepository, times(1)).findByStation(1);
         verify(fireStationRepository, times(1)).deleteAll(fireStations);
+        assertThat(i).isEqualTo(2);
     }
 
     @Test
@@ -203,10 +195,11 @@ public class FireStationServiceTest {
         List<FireStation> fireStations = new ArrayList<>();
         when(fireStationRepository.findByStation(8)).thenReturn(fireStations);
 
-        fireStationService.deleteFireStation(8);
+        int i = fireStationService.deleteFireStationByStation(8);
 
         verify(fireStationRepository, times(1)).findByStation(8);
         verify(fireStationRepository, times(0)).deleteAll(fireStations);
+        assertThat(i).isEqualTo(0);
     }
 
 }

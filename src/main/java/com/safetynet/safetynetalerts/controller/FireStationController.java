@@ -5,8 +5,11 @@ import com.safetynet.safetynetalerts.service.FireStationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -27,9 +30,22 @@ public class FireStationController {
      * @return the added fire station station
      */
     @PostMapping(value="/firestation")
-    public Optional<FireStation> createFireStation (@RequestBody FireStation fireStation) {
-        LOGGER.info("Endpoint /firestation: Creation of record " + fireStation.toString() + " asked");
-        return fireStationService.createFireStation(fireStation);
+    public ResponseEntity<FireStation> createFireStation (@RequestBody FireStation fireStation) {
+        if (!fireStation.getAddress().equals("") && fireStation.getId() == null ) {
+            LOGGER.info("Endpoint /firestation: Creation of record " + fireStation.toString() + " asked");
+            Optional<FireStation> fireStation1 = fireStationService.createFireStation(fireStation);
+            if (fireStation1.isPresent()) {
+                LOGGER.info("Endpoint /firestation: Creation done");
+                return new ResponseEntity<>(fireStation1.get(), HttpStatus.CREATED);
+            } else {
+                LOGGER.info("Endpoint /firestation creation request: fire station already exist");
+                return  new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+        } else {
+            LOGGER.error("Endpoint /firestation creation request: Address and Station mandatory, Id forbidden");
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     /**
@@ -40,9 +56,18 @@ public class FireStationController {
      */
     @PutMapping(value="/firestation/{address}")
     @ResponseBody
-    public Iterable<FireStation> updateFireStation (@PathVariable("address") String address, @RequestBody Integer station) {
+    public ResponseEntity<List<FireStation>> updateFireStation (@PathVariable("address") String address, @RequestBody Integer station) {
+
         LOGGER.info("Updating asked for fire station assigned to address : " + address);
-        return fireStationService.updateFireStation(address, station);
+        List<FireStation> fireStations = fireStationService.updateFireStation(address, station);
+        int i = fireStations.size();
+        if (i > 0) {
+            LOGGER.info("Endpoint /firestation update request: " + i +" fire station updated");
+            return new ResponseEntity<>(fireStations, HttpStatus.OK);
+        } else {
+            LOGGER.info("Endpoint /firestation update request: fire station not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     /**
@@ -50,10 +75,25 @@ public class FireStationController {
      * @param address the address to be remove from the entity
      */
     @DeleteMapping(value="/firestation/address={address}")
-    public void deleteFireStationByAddress (@PathVariable("address") String address) {
-        LOGGER.info("Endpoint /firestation/address={address}: deletion asked for records " +
-                "FireStation for the address " + address);
-        fireStationService.deleteFireStation(address);
+    public ResponseEntity<?> deleteFireStationByAddress (@PathVariable("address") String address) {
+        if (address != null && !address.equals("")) {
+            LOGGER.info("Endpoint /firestation/address={address}: deletion asked for records " +
+                    "FireStation for the address " + address);
+            int nbFireStationFromAddress = fireStationService.deleteFireStationByAddress(address);
+            if (nbFireStationFromAddress == 0) {
+                LOGGER.info("Endpoint /firestation/address={address} delete request:" +
+                        " no fire station found for the address");
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                LOGGER.info("Endpoint /firestation/address={address} :" + nbFireStationFromAddress +
+                        " record deleted for the address");
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } else {
+            LOGGER.error("Endpoint /firestation/address={address} delete request:" +
+                    " address is mandatory");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
@@ -61,9 +101,19 @@ public class FireStationController {
      * @param station the station to be remove
      */
     @DeleteMapping(value="/firestation/station={station}")
-    public void deleteFireStation (@PathVariable("station") Integer station) {
+    public ResponseEntity<?> deleteFireStation (@PathVariable("station") Integer station) {
         LOGGER.info("Endpoint /firestation/station={station}: deletion of the records for " +
                 "fire station number " + station + " asked");
-        fireStationService.deleteFireStation(station);
+        int i = fireStationService.deleteFireStationByStation(station);
+        if (i == 0) {
+            LOGGER.info("Endpoint /firestation/station={station} delete request:" +
+                    " no address attached to this station");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            LOGGER.info("Endpoint /firestation/station={station} delete request:" + i +
+                    " record deleted for the station");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
     }
 }

@@ -106,18 +106,6 @@ public class PersonServiceTest {
     }
 
     @Test
-    public void tryToUpdatePersonWithNoNameTest() {
-        //WHEN
-        Optional<Person> person = personService.updatePerson(new Person());
-
-        //THEN
-        verify(personRepository, times(0)).findById(personId);
-        verify(personRepository, times(0)).save(any(Person.class));
-        assertThat(person).isEqualTo(Optional.of(new Person()));
-
-    }
-
-    @Test
     public void updateNonExistingPersonTest() {
         //GIVEN
         Optional<Person> optionalPerson = Optional.empty();
@@ -144,17 +132,6 @@ public class PersonServiceTest {
 
         //THEN
         verify(personRepository, times(1)).findById(personId);
-        verify(personRepository, times(0)).save(any(Person.class));
-        assertThat(person).isEqualTo(Optional.empty());
-    }
-
-    @Test
-    public void tryToSavePersonWithNoNameTest() {
-        //WHEN
-        Optional<Person> person = personService.createPerson(new Person());
-
-        //THEN
-        verify(personRepository, times(0)).findById(any(PersonId.class));
         verify(personRepository, times(0)).save(any(Person.class));
         assertThat(person).isEqualTo(Optional.empty());
     }
@@ -203,21 +180,13 @@ public class PersonServiceTest {
         when(personRepository.findById(personId)).thenReturn(Optional.of(person2));
 
         //WHEN
-        personService.deletePerson("Dad", "Family12");
+        boolean response = personService.deletePerson("Dad", "Family12");
 
         //THEN
         verify(personRepository, times(1)).findById(personId);
         verify(personRepository,times(1)).deleteById(personId);
-    }
 
-    @Test
-    public void deletePersonWithNullPersonIdTest(){
-       //WHEN
-        personService.deletePerson(null, null);
-
-        //THEN
-        verify(personRepository,times(0)).deleteById(any(PersonId.class));
-        verify(personRepository, times(0)).findById(any(PersonId.class));
+        assertThat(response).isTrue();
     }
 
     @Test
@@ -226,11 +195,12 @@ public class PersonServiceTest {
         when(personRepository.findById(personId)).thenReturn(Optional.empty());
 
         //WHEN
-        personService.deletePerson("Dad", "Family12");
+        boolean response = personService.deletePerson("Dad", "Family12");
 
         //THEN
         verify(personRepository, times(1)).findById(personId);
         verify(personRepository,times(0)).deleteById(any(PersonId.class));
+        assertThat(response).isFalse();
     }
 
     @Test

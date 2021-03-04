@@ -5,6 +5,8 @@ import com.safetynet.safetynetalerts.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -28,10 +30,23 @@ public class PersonController {
      * @return the added person
      */
     @PostMapping(value="/person")
-    public Optional<Person> createPerson(@RequestBody Person person) {
-        LOGGER.info("Endpoint /person: creation request Person record for " + person.getFirstName() +
-                  " " + person.getLastName() + " received");
-        return personService.createPerson(person);
+    public ResponseEntity<Person> createPerson(@RequestBody Person person) {
+        if (!person.getFirstName().equals("") && !person.getLastName().equals("")
+                && person.getFirstName() != null && person.getLastName() != null) {
+            LOGGER.info("Endpoint /person: creation request Person record for " + person.getFirstName() +
+                    " " + person.getLastName() + " received");
+            Optional<Person> person1 = personService.createPerson(person);
+            if (person1.isPresent()) {
+                LOGGER.info("Endpoint /person: creation done");
+                return new ResponseEntity<>(person1.get(), HttpStatus.CREATED);
+            } else {
+                LOGGER.info("Endpoint /person: person already existing");
+                return new ResponseEntity(HttpStatus.CONFLICT);
+            }
+        } else {
+            LOGGER.error("Endpoint /person Create request: firstname and lastname mandatory");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
@@ -40,11 +55,23 @@ public class PersonController {
      * @param lastName the lastname of the person to be deleted
      */
     @DeleteMapping(value = "/person/{firstName}:{lastName}")
-    public void deletePerson(@PathVariable("firstName") String firstName,
+    public ResponseEntity<?> deletePerson(@PathVariable("firstName") String firstName,
                              @PathVariable("lastName") String lastName) {
-        LOGGER.info("Endpoint /person: deletion request for record Person " + firstName +
-                " " + lastName + " received");
-        personService.deletePerson(firstName, lastName);
+        if (!firstName.equals("")  && !lastName.equals("")) {
+            LOGGER.info("Endpoint /person: deletion request for record Person " + firstName +
+                    " " + lastName + " received");
+            if (personService.deletePerson(firstName, lastName)) {
+                LOGGER.info("Endpoint /person: deletion completed");
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            } else {
+                LOGGER.info("Endpoint /person: person not found");
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+
+        } else {
+            LOGGER.error("Endpoint /person delete request: firstname and lastname mandatory");
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
 
     }
 
@@ -54,9 +81,22 @@ public class PersonController {
      * @return the updated person
      */
     @PutMapping(value="/person")
-    public Optional<Person> updatePerson(@RequestBody Person person  ) {
-        LOGGER.info("Endpoint /person: update request for " +
-                person.getFirstName() + " " + person.getLastName() + " received");
-        return personService.updatePerson(person);
+    public ResponseEntity<Person> updatePerson(@RequestBody Person person  ) {
+        if (!person.getFirstName().equals("") && !person.getLastName().equals("")
+             && person.getFirstName() != null && person.getLastName() != null) {
+            LOGGER.info("Endpoint /person: update request for " +
+                    person.getFirstName() + " " + person.getLastName() + " received");
+            Optional<Person> person1 = personService.updatePerson(person);
+            if (person1.isPresent()) {
+                LOGGER.info("Endpoint /person: update done");
+                return new ResponseEntity<>(person1.get(), HttpStatus.OK);
+            } else {
+                LOGGER.info("Endpoint /person: person not found");
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } else {
+            LOGGER.error("Endpoint /person Update request: firstname and lastname mandatory");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

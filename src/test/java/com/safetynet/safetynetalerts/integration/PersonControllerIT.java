@@ -60,7 +60,7 @@ public class PersonControllerIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(person));
         mockMvc.perform(createRequest)
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("firstName", is("Baby")))
                 .andExpect(jsonPath("address", is("1509 Culver St")))
                 .andExpect(jsonPath("email", is("jaboyd@email.com")));
@@ -83,8 +83,8 @@ public class PersonControllerIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(person));
         mockMvc.perform(createRequest)
-                .andExpect(status().isOk())
-                .andExpect(content().string("null"));
+                .andExpect(status().isConflict())
+                .andExpect(content().string(""));
 
         // To verify that Existing Boyd has not been updated;
         assertThat(personRepository.findById(personExistingId)).isEqualTo(person2);
@@ -130,15 +130,50 @@ public class PersonControllerIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(person));
         mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(content().string("null"));
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(""));
+    }
+
+    @Test
+    public void updateEmptyNamePersonTest() throws Exception {
+        person.setFirstName("");
+        person.setLastName("");
+        person.setEmail("test.update@email.com");
+        person.setPhone(null);
+        person.setZip(null);
+        person.setCity(null);
+        person.setAddress("1508 Culver St");
+        RequestBuilder request = MockMvcRequestBuilders
+                .put("/person/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(person));
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(""));
     }
 
     @Test
     public void deletePersonTest() throws Exception {
         //deleting M. Delete Boyd
         mockMvc.perform(delete("/person/Delete:Boyd"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
+
+        assertThat(personRepository.existsById(personDeleteId)).isFalse();
+
+    }
+    @Test
+    public void deleteNonExistingPersonTest() throws Exception {
+        //deleting M. NonExisting Boyd
+        mockMvc.perform(delete("/person/NonExisting:Boyd"))
+                .andExpect(status().isNotFound());
+
+        assertThat(personRepository.existsById(personDeleteId)).isFalse();
+
+    }
+    @Test
+    public void deleteBadRequestPersonTest() throws Exception {
+        mockMvc.perform(delete("/person/:Boyd"))
+                .andExpect(status().isBadRequest());
 
         assertThat(personRepository.existsById(personDeleteId)).isFalse();
 

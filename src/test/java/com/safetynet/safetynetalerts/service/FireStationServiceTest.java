@@ -20,10 +20,10 @@ import static org.mockito.Mockito.*;
 public class FireStationServiceTest {
 
     @MockBean
-    FireStationRepository fireStationRepository;
+    private FireStationRepository fireStationRepository;
 
     @Autowired
-    FireStationService fireStationService;
+    private FireStationService fireStationService;
 
     private static FireStation fireStation1;
     private static FireStation fireStation2;

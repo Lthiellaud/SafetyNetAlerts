@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
 
 
 @SpringBootTest(properties = "command.line.runner.enabled=false")
-@ActiveProfiles("test")
 public class ChildAlertServiceTest {
 
     @Autowired

@@ -24,6 +24,12 @@ public class ChildAlertService {
     @Autowired
     private AlertListsService alertListsService;
 
+    /**
+     * to give a list of the children living at the given address.
+     * @param address Address for which the child list is required
+     * @return the child list group by homehood with first name, last name, age and a list of other
+     *         homehood members
+     */
     public List<ChildAlertDTO> getChildAlertList(String address) {
         List<ChildAlertDTO> childAlertList = new ArrayList<>();
 
@@ -43,25 +49,30 @@ public class ChildAlertService {
         for (Map.Entry<String, List<PersonMedicalRecordDTO>> entry : homeHoodList.entrySet()) {
             String name = entry.getKey();
             List<PersonMedicalRecordDTO> list = entry.getValue();
-            List<PersonMedicalRecordDTO> children = list.stream()
-                    .filter(p -> p.getAge() <= 18).collect(Collectors.toList());
+            List<PersonMedicalRecordDTO> children = list
+                    .stream()
+                    .filter(p -> p.getAge() <= 18)
+                    .collect(Collectors.toList());
 
             int i = children.size();
+            //The list is completed only if children are living at the address
             if (i > 0) {
                 List<PersonAlertDTO> childList = new ArrayList<>();
                 children.forEach(c -> childList.add(new PersonAlertDTO(c)));
-                List<PersonMedicalRecordDTO> adults = list.stream()
-                        .filter(p -> p.getAge() > 18).collect(Collectors.toList());
+                List<PersonMedicalRecordDTO> adults = list
+                        .stream()
+                        .filter(p -> p.getAge() > 18)
+                        .collect(Collectors.toList());
                 List<PersonAlertDTO> adultList = new ArrayList<>();
                 adults.forEach(a -> adultList.add(new PersonAlertDTO(a)));
                 childAlertList.add(new ChildAlertDTO(name, childList, adultList));
                 message += "homehood " + name + ": " + i +
                         " child(ren) and " + adultList.size() + " adult(s)\n";
             } else {
-                message += "homehood " + name + ": no child";
+                message += "homehood " + name + ": no child\n";
             }
         }
-        LOGGER.info("getChildAlertList: " + address + " \n" + message);
+        LOGGER.debug("getChildAlertList: " + address + " \n" + message);
         return childAlertList;
     }
 }

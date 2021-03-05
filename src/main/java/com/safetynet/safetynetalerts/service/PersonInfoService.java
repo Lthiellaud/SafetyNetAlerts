@@ -28,8 +28,11 @@ public class PersonInfoService {
         List<PersonMedicalRecordDTO> persons =
                 personService.getAllByFirstAndLastName(firstName, lastName);
         LOGGER.debug("getPersonInfo: " + persons.size() + " for " + firstName + " " + lastName);
+
+        //add medical record information
         alertListsService.getMedicalRecord(persons, false);
         LOGGER.debug("getPersonInfo: medical records completed for " + firstName + " " + lastName);
+
         return persons;
     }
 }

@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.DTO.FloodDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonByAddressDTO;
+import com.safetynet.safetynetalerts.model.DTO.PersonPhoneMedicalRecordDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,10 @@ import java.util.List;
 @Service
 public class FloodService {
     @Autowired
-    AlertListsService alertListsService;
+    private AlertListsService alertListsService;
 
     @Autowired
-    FireStationService fireStationService;
+    private FireStationService fireStationService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FloodService.class);
 
@@ -35,15 +36,19 @@ public class FloodService {
             //retrieve the list of persons (PersonPhoneMedicalRecordDTO model) for each address
             if (addresses.size() > 0) {
                 addresses.forEach(address -> {
-                    PersonByAddressDTO p = new PersonByAddressDTO();
-                    p.setAddress(address);
-                    p.setPersons(alertListsService.getPersonPhoneMedicalRecordDTO(address));
-                    personByAddressList.add(p);
+                    List<PersonPhoneMedicalRecordDTO> persons =
+                            alertListsService.getPersonPhoneMedicalRecordDTO(address);
+                    if (persons.size() > 0 ) {
+                        PersonByAddressDTO p = new PersonByAddressDTO();
+                        p.setAddress(address);
+                        p.setPersons(persons);
+                        personByAddressList.add(p);
+                    }
                 });
                 nbPerson += personByAddressList.size();
             }
             //for each station, add the list of persons by address
-            LOGGER.info("getFloodList: " + nbPerson + " persons found for" +
+            LOGGER.debug("getFloodList: " + nbPerson + " persons found for" +
                     " station " + station);
             if (nbPerson > 0) {
                 floodList.add(new FloodDTO(station, personByAddressList));

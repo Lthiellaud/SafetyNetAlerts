@@ -32,15 +32,15 @@ public class ChildAlertControllerIT {
     @Test
     public void getEmptyChildListIT() throws Exception {
         mockMvc.perform(get("/childAlert").param("address", "given address"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("[ ]"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(""))
                 .andDo(print());
     }
 
     @Test
     public void getChildList_noParamIT() throws Exception {
         mockMvc.perform(get("/childAlert").param("address", ""))
-                .andExpect(status().isOk())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().string(""))
                 .andDo(print());
     }

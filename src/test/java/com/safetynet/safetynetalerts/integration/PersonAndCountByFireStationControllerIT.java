@@ -38,8 +38,8 @@ public class PersonAndCountByFireStationControllerIT {
     @Test
     public void getPersonAndCountByFireStationController_emptyListIT() throws Exception {
         mockMvc.perform(get("/firestation").param("stationNumber", "11"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("[ ]"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(""))
                 .andDo(print());
     }
 

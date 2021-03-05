@@ -23,8 +23,8 @@ public class PhoneAlertControllerTest {
 
    @Test
     public void getPhoneListTest() throws Exception {
-        mockMvc.perform(get("/phoneAlert").param("firestation", "2"))
-                .andExpect(status().isOk());
+        mockMvc.perform(get("/phoneAlert").param("firestation", "11"))
+                .andExpect(status().isNotFound());
     }
 
 }

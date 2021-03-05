@@ -1,12 +1,10 @@
 package com.safetynet.safetynetalerts.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Defines a person by his firstname and lastname

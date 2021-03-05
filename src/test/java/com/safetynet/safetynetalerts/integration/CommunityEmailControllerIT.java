@@ -30,7 +30,7 @@ public class CommunityEmailControllerIT {
     @Test
     public void getEmailsForCityCulver_noParamIT() throws Exception {
         mockMvc.perform(get("/communityEmail").param("city", ""))
-                .andExpect(status().isOk())
+                .andExpect(status().isBadRequest())
                 .andDo(print())
                 .andExpect(content().string(""));
     }
@@ -38,9 +38,9 @@ public class CommunityEmailControllerIT {
     @Test
     public void getEmailsForCityCity_shouldReturnEmptyBody() throws Exception {
         mockMvc.perform(get("/communityEmail").param("city", "City"))
-                .andExpect(status().isOk())
+                .andExpect(status().isNotFound())
                 .andDo(print())
-                .andExpect(jsonPath("email").doesNotExist());
+                .andExpect(content().string(""));
     }
 
 

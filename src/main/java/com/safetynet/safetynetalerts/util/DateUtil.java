@@ -16,6 +16,11 @@ public class DateUtil {
         return now;
     }
 
+    /**
+     * To calculate the age from a birthdate
+     * @param birthdate the date to be used for the calculation
+     * @return the calculated age
+     */
     public Integer age(Date birthdate) {
         DateFormat format = new SimpleDateFormat("yyyyMMdd");
         if (birthdate !=null) {

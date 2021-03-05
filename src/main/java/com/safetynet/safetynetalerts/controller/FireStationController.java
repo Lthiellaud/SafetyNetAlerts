@@ -27,12 +27,13 @@ public class FireStationController {
     /**
      * POST - To add a new fire station.
      * @param fireStation the fire station to be added
-     * @return the added fire station station
+     * @return the added fire station station and http status of the request
      */
-    @PostMapping(value="/firestation")
-    public ResponseEntity<FireStation> createFireStation (@RequestBody FireStation fireStation) {
-        if (!fireStation.getAddress().equals("") && fireStation.getId() == null ) {
-            LOGGER.info("Endpoint /firestation: Creation of record " + fireStation.toString() + " asked");
+    @PostMapping(value = "/firestation")
+    public ResponseEntity<FireStation> createFireStation(@RequestBody FireStation fireStation) {
+        if (!fireStation.getAddress().equals("") && fireStation.getId() == null) {
+            LOGGER.info("Endpoint /firestation: Creation of record "
+                    + fireStation.toString() + " asked");
             Optional<FireStation> fireStation1 = fireStationService.createFireStation(fireStation);
             if (fireStation1.isPresent()) {
                 LOGGER.info("Endpoint /firestation: Creation done");
@@ -42,7 +43,8 @@ public class FireStationController {
                 return  new ResponseEntity<>(HttpStatus.CONFLICT);
             }
         } else {
-            LOGGER.error("Endpoint /firestation creation request: Address and Station mandatory, Id forbidden");
+            LOGGER.error("Endpoint /firestation creation request: Address" +
+                    " and Station mandatory, Id forbidden");
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -52,17 +54,19 @@ public class FireStationController {
      * PUT - To update a station number assigned to an address.
      * @param address The address to be updated
      * @param station the new fire station number
-     * @return the updated fire station
+     * @return the updated fire station and http status of the request
      */
-    @PutMapping(value="/firestation/{address}")
+    @PutMapping(value = "/firestation/{address}")
     @ResponseBody
-    public ResponseEntity<List<FireStation>> updateFireStation (@PathVariable("address") String address, @RequestBody Integer station) {
+    public ResponseEntity<List<FireStation>>
+                updateFireStation(@PathVariable("address") String address,
+                                  @RequestBody Integer station) {
 
         LOGGER.info("Updating asked for fire station assigned to address : " + address);
         List<FireStation> fireStations = fireStationService.updateFireStation(address, station);
         int i = fireStations.size();
         if (i > 0) {
-            LOGGER.info("Endpoint /firestation update request: " + i +" fire station updated");
+            LOGGER.info("Endpoint /firestation update request: " + i + " fire station updated");
             return new ResponseEntity<>(fireStations, HttpStatus.OK);
         } else {
             LOGGER.info("Endpoint /firestation update request: fire station not found");
@@ -73,9 +77,10 @@ public class FireStationController {
     /**
      * DELETE - To delete the mapping at an address.
      * @param address the address to be remove from the entity
+     * @return http status of the request
      */
-    @DeleteMapping(value="/firestation/address={address}")
-    public ResponseEntity<?> deleteFireStationByAddress (@PathVariable("address") String address) {
+    @DeleteMapping(value = "/firestation/address={address}")
+    public ResponseEntity<?> deleteFireStationByAddress(@PathVariable("address") String address) {
         if (address != null && !address.equals("")) {
             LOGGER.info("Endpoint /firestation/address={address}: deletion asked for records " +
                     "FireStation for the address " + address);
@@ -99,9 +104,10 @@ public class FireStationController {
     /**
      * DELETE - To delete the mapping of a station.
      * @param station the station to be remove
+     * @return http status of the request
      */
-    @DeleteMapping(value="/firestation/station={station}")
-    public ResponseEntity<?> deleteFireStation (@PathVariable("station") Integer station) {
+    @DeleteMapping(value = "/firestation/station={station}")
+    public ResponseEntity<?> deleteFireStation(@PathVariable("station") Integer station) {
         LOGGER.info("Endpoint /firestation/station={station}: deletion of the records for " +
                 "fire station number " + station + " asked");
         int i = fireStationService.deleteFireStationByStation(station);
@@ -114,6 +120,5 @@ public class FireStationController {
                     " record deleted for the station");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
     }
 }

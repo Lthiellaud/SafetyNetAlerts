@@ -14,10 +14,10 @@ import java.util.List;
 @Service
 public class PersonAndCountByFireStationService {
     @Autowired
-    AlertListsService alertListsService;
+    private AlertListsService alertListsService;
 
     @Autowired
-    FireStationService fireStationService;
+    private FireStationService fireStationService;
 
     private final Logger LOGGER = LoggerFactory.getLogger(PersonAndCountByFireStationService.class);
 
@@ -27,7 +27,8 @@ public class PersonAndCountByFireStationService {
      * @return the list to be found
      */
     public List<PersonAndCountByFireStationDTO> getPersonAndCountByFireStation(int stationNumber) {
-        PersonAndCountByFireStationDTO personAndCountByFireStation = new PersonAndCountByFireStationDTO();
+        PersonAndCountByFireStationDTO personAndCountByFireStation =
+                new PersonAndCountByFireStationDTO();
         List<PersonMedicalRecordDTO> personsWithAge = new ArrayList<>();
         List<PersonByFireStationDTO> personByFireStationList = new ArrayList<>();
         List<PersonAndCountByFireStationDTO> resultList = new ArrayList<>();
@@ -38,24 +39,32 @@ public class PersonAndCountByFireStationService {
         //list of the persons who live at these addresses with their age
         if (addresses.size() > 0) {
             addresses.forEach(address ->
-                personsWithAge.addAll(alertListsService.getMedicalRecordByAddress(address, true))
+                personsWithAge.addAll(alertListsService
+                        .getMedicalRecordByAddress(address, true))
             );
         }
 
         //Constitution of the output record
         int i = personsWithAge.size();
         if (i > 0) {
-            personAndCountByFireStation.setChildrenCount(personsWithAge.stream()
-                    .filter(p -> p.getAge() < 19).count());
-            personAndCountByFireStation.setAdultsCount(personsWithAge.stream()
-                    .filter(p -> p.getAge() > 18).count());
+            personAndCountByFireStation.setChildrenCount(personsWithAge
+                    .stream()
+                    .filter(p -> p.getAge() < 19)
+                    .count());
+            personAndCountByFireStation.setAdultsCount(personsWithAge
+                    .stream()
+                    .filter(p -> p.getAge() > 18)
+                    .count());
+            //Fill PersonByFireStationDTO data from PersonMedicalRecordDTO and add it to
+            // personByFireStationList
             personsWithAge.forEach(p -> personByFireStationList.add(new PersonByFireStationDTO(p)));
+            //complete PersonAndCountByFireStationDTO with personByFireStationList
             personAndCountByFireStation.setPersonsByFireStation(personByFireStationList);
             resultList.add(personAndCountByFireStation);
-            LOGGER.info("getPersonAndCountByFireStation: " + i + " persons found for fire station" +
-                    " number " + stationNumber);
+            LOGGER.debug("getPersonAndCountByFireStation: " + i + " persons found for fire " +
+                    "station number " + stationNumber);
         } else {
-            LOGGER.error("getPersonAndCountByFireStation: nobody found for fire station"
+            LOGGER.debug("getPersonAndCountByFireStation: nobody found for fire station"
                     + " number " + stationNumber);
         }
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name="medicalrecords")
+@Table(name = "medicalrecords")
 @IdClass(PersonId.class)
 public class MedicalRecord {
 
@@ -21,7 +21,7 @@ public class MedicalRecord {
     @Id
     private String lastName;
 
-    @JsonFormat(pattern="MM/dd/yyyy")
+    @JsonFormat(pattern = "MM/dd/yyyy")
     private Date birthdate;
 
     @ElementCollection
@@ -30,18 +30,4 @@ public class MedicalRecord {
     @ElementCollection
     private List<String> allergies;
 
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        MedicalRecord that = (MedicalRecord) o;
-        boolean result = (this.firstName == that.getFirstName())
-                && (this.lastName == that.getLastName())
-                && (this.birthdate == that.getBirthdate());
-        return result;
-    }*/
 }

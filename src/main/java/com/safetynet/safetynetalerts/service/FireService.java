@@ -14,10 +14,10 @@ import java.util.List;
 public class FireService {
 
         @Autowired
-        AlertListsService alertListsService;
+        private AlertListsService alertListsService;
 
         @Autowired
-        FireStationService fireStationService;
+        private FireStationService fireStationService;
 
         private static final Logger LOGGER = LoggerFactory.getLogger(FireStationService.class);
 
@@ -35,12 +35,14 @@ public class FireService {
                     .getPersonPhoneMedicalRecordDTO(address);
             int i = stations.size();
             int j = persons.size();
+
+            //the list is completed only if somebody is living at the address
             if (j != 0) {
                 fireDTOS.add(new FireDTO(stations, persons));
-                LOGGER.info("getFirePersonList: " + i + " fire station(s) and " + j
+                LOGGER.debug("getFirePersonList: " + i + " fire station(s) and " + j
                         + " persons found for address " + address);
             } else {
-                LOGGER.error("getFirePersonList: nobody found for address " + address);
+                LOGGER.debug("getFirePersonList: nobody found for address " + address);
             }
             return fireDTOS;
         }

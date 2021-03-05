@@ -5,6 +5,8 @@ import com.safetynet.safetynetalerts.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,13 +27,22 @@ public class CommunityEmailController {
      * @return the email list of the city inhabitants
      */
     @GetMapping("/communityEmail")
-    public List<ICommunityEmailDTO> getEmails(@RequestParam("city") String city) {
+    public ResponseEntity<List<ICommunityEmailDTO>> getEmails(@RequestParam("city") String city) {
         if (city.equals("")) {
             logger.error("URL /communityEmail Request: a parameter \"city\" is needed");
-            return null;
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            logger.info("URL /communityEmail: Request for "+ city + " received");
-            return personService.getEmailList(city);
+            logger.info("URL /communityEmail: Request for " + city + " received");
+            List<ICommunityEmailDTO> communityEmailList = personService.getEmailList(city);
+            int i = communityEmailList.size();
+            if (i > 0) {
+                logger.info("URL /communityEmail: " + i + " mail sent for " + city);
+                return new ResponseEntity<>(communityEmailList, HttpStatus.OK);
+            } else {
+                logger.info("URL /communityEmail: no mail found for " + city);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
         }
     }
 }

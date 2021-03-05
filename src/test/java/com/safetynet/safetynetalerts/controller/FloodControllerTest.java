@@ -25,7 +25,7 @@ public class FloodControllerTest {
     @Test
     public void getFloodListTest() throws Exception {
         mockMvc.perform(get("/flood/stations").param("stations", "1,2"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 
 }

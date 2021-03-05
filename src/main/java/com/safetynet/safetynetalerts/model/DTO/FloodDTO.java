@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Class for URL /flood/stations?stations=<a list of station_numbers>
+ */
 @Getter
 @AllArgsConstructor
 public class FloodDTO {

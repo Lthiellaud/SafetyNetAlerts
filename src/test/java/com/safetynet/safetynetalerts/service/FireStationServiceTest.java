@@ -2,6 +2,7 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.FireStation;
 import com.safetynet.safetynetalerts.repository.FireStationRepository;
+import com.safetynet.safetynetalerts.service.implementation.FireStationServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class FireStationServiceTest {
     private FireStationRepository fireStationRepository;
 
     @Autowired
-    private FireStationService fireStationService;
+    private FireStationServiceImpl fireStationService;
 
     private static FireStation fireStation1;
     private static FireStation fireStation2;

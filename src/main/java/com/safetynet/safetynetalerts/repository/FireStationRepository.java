@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface FireStationRepository extends JpaRepository<FireStation, String> {
+public interface FireStationRepository extends JpaRepository<FireStation, Long> {
 
     List<FireStation> findByStation(Integer station);
     List<FireStation> findByAddress(String address);

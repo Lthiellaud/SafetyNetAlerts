@@ -3,6 +3,7 @@ package com.safetynet.safetynetalerts.service;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.PersonId;
 import com.safetynet.safetynetalerts.repository.MedicalRecordRepository;
+import com.safetynet.safetynetalerts.service.implementation.MedicalRecordServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,7 +25,7 @@ public class MedicalRecordServiceTest {
     private MedicalRecordRepository medicalRecordRepository;
 
     @InjectMocks
-    private MedicalRecordService medicalRecordService;
+    private MedicalRecordServiceImpl medicalRecordService;
 
     private static MedicalRecord medicalRecord1;
     private static MedicalRecord medicalRecord2;

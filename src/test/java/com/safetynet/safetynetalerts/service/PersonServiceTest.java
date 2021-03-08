@@ -4,10 +4,13 @@ import com.safetynet.safetynetalerts.model.DTO.*;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
 import com.safetynet.safetynetalerts.repository.PersonRepository;
+import com.safetynet.safetynetalerts.service.implementation.PersonServiceImpl;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
@@ -23,13 +26,14 @@ public class PersonServiceTest {
     private PersonRepository personRepository;
 
     @InjectMocks
-    private PersonService personService;
+    private PersonServiceImpl personService;
 
     private static Person person1;
     private static Person person2;
     private static Person person2Update;
     private static Person person2FalseUpdate;
     private static PersonId personId;
+
 
     @BeforeEach
     public void initDtoTest(){

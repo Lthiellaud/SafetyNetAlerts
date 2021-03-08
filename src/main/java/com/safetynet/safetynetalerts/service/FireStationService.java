@@ -5,6 +5,9 @@ import com.safetynet.safetynetalerts.model.FireStation;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service used by FireStation Controller
+ */
 public interface FireStationService {
     /**
      * To add a new fire station.

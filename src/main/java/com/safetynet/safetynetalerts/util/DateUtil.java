@@ -4,6 +4,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Utility to make calculation on dates
+ */
 public class DateUtil {
 
     private Date now;

@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.List;
 
 /**
- * Class for URL /flood/stations?stations=<a list of station_numbers>.
+ * Class for URL /flood/stations{@literal ?}stations={a list of station_numbers}.
  */
 @Getter
 @AllArgsConstructor

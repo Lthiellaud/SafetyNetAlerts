@@ -4,6 +4,9 @@ import com.safetynet.safetynetalerts.model.DTO.FireDTO;
 
 import java.util.List;
 
+/**
+ * Service used by Fire Controller
+ */
 public interface FireService {
     /**
          * To get the list of the inhabitants living at an address and the attached fire station.

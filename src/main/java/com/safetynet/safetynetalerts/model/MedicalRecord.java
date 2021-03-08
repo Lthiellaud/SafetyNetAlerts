@@ -7,6 +7,9 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Contains the data : (firstname, lastname)=unique id, birthdate, medications, allergies.
+ */
 @Entity
 @Data
 @Table(name = "medicalrecords")

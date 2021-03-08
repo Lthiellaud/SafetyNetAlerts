@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * gives access to FireStation records.
+ */
 @Repository
 public interface FireStationRepository extends JpaRepository<FireStation, Long> {
 

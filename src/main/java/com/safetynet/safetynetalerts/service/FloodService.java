@@ -4,6 +4,9 @@ import com.safetynet.safetynetalerts.model.DTO.FloodDTO;
 
 import java.util.List;
 
+/**
+ * Service used by Flood Controller
+ */
 public interface FloodService {
     /**
      * to get the list of the households attached to the given fire stations.

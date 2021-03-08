@@ -6,6 +6,9 @@ import com.safetynet.safetynetalerts.model.PersonId;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service used by MedicalRecord Controller
+ */
 public interface MedicalRecordService {
     /**
      * To get a medical record from a firstname and a lastname.

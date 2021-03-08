@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
+/**
+ * Defines the URL /personInfo{@literal ?}firstName={firstName}{@literal &}lastName={lastName}.
+ */
 @RestController
 public class PersonInfoController {
 
@@ -26,7 +29,7 @@ public class PersonInfoController {
     private PersonInfoService personInfoService;
 
    /**
-     * URL /personInfo?firstName=<firstName>&lastName=<lastName>.
+     * URL /personInfo?firstName={firstName}{@literal &}lastName={lastName}.
      * @param firstName the firstname sought
      * @param lastName the lastname sought
      * @return the list of inhabitants including address, age, email, medical record

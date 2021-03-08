@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Defines the URL /fire{@literal ?}address={address}.
+ */
 @RestController
 public class FireController {
     @Autowired

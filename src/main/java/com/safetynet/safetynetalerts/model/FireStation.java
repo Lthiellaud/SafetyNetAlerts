@@ -4,6 +4,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * Contains the records address/matching fire station number.
+ */
 @Entity
 @Data
 @Table(name = "firestations")

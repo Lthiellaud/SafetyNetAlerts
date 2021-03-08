@@ -9,6 +9,9 @@ import com.safetynet.safetynetalerts.model.PersonId;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service used by Person Controller
+ */
 public interface PersonService {
     /**
      * To apply the modifications to a person. Only non null attributes will be changed.

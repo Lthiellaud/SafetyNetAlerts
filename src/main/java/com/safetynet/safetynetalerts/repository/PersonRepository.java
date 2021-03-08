@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * gives access to Person records.
+ */
 @Repository
 public interface PersonRepository extends JpaRepository<Person, PersonId> {
 

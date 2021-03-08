@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * Class used for URL /firestation?stationNumber=<station_number>.
+ * Class used for URL /firestation{@literal ?}stationNumber={station_number}.
  */
 @Setter
 @Getter

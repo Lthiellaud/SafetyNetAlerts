@@ -12,7 +12,7 @@ public class PersonByFireStationDTO {
     private String address;
     private String phone;
 
-    public PersonByFireStationDTO (PersonMedicalRecordDTO person) {
+    public PersonByFireStationDTO(PersonMedicalRecordDTO person) {
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
         this.address = person.getAddress();

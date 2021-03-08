@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+/**
+ * Defines the URL /firestation{@literal ?}stationNumber={station_number}.
+ */
 @RestController
 public class PersonAndCountByFireStationController {
 
@@ -23,7 +26,7 @@ public class PersonAndCountByFireStationController {
             .getLogger(PersonAndCountByFireStationController.class);
 
     /**
-     * URL /firestation?stationNumber=<station_number>.
+     * URL /firestation?stationNumber={station_number}.
      * @param station The station number for which we need the list
      * @return the list to be found
      */
@@ -41,5 +44,4 @@ public class PersonAndCountByFireStationController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
 }

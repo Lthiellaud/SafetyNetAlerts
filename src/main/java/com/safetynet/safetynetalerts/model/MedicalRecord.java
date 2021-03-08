@@ -2,13 +2,14 @@ package com.safetynet.safetynetalerts.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Contains the data : (firstname, lastname)=unique id, birthdate, medications, allergies.
+ */
 @Entity
 @Data
 @Table(name = "medicalrecords")

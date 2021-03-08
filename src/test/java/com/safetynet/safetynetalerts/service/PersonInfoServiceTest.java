@@ -3,6 +3,9 @@ package com.safetynet.safetynetalerts.service;
 import com.safetynet.safetynetalerts.model.DTO.PersonMedicalRecordDTO;
 import com.safetynet.safetynetalerts.model.MedicalRecord;
 import com.safetynet.safetynetalerts.model.PersonId;
+import com.safetynet.safetynetalerts.service.implementation.MedicalRecordServiceImpl;
+import com.safetynet.safetynetalerts.service.implementation.PersonInfoServiceImpl;
+import com.safetynet.safetynetalerts.service.implementation.PersonServiceImpl;
 import com.safetynet.safetynetalerts.util.DateUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,13 +26,13 @@ import static org.mockito.Mockito.when;
 public class PersonInfoServiceTest {
 
     @MockBean
-    private PersonService personService;
+    private PersonServiceImpl personService;
 
     @MockBean
-    private MedicalRecordService medicalRecordService;
+    private MedicalRecordServiceImpl medicalRecordService;
 
     @Autowired
-    private PersonInfoService personInfoService;
+    private PersonInfoServiceImpl personInfoService;
 
     private static PersonId personId2;
 

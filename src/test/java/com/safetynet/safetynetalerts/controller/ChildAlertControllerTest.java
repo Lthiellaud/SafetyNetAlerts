@@ -17,15 +17,17 @@ public class ChildAlertControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ChildAlertController childAlertController;
-
-    @MockBean
     private ChildAlertService childAlertService;
 
     @Test
     public void childAlertControllerTest() throws Exception {
         mockMvc.perform(get("/childAlert").param("address", "given address"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void getChildList_noParamIT() throws Exception {
+        mockMvc.perform(get("/childAlert").param("address", ""))
+                .andExpect(status().isBadRequest());
+    }
 }

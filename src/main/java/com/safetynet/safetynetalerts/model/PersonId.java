@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.io.Serializable;
 
 /**
- * Defines a person by his firstname and lastname
+ * Defines a person by his firstname and lastname.
  */
 @Getter
 @EqualsAndHashCode
@@ -17,7 +17,7 @@ public class PersonId implements Serializable {
     private String firstName;
     private String lastName;
 
-    public PersonId() {}
+    public PersonId() { }
 
     @Override
     public String toString() {

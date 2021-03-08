@@ -2,6 +2,9 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.DTO.FloodDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonPhoneMedicalRecordDTO;
+import com.safetynet.safetynetalerts.service.implementation.AlertListsServiceImpl;
+import com.safetynet.safetynetalerts.service.implementation.FireStationServiceImpl;
+import com.safetynet.safetynetalerts.service.implementation.FloodServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +22,13 @@ import static org.mockito.Mockito.*;
 public class FloodServiceTest {
 
     @MockBean
-    AlertListsService alertListsService;
+    private AlertListsServiceImpl alertListsService;
 
     @MockBean
-    FireStationService fireStationService;
+    private FireStationServiceImpl fireStationService;
 
     @Autowired
-    private FloodService floodService;
+    private FloodServiceImpl floodService;
 
     private static PersonPhoneMedicalRecordDTO personPhoneMedicalRecord1;
     private static PersonPhoneMedicalRecordDTO personPhoneMedicalRecord2;

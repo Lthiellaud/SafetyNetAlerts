@@ -4,6 +4,9 @@ import com.safetynet.safetynetalerts.model.DTO.ChildAlertDTO;
 
 import java.util.List;
 
+/**
+ * Service used by ChildAlert Controller
+ */
 public interface ChildAlertService {
     /**
      * to give a list of the children living at the given address.

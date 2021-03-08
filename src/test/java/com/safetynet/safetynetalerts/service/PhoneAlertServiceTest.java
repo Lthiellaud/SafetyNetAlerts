@@ -1,6 +1,9 @@
 package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.DTO.IPhoneAlertDTO;
+import com.safetynet.safetynetalerts.service.implementation.FireStationServiceImpl;
+import com.safetynet.safetynetalerts.service.implementation.PersonServiceImpl;
+import com.safetynet.safetynetalerts.service.implementation.PhoneAlertServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,13 +20,13 @@ import static org.mockito.Mockito.*;
 public class PhoneAlertServiceTest {
 
     @MockBean
-    private FireStationService fireStationService;
+    private FireStationServiceImpl fireStationService;
 
     @MockBean
-    private PersonService personService;
+    private PersonServiceImpl personService;
 
     @Autowired
-    PhoneAlertService phoneAlertService;
+    PhoneAlertServiceImpl phoneAlertService;
 
     @Test
     public void getPhonesTest() {

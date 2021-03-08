@@ -18,10 +18,7 @@ public class PhoneAlertControllerTest {
     @MockBean
     private PhoneAlertService phoneAlertService;
 
-    @Autowired
-    private PhoneAlertController phoneAlertController;
-
-   @Test
+    @Test
     public void getPhoneListTest() throws Exception {
         mockMvc.perform(get("/phoneAlert").param("firestation", "11"))
                 .andExpect(status().isNotFound());

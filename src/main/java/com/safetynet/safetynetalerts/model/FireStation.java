@@ -1,11 +1,12 @@
 package com.safetynet.safetynetalerts.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Contains the records address/matching fire station number.
+ */
 @Entity
 @Data
 @Table(name = "firestations")

@@ -19,13 +19,16 @@ public class FloodControllerTest {
     @MockBean
     private FloodService floodService;
 
-    @Autowired
-    private FloodController floodController;
-
     @Test
     public void getFloodListTest() throws Exception {
         mockMvc.perform(get("/flood/stations").param("stations", "1,2"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void getFloodList_BadRequestTest() throws Exception {
+        mockMvc.perform(get("/flood/stations").param("stations", ""))
+                .andExpect(status().isBadRequest());
     }
 
 }

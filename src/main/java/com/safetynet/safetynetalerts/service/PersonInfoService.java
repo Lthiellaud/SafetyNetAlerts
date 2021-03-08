@@ -4,6 +4,9 @@ import com.safetynet.safetynetalerts.model.DTO.PersonMedicalRecordDTO;
 
 import java.util.List;
 
+/**
+ * Service used by PersonInfo Controller
+ */
 public interface PersonInfoService {
     /**
      * To get a complete PersonMedicalRecordDTO for a person or a list of person.

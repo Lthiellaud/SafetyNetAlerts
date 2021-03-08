@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
+/**
+ * Defines the URL /phoneAlert{@literal ?}firestation={firestation_number}.
+ */
 @RestController
 public class PhoneAlertController {
 
@@ -24,7 +27,7 @@ public class PhoneAlertController {
 
 
     /**
-     * URL /phoneAlert?firestation=<firestation_number>.
+     * URL /phoneAlert?firestation={firestation_number}.
      * @param fireStation the number of the fire Station we need
      * @return the phone number list of the persons attached to fire station number "fireStation"
      */

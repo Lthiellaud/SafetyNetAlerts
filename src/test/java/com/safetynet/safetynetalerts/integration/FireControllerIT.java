@@ -29,20 +29,4 @@ public class FireControllerIT {
                 .andExpect(content().string(containsString("Family3-st1")));
     }
 
-    @Test
-    public void getFirePersonsForNewAddress_shouldReturnEmptyArray() throws Exception {
-        mockMvc.perform(get("/fire").param("address", "new address"))
-                .andExpect(status().isNotFound())
-                .andDo(print())
-                .andExpect(content().string(""));
-    }
-
-    @Test
-    public void getFirePersonsForNullAddress_shouldReturnNull() throws Exception {
-        mockMvc.perform(get("/fire").param("address", ""))
-                .andExpect(status().isBadRequest())
-                .andDo(print())
-                .andExpect(content().string(""));
-    }
-
 }

@@ -15,15 +15,14 @@ public class PersonAndCountByFireStationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
-    private PersonAndCountByFireStationController personAndCountByFireStationController;
+
     @MockBean
     private PersonAndCountByFireStationService personAndCountByFireStationService;
 
     @Test
     public void getPersonAndCountByFireStationControllerTest() throws Exception {
         mockMvc.perform(get("/firestation").param("stationNumber", "1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 
 

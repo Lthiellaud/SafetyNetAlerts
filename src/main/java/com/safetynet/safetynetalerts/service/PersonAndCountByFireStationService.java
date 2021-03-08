@@ -4,6 +4,9 @@ import com.safetynet.safetynetalerts.model.DTO.PersonAndCountByFireStationDTO;
 
 import java.util.List;
 
+/**
+ * Service used by PersonAndCountByFireStation Controller
+ */
 public interface PersonAndCountByFireStationService {
     /**
      * To get the list of the inhabitants to a given fire station, giving children and adults count.

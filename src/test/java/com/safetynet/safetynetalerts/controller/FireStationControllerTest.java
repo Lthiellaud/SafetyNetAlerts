@@ -24,16 +24,15 @@ public class FireStationControllerTest {
     @MockBean
     private FireStationService fireStationService;
 
-    @Autowired
-    private FireStationController fireStationController;
-
     private FireStation fireStation;
     private ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public void postExistingFireStationTest() throws Exception {
+    public void postFireStation_nothingReturnTest() throws Exception {
+        //as FireStationService is mocked, the method createFireStation sends an empty optional
+        //as if the record for which we ask a creation was already existing => Conflict response
         fireStation = new FireStation();
-        fireStation.setStation(1);
+        fireStation.setStation(4500);
         fireStation.setAddress("address1-st1");
         RequestBuilder createRequest = MockMvcRequestBuilders
                 .post("/firestation")

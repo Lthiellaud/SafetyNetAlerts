@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
+/**
+ * Defines the URL /flood/stations{@literal ?}stations={a list of station_numbers}.
+ */
 @RestController
 public class FloodController {
 
@@ -23,7 +26,7 @@ public class FloodController {
     private FloodService floodService;
 
     /**
-     * URL /flood/stations?stations=<a list of station_numbers>.
+     * URL /flood/stations?stations={a list of station_numbers}.
      * @param stations the list of station for which we need the list (integers separated by comma)
      * @return a list of the households attached to the given stations
      */

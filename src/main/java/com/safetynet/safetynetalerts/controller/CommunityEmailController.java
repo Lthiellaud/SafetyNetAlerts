@@ -13,33 +13,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Defines the URL /communityEmail{@literal ?}city={city}.
+ */
 @RestController
 public class CommunityEmailController {
 
-    private Logger logger = LoggerFactory.getLogger(CommunityEmailController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommunityEmailController.class);
 
     @Autowired
     private PersonService personService;
 
     /**
-     * Response to url http://localhost:9090/communityEmail?city=<city>.
+     * Response to url /communityEmail?city={city}.
      * @param city the city for which we need all the inhabitants email
      * @return the email list of the city inhabitants
      */
     @GetMapping("/communityEmail")
     public ResponseEntity<List<ICommunityEmailDTO>> getEmails(@RequestParam("city") String city) {
         if (city.equals("")) {
-            logger.error("URL /communityEmail Request: a parameter \"city\" is needed");
+            LOGGER.error("URL /communityEmail Request: a parameter \"city\" is needed");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } else {
-            logger.info("URL /communityEmail: Request for " + city + " received");
+            LOGGER.info("URL /communityEmail: Request for " + city + " received");
             List<ICommunityEmailDTO> communityEmailList = personService.getEmailList(city);
             int i = communityEmailList.size();
             if (i > 0) {
-                logger.info("URL /communityEmail: " + i + " mail sent for " + city);
+                LOGGER.info("URL /communityEmail: " + i + " mail sent for " + city);
                 return new ResponseEntity<>(communityEmailList, HttpStatus.OK);
             } else {
-                logger.info("URL /communityEmail: no mail found for " + city);
+                LOGGER.info("URL /communityEmail: no mail found for " + city);
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 

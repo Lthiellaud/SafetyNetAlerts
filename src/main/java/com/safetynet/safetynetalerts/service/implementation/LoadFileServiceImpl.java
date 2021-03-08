@@ -59,7 +59,7 @@ public class LoadFileServiceImpl implements LoadFileService {
 
                     // Save fire stations node from data.json to Firestation entity
                     TypeReference<List<FireStation>> typeRefFireStation =
-                            new TypeReference<List<FireStation>>() {};
+                            new TypeReference<List<FireStation>>() { };
                     JsonNode fireStationNode = mapper.readTree(data).get("firestations");
                     List<FireStation> fireStations = mapper
                             .readValue(fireStationNode.toString(), typeRefFireStation);
@@ -68,7 +68,7 @@ public class LoadFileServiceImpl implements LoadFileService {
 
                     // Save medical records node from data.json to MedicalRecord entity
                     TypeReference<List<MedicalRecord>> typeRefMedicalRecord =
-                            new TypeReference<List<MedicalRecord>>() {};
+                            new TypeReference<List<MedicalRecord>>() { };
                     JsonNode medicalRecordNode = mapper.readTree(data).get("medicalrecords");
                     List<MedicalRecord> medicalRecords = mapper
                             .readValue(medicalRecordNode.toString(), typeRefMedicalRecord);

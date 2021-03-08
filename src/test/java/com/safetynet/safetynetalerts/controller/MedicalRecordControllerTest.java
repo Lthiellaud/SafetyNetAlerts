@@ -36,13 +36,10 @@ public class MedicalRecordControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    private ObjectMapper mapper = new ObjectMapper();
-
     @MockBean
     MedicalRecordService medicalRecordService;
 
-    @Autowired
-    private MedicalRecordController medicalRecordController;
+    private ObjectMapper mapper = new ObjectMapper();
 
     private MedicalRecord medicalRecord;
     private Calendar calendar = Calendar.getInstance();
@@ -54,6 +51,8 @@ public class MedicalRecordControllerTest {
     }
     @Test
     public void CreateExistingMedicalRecordTest() throws Exception {
+        //as MedicalRecordService is mocked, the method createMedicalRecord sends an empty optional
+        //as if the record for which we ask a creation was already existing => Conflict response
         calendar.set(2021,JANUARY, 17);
         medicalRecord.setFirstName("Existing");
         medicalRecord.setLastName("Boyd");

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-
+/**
+ * Defines the URL /childAlert{@literal ?}address={address}.
+ */
 @RestController
 public class ChildAlertController {
 

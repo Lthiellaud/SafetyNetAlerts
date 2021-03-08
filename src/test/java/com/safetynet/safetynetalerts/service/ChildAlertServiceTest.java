@@ -2,6 +2,8 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.DTO.ChildAlertDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonMedicalRecordDTO;
+import com.safetynet.safetynetalerts.service.implementation.AlertListsServiceImpl;
+import com.safetynet.safetynetalerts.service.implementation.ChildAlertServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,10 +23,10 @@ import static org.mockito.Mockito.when;
 public class ChildAlertServiceTest {
 
     @Autowired
-    private ChildAlertService childAlertService;
+    private ChildAlertServiceImpl childAlertService;
 
     @MockBean
-    private AlertListsService alertListsService;
+    private AlertListsServiceImpl alertListsService;
 
     private static PersonMedicalRecordDTO personMedicalRecord1;
     private static PersonMedicalRecordDTO personMedicalRecord2;

@@ -5,6 +5,9 @@ import com.safetynet.safetynetalerts.model.DTO.PersonPhoneMedicalRecordDTO;
 
 import java.util.List;
 
+/**
+ * Services used by several other services.
+ */
 public interface AlertListsService {
     /**
      * To get the list of the inhabitants living at an address.

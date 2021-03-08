@@ -1,11 +1,15 @@
 package com.safetynet.safetynetalerts.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 
+/**
+ * Contains the data person: (firstname, lastname)=unique id, full address, phone, email.
+ */
 @Entity
 @Data
 @Table(name = "persons")

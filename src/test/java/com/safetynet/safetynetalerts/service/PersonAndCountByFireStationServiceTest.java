@@ -1,10 +1,12 @@
 package com.safetynet.safetynetalerts.service;
 
-import com.safetynet.safetynetalerts.model.DTO.ChildAlertDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonAndCountByFireStationDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonMedicalRecordDTO;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
+import com.safetynet.safetynetalerts.service.implementation.AlertListsServiceImpl;
+import com.safetynet.safetynetalerts.service.implementation.FireStationServiceImpl;
+import com.safetynet.safetynetalerts.service.implementation.PersonAndCountByFireStationServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,13 @@ import static org.mockito.Mockito.*;
 public class PersonAndCountByFireStationServiceTest {
 
     @MockBean
-    FireStationService fireStationService;
+    private FireStationServiceImpl fireStationService;
 
     @MockBean
-    AlertListsService alertListsService;
+    private AlertListsServiceImpl alertListsService;
 
     @Autowired
-    PersonAndCountByFireStationService personAndCountByFireStationService;
+    private PersonAndCountByFireStationServiceImpl personAndCountByFireStationService;
 
     private static Person person1;
     private static Person person2;

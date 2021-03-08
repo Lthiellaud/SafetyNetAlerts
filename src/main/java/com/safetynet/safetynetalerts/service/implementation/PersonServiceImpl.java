@@ -26,7 +26,7 @@ public class PersonServiceImpl implements PersonService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     @Override
-    public Optional<Person> updatePerson(Person person){
+    public Optional<Person> updatePerson(Person person) {
         PersonId personId = new PersonId(person.getFirstName(), person.getLastName());
         Optional<Person> p = personRepository.findById(personId);
         if (p.isPresent()) {
@@ -62,7 +62,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean getPersonId(PersonId personId){
+    public boolean getPersonId(PersonId personId) {
         return personRepository.findById(personId).isPresent();
     }
     @Override

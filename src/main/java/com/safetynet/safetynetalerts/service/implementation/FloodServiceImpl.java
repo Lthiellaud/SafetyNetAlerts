@@ -36,7 +36,7 @@ public class FloodServiceImpl implements FloodService {
                 addresses.forEach(address -> {
                     List<PersonPhoneMedicalRecordDTO> persons =
                             alertListsService.getPersonPhoneMedicalRecordDTO(address);
-                    if (persons.size() > 0 ) {
+                    if (persons.size() > 0) {
                         PersonByAddressDTO p = new PersonByAddressDTO();
                         p.setAddress(address);
                         p.setPersons(persons);

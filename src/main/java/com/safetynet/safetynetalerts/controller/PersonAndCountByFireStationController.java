@@ -41,5 +41,4 @@ public class PersonAndCountByFireStationController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
 }

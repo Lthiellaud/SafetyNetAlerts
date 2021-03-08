@@ -43,11 +43,16 @@ public interface FireStationService {
     Integer deleteFireStationByStation(Integer station);
 
     /**
-     * To get the list of fire stations assigned for an address
+     * To get the list of fire stations assigned for an address.
      * @param address the address for which we need a list of station number
      * @return the list of fire station number for this address
      */
     List<Integer> getStations(String address);
 
+    /**
+     * To get the list of addresses attached to a fire station identified by its station number.
+     * @param station the given station number
+     * @return the list of addresses
+     */
     List<String> getAddresses(Integer station);
 }

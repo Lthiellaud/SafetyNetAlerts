@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.List;
 
 /**
- * Class for URL /childAlert?address=<address>
+ * Class for URL /childAlert?address=<address>.
  */
 @Getter
 public class ChildAlertDTO {

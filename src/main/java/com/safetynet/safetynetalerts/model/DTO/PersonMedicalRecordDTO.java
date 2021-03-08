@@ -43,5 +43,5 @@ public class PersonMedicalRecordDTO {
         this.email = person.getEmail();
     }
 
-    public PersonMedicalRecordDTO() {}
+    public PersonMedicalRecordDTO() { }
 }

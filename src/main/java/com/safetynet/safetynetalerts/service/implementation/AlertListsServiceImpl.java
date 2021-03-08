@@ -60,6 +60,7 @@ public class AlertListsServiceImpl implements AlertListsService {
         });
     }
 
+    @Override
     public List<PersonMedicalRecordDTO> getMedicalRecordByAddress(String address, boolean ageOnly) {
         List<PersonMedicalRecordDTO> persons =
                 personService.getAllByAddress(address);

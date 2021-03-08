@@ -27,5 +27,5 @@ public class PersonPhoneMedicalRecordDTO {
         this.allergies = person.getAllergies();
     }
 
-    public PersonPhoneMedicalRecordDTO() {}
+    public PersonPhoneMedicalRecordDTO() { }
 }

@@ -22,12 +22,12 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MedicalRecordServiceImpl.class);
 
     @Override
-    public Optional<MedicalRecord> getMedicalRecord(PersonId personId){
+    public Optional<MedicalRecord> getMedicalRecord(PersonId personId) {
         return medicalRecordRepository.findById(personId);
     }
 
     @Override
-    public Optional<MedicalRecord> updateMedicalRecord(MedicalRecord medicalRecord){
+    public Optional<MedicalRecord> updateMedicalRecord(MedicalRecord medicalRecord) {
 
         PersonId personId = new PersonId(medicalRecord.getFirstName(), medicalRecord.getLastName());
         Optional<MedicalRecord> m = getMedicalRecord(personId);

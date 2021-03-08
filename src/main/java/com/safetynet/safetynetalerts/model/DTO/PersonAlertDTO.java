@@ -3,7 +3,7 @@ package com.safetynet.safetynetalerts.model.DTO;
 import lombok.Getter;
 
 /**
- * Class used for URL /childAlert
+ * Class used for URL /childAlert.
  */
 @Getter
 public class PersonAlertDTO {

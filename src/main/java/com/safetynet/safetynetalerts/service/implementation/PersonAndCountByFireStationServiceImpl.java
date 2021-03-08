@@ -22,7 +22,8 @@ public class PersonAndCountByFireStationServiceImpl implements PersonAndCountByF
     @Autowired
     private FireStationService fireStationService;
 
-    private final Logger LOGGER = LoggerFactory.getLogger(PersonAndCountByFireStationServiceImpl.class);
+    private final Logger LOGGER = LoggerFactory
+            .getLogger(PersonAndCountByFireStationServiceImpl.class);
 
     @Override
     public List<PersonAndCountByFireStationDTO> getPersonAndCountByFireStation(int stationNumber) {

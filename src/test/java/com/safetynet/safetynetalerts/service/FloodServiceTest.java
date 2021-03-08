@@ -31,7 +31,6 @@ public class FloodServiceTest {
     private static PersonPhoneMedicalRecordDTO personPhoneMedicalRecord2;
     private static PersonPhoneMedicalRecordDTO personPhoneMedicalRecord3;
     private static PersonPhoneMedicalRecordDTO personPhoneMedicalRecord4;
-    private static PersonPhoneMedicalRecordDTO personPhoneMedicalRecord5;
 
     @BeforeAll
     public static void init() {
@@ -39,7 +38,6 @@ public class FloodServiceTest {
         personPhoneMedicalRecord2 = new PersonPhoneMedicalRecordDTO();
         personPhoneMedicalRecord3 = new PersonPhoneMedicalRecordDTO();
         personPhoneMedicalRecord4 = new PersonPhoneMedicalRecordDTO();
-        personPhoneMedicalRecord5 = new PersonPhoneMedicalRecordDTO();
 
         personPhoneMedicalRecord1.setFirstName("Baby");
         personPhoneMedicalRecord1.setLastName("Family11");
@@ -68,13 +66,6 @@ public class FloodServiceTest {
         personPhoneMedicalRecord4.setAge(40);
         personPhoneMedicalRecord4.setMedications(new ArrayList<>());
         personPhoneMedicalRecord4.setAllergies(Arrays.asList("allergie4"));
-
-        personPhoneMedicalRecord5.setFirstName("Mum");
-        personPhoneMedicalRecord5.setLastName("Family21");
-        personPhoneMedicalRecord5.setPhone("phone20" );
-        personPhoneMedicalRecord5.setAge(50);
-        personPhoneMedicalRecord5.setMedications(new ArrayList<>());
-        personPhoneMedicalRecord5.setAllergies(Arrays.asList("allergie20"));
 
     }
 

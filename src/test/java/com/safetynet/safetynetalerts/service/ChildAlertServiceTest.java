@@ -2,15 +2,12 @@ package com.safetynet.safetynetalerts.service;
 
 import com.safetynet.safetynetalerts.model.DTO.ChildAlertDTO;
 import com.safetynet.safetynetalerts.model.DTO.PersonMedicalRecordDTO;
-import com.safetynet.safetynetalerts.model.Person;
-import com.safetynet.safetynetalerts.model.PersonId;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.Arrays;

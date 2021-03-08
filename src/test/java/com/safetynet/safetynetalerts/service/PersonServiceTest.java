@@ -31,8 +31,6 @@ public class PersonServiceTest {
     private static Person person2FalseUpdate;
     private static PersonId personId;
 
-    private Calendar calendar = Calendar.getInstance();
-
     @BeforeEach
     public void initDtoTest(){
         person1 = new Person();
@@ -282,7 +280,7 @@ public class PersonServiceTest {
 
         //THEN
         verify(personRepository,times(1)).findAllByAddress("address12");
-        assertThat(persons.size()).isEqualTo(2);
+        assertThat(personsFound.size()).isEqualTo(2);
     }
 
     @Test

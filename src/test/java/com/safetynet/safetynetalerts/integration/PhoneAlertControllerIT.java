@@ -34,8 +34,8 @@ public class PhoneAlertControllerIT {
     @Test
     public void getPhoneAlert_station6_shouldReturnEmptyBody() throws Exception {
         mockMvc.perform(get("/phoneAlert").param("firestation", "6"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("phone").doesNotExist());
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(""));
     }
 
 }

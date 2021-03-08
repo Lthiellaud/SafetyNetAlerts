@@ -15,16 +15,16 @@ import java.util.Optional;
 public class AlertListsService {
 
     @Autowired
-    MedicalRecordService medicalRecordService;
+    private MedicalRecordService medicalRecordService;
 
     @Autowired
-    PersonService personService;
+    private PersonService personService;
 
     @Autowired
-    FireStationService fireStationService;
+    private FireStationService fireStationService;
 
     private static PersonId personId;
-    private static DateUtil dateUtil = new DateUtil();
+    private static final DateUtil DATE_UTIL = new DateUtil();
 
     /**
      * To get the list of the inhabitants living at an address.
@@ -54,7 +54,7 @@ public class AlertListsService {
             Optional<MedicalRecord> m = medicalRecordService.getMedicalRecord(personId);
             if (m.isPresent()) {
                 MedicalRecord medicalRecord = m.get();
-                person.setAge(dateUtil.age(medicalRecord.getBirthdate()));
+                person.setAge(DATE_UTIL.age(medicalRecord.getBirthdate()));
                 if (!ageOnly) {
                     person.setMedications(medicalRecord.getMedications());
                     person.setAllergies(medicalRecord.getAllergies());
@@ -64,8 +64,8 @@ public class AlertListsService {
     }
 
     /**
-     * To complete PersonMedicalRecordDTO list of the persons living at a given address with age or
-     * age, medications and allergies.
+     * To complete PersonMedicalRecordDTO list of the persons living at a given address.
+     * Data added: age or age, medications and allergies.
      * @param address the address for which the PersonMedicalRecordDTO are needed
      * @param ageOnly true if only age is needed, false if allergies and medications are also needed
      * @return the list of PersonMedicalRecordDTO

@@ -4,6 +4,9 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * Class for URL /fire?address=<address>
+ */
 @Getter
 public class FireDTO {
 

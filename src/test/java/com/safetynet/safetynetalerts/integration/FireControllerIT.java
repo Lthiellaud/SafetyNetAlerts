@@ -32,26 +32,17 @@ public class FireControllerIT {
     @Test
     public void getFirePersonsForNewAddress_shouldReturnEmptyArray() throws Exception {
         mockMvc.perform(get("/fire").param("address", "new address"))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().string("[ ]"));
-    }
-
-    @Test
-    public void getFirePersonsForNullAddress_shouldReturnNull() throws Exception {
-        mockMvc.perform(get("/fire").param("address", ""))
-                .andExpect(status().isOk())
+                .andExpect(status().isNotFound())
                 .andDo(print())
                 .andExpect(content().string(""));
     }
 
     @Test
-    public void getFirePersonsForGivenAddress_shouldReturnEmptyBody() throws Exception {
-        mockMvc.perform(get("/fire").param("address", "Given Address"))
-                .andExpect(status().isOk())
+    public void getFirePersonsForNullAddress_shouldReturnNull() throws Exception {
+        mockMvc.perform(get("/fire").param("address", ""))
+                .andExpect(status().isBadRequest())
                 .andDo(print())
-                .andExpect(jsonPath("firstName").doesNotExist());
+                .andExpect(content().string(""));
     }
-
 
 }

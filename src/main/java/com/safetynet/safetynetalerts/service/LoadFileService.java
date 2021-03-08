@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 public class LoadFileService {
 
-    private static Logger logger = LoggerFactory.getLogger(LoadFileService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoadFileService.class);
 
     @Autowired
     private FireStationService fireStationService;
@@ -48,34 +48,36 @@ public class LoadFileService {
                     String data = mapper.readTree(inputStream).toString();
 
                     // Save persons node from data.json to Person entity
-                    TypeReference<List<Person>> typeRefperson = new TypeReference<List<Person>>() {
+                    TypeReference<List<Person>> typeRefPerson = new TypeReference<List<Person>>() {
                     };
                     JsonNode personNode = mapper.readTree(data).get("persons");
-                    List<Person> persons = mapper.readValue(personNode.toString(), typeRefperson);
+                    List<Person> persons = mapper.readValue(personNode.toString(), typeRefPerson);
                     personService.savePersonList(persons);
-                    logger.info("data persons saved from file "+ path + " !");
+                    LOGGER.info("data persons saved from file "+ path + " !");
 
-                    // Save firestations node from data.json to Firestation entity
-                    TypeReference<List<FireStation>> typeRefFireStation = new TypeReference<List<FireStation>>() {
-                    };
+                    // Save fire stations node from data.json to Firestation entity
+                    TypeReference<List<FireStation>> typeRefFireStation =
+                            new TypeReference<List<FireStation>>() {};
                     JsonNode fireStationNode = mapper.readTree(data).get("firestations");
-                    List<FireStation> fireStations = mapper.readValue(fireStationNode.toString(), typeRefFireStation);
+                    List<FireStation> fireStations = mapper
+                            .readValue(fireStationNode.toString(), typeRefFireStation);
                     fireStationService.saveFireStationList(fireStations);
-                    logger.info("data fire stations from file "+ path + " !");
+                    LOGGER.info("data fire stations from file "+ path + " !");
 
-                    // Save medicalrecords node from data.json to MedicalRecord entity
-                    TypeReference<List<MedicalRecord>> typeRefMedicalRecord = new TypeReference<List<MedicalRecord>>() {
-                    };
+                    // Save medical records node from data.json to MedicalRecord entity
+                    TypeReference<List<MedicalRecord>> typeRefMedicalRecord =
+                            new TypeReference<List<MedicalRecord>>() {};
                     JsonNode medicalRecordNode = mapper.readTree(data).get("medicalrecords");
-                    List<MedicalRecord> medicalRecords = mapper.readValue(medicalRecordNode.toString(), typeRefMedicalRecord);
+                    List<MedicalRecord> medicalRecords = mapper
+                            .readValue(medicalRecordNode.toString(), typeRefMedicalRecord);
                     medicalRecordService.saveMedicalRecordList(medicalRecords);
-                    logger.info("data medical records from file "+ path + " !");
+                    LOGGER.info("data medical records from file "+ path + " !");
                 } catch (IOException e) {
-                    logger.error("error while reading " + path, e);
+                    LOGGER.error("error while reading " + path, e);
                 }
             }
         } catch (Exception e) {
-            logger.error("Missing Required Property : [dataPath]", e);
+            LOGGER.error("Missing Required Property : [dataPath]", e);
         }
     }
 

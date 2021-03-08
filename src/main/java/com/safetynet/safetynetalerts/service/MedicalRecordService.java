@@ -18,7 +18,7 @@ public class MedicalRecordService {
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
 
-    private static Logger logger = LoggerFactory.getLogger(MedicalRecordService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MedicalRecordService.class);
 
     /**
      * To get a medical record from a firstname and a lastname.
@@ -33,7 +33,7 @@ public class MedicalRecordService {
      * To apply the modifications to a medical record. Except for medications and allergies,
      * only non null attributes will be changed.
      * @param medicalRecord the modified medical record to be used for updating th medical record
-     * @return the founded medical record
+     * @return the updated medical record or an empty optional if nothing done
      */
     public Optional<MedicalRecord> updateMedicalRecord(MedicalRecord medicalRecord){
 
@@ -48,10 +48,10 @@ public class MedicalRecordService {
             currentMedicalRecord.setMedications(medicalRecord.getMedications());
             currentMedicalRecord.setAllergies(medicalRecord.getAllergies());
             medicalRecordRepository.save(medicalRecord);
-            logger.debug("updateMedicalRecord: record for " + personId.toString() + " updated");
+            LOGGER.debug("updateMedicalRecord: record for " + personId.toString() + " updated");
             return Optional.of(currentMedicalRecord);
         } else {
-            logger.debug("updateMedicalRecord: no record for " + personId.toString() + " founded");
+            LOGGER.debug("updateMedicalRecord: no record for " + personId.toString() + " founded");
             return m;
         }
 
@@ -60,7 +60,7 @@ public class MedicalRecordService {
     /**
      * To add a new medical record.
      * @param medicalRecord the medical record to be added
-     * @return the added medical record
+     * @return the added medical record  or an empty optional if nothing done
      */
     public Optional<MedicalRecord> createMedicalRecord(MedicalRecord medicalRecord) {
 
@@ -68,11 +68,11 @@ public class MedicalRecordService {
         boolean existing = getMedicalRecord(personId).isPresent();
         if (!existing) {
             medicalRecordRepository.save(medicalRecord);
-            logger.debug("createMedicalRecord: record for " + personId.toString() + " created");
+            LOGGER.debug("createMedicalRecord: record for " + personId.toString() + " created");
             return Optional.of(medicalRecord);
         } else {
-            logger.debug("createMedicalRecord: record for " + personId.toString() + " already exists. " +
-                    "Nothing done");
+            LOGGER.debug("createMedicalRecord: record for " + personId.toString() +
+                    " already exists. Nothing done");
             return Optional.empty();
         }
 
@@ -92,18 +92,20 @@ public class MedicalRecordService {
      * To delete a medical record from a firstname and a lastname.
      * @param firstName defines the firstname of the medical record to be deleted
      * @param lastName defines the lastname of the medical record to be deleted
-     *
+     * @return true if a record has been deleted, false otherwise
      */
     public boolean deleteMedicalRecord(String firstName, String lastName) {
 
         PersonId personId = new PersonId(firstName, lastName);
         Optional<MedicalRecord> m = getMedicalRecord(personId);
         if (m.isPresent()) {
-            logger.debug("deleteMedicalRecord: medical record of " + personId.toString() + " deleted");
+            LOGGER.debug("deleteMedicalRecord: medical record of " + personId.toString() +
+                    " deleted");
             medicalRecordRepository.deleteById(personId);
             return  true;
         } else {
-            logger.debug("deleteMedicalRecord: The medical record of " + personId.toString() + " does not exists");
+            LOGGER.debug("deleteMedicalRecord: The medical record of " + personId.toString() +
+                    " does not exists");
             return false;
         }
 

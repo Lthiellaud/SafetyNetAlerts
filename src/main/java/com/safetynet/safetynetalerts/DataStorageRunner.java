@@ -1,14 +1,12 @@
 package com.safetynet.safetynetalerts;
 
 import com.safetynet.safetynetalerts.service.LoadFileService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 /**
- * Command Line runner for execute method of loadFileService
+ * Command Line runner for executing method of loadFileService.
  */
 @ConditionalOnProperty(
         prefix = "command.line.runner",
@@ -24,7 +22,7 @@ public class DataStorageRunner implements CommandLineRunner {
         this.loadFileService = loadFileService;
     }
     /**
-     * Command Line runner for execute method of loadFileService.
+     * Command Line runner for executing method of loadFileService.
      * @param args default argument
      */
     public void run(String... args) {

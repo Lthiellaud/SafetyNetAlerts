@@ -7,6 +7,10 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Class-based projection of the class Person.
+ * Used each time mixed person and medical record data are needed
+ */
 @Getter
 @Setter
 @JsonFilter("myDynamicFilter")

@@ -27,7 +27,7 @@ public class PersonService {
     /**
      * To apply the modifications to a person. Only non null attributes will be changed.
      * @param person The modified person record to be used for updating the person
-     * @return the founded person
+     * @return the founded person or an empty optional if nothing done
      */
     public Optional<Person> updatePerson(Person person){
         PersonId personId = new PersonId(person.getFirstName(), person.getLastName());
@@ -67,7 +67,7 @@ public class PersonService {
     /**
      * To verify if the person defined by firstname and lastname exists.
      * @param personId defines firstname and lastname of the person
-     * @return the founded person
+     * @return true if the person has been found, false otherwise
      */
     public boolean getPersonId(PersonId personId){
         return personRepository.findById(personId).isPresent();
@@ -75,7 +75,7 @@ public class PersonService {
     /**
      * To add a person.
      * @param person the person to be added
-     * @return the saved person
+     * @return the saved person or an empty optional if nothing done
      */
     public Optional<Person> createPerson(Person person) {
         PersonId personId = new PersonId(person.getFirstName(), person.getLastName());
@@ -102,11 +102,12 @@ public class PersonService {
      * To delete a person from his firstname and lastname.
      * @param firstName defines firstname of the person
      * @param lastName defines lastname of the person
+     * @return true if a record has been deleted, false otherwise
      */
     public boolean deletePerson(String firstName, String lastName) {
         PersonId personId = new PersonId(firstName, lastName);
         if (getPersonId(personId)) {
-            LOGGER.debug("record for " + personId.toString() +" deleted");
+            LOGGER.debug("record for " + personId.toString() + " deleted");
             personRepository.deleteById(personId);
             return true;
         } else {
@@ -136,15 +137,17 @@ public class PersonService {
     }
 
     /**
-     * To get all the phone numbers of corresponding to a list of address
+     * To get all the phone numbers of corresponding to a list of address.
      * @param addresses the list of addresses for which we need the phone number
      * @return the list of phone number
      */
     public List<IPhoneAlertDTO> getPhones(List<String> addresses) {
-        List<IPhoneAlertDTO> persons = personRepository.findAllDistinctPhoneByAddressIsIn(addresses);
+        List<IPhoneAlertDTO> persons = personRepository
+                .findAllDistinctPhoneByAddressIsIn(addresses);
         int i = persons.size();
         if (i > 0) {
-            LOGGER.debug("getPhones: List of " + i + " person(s) found for the addresses " + addresses);
+            LOGGER.debug("getPhones: List of " + i + " person(s) found for the addresses " +
+                    addresses);
             return persons;
         } else {
             LOGGER.debug("getPhones:nobody found for the addresses " + addresses);
@@ -153,7 +156,7 @@ public class PersonService {
     }
 
     /**
-     * to get the list of the inhabitants at the given address
+     * to get the list of the inhabitants at the given address.
      * @param address The address for which we need the inhabitants list
      * @return the inhabitants list in PersonMedicalRecordDTO projection
      */
@@ -161,7 +164,8 @@ public class PersonService {
         List<PersonMedicalRecordDTO> persons = personRepository.findAllByAddress(address);
         int i = persons.size();
         if (i > 0) {
-            LOGGER.debug("getAllByAddress: List of " + i + " person(s) found for the address " + address);
+            LOGGER.debug("getAllByAddress: List of " + i + " person(s) found for the address " +
+                    address);
             return persons;
         } else {
             LOGGER.debug("getAllByAddress:nobody found for the address " + address);
@@ -176,23 +180,26 @@ public class PersonService {
      * @param lastName lastName value is mandatory
      * @return the list of persons including address, age, email and medical information
      */
-    public List<PersonMedicalRecordDTO> getAllByFirstAndLastName(String firstName, String lastName) {
+    public List<PersonMedicalRecordDTO>
+                getAllByFirstAndLastName(String firstName, String lastName) {
         if (lastName != null) {
             List<PersonMedicalRecordDTO> personsByLastName =
                     personRepository.findAllByLastName(lastName);
             int i = personsByLastName.size();
             if (i > 0) {
                 if (firstName == null || firstName.equals("")) {
-                    LOGGER.debug("getAllByFirstAndLastName: List of " + i + " person(s) with lastname " +
-                            lastName + " found");
+                    LOGGER.debug("getAllByFirstAndLastName: List of " + i + " person(s) with " +
+                            "lastname " + lastName + " found");
                     return personsByLastName;
                 } else {
-                    List<PersonMedicalRecordDTO> personsByFirstAndLastName = personsByLastName.stream()
-                            .filter(p -> p.getFirstName().matches(firstName)).collect(Collectors.toList());
+                    List<PersonMedicalRecordDTO> personsByFirstAndLastName = personsByLastName
+                            .stream()
+                            .filter(p -> p.getFirstName().matches(firstName))
+                            .collect(Collectors.toList());
                     i = personsByFirstAndLastName.size();
                     if (i > 0) {
-                        LOGGER.debug("getAllByFirstAndLastName: List of " + i + " person(s) with name " +
-                                firstName + " " + lastName + " found");
+                        LOGGER.debug("getAllByFirstAndLastName: List of " + i + " person(s) with " +
+                                "name " + firstName + " " + lastName + " found");
                         return personsByFirstAndLastName;
                     }
                 }

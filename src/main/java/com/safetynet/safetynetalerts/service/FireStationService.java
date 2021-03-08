@@ -23,7 +23,7 @@ public class FireStationService {
     /**
      * To add a new fire station.
      * @param fireStation the fire station to be added
-     * @return the added fire station station
+     * @return the added fire station station or an empty optional if nothing done
      */
     public Optional<FireStation> createFireStation(FireStation fireStation) {
         List<FireStation> fireStations = fireStationRepository
@@ -42,7 +42,7 @@ public class FireStationService {
      * To update the fire station number for an address.
      * @param address the address to be updated
      * @param station th new fire station number
-     * @return the updated fire station
+     * @return the updated fire station or an empty list if nothing done
      */
     public List<FireStation> updateFireStation(String address, Integer station) {
         List<FireStation> fireStations = fireStationRepository.findByAddress(address);
@@ -57,7 +57,7 @@ public class FireStationService {
             LOGGER.debug("updateFireStation: " + i +
                     " record(s) fire station updated for the address : " + address);
         } else {
-            LOGGER.debug("updateFireStation: no fire station for this address");
+            LOGGER.debug("updateFireStation: no fire station for the address" + address);
         }
 
         return fireStationsUpdated;
@@ -66,7 +66,7 @@ public class FireStationService {
     /**
      * To add a list of new fire stations.
      * @param fireStations the fire station to be added
-     * @return the added fire station station
+     * @return the added fire station station or an empty list if nothing done
      */
     public Iterable<FireStation> saveFireStationList(List<FireStation> fireStations) {
         return fireStationRepository.saveAll(fireStations);
@@ -75,16 +75,17 @@ public class FireStationService {
     /**
      * To delete a fire stations from its address.
      * @param address the address of the fire station to be deleted
+     * @return the number of deleted record
      */
     public Integer deleteFireStationByAddress(String address) {
         List<FireStation> fireStations = fireStationRepository.findByAddress(address);
         int i = fireStations.size();
         if (i > 0) {
-            LOGGER.debug("deleteFireStation(address): " + i +
+            LOGGER.debug("deleteFireStation(\"" + address + "\"): " + i +
                     " fire stations deleted");
             fireStationRepository.deleteAll(fireStations);
         } else {
-            LOGGER.debug("deleteFireStation(address): no fire station deleted");
+            LOGGER.debug("deleteFireStation(\"" + address + "\"): no fire station deleted");
         }
         return i;
     }
@@ -92,16 +93,17 @@ public class FireStationService {
     /**
      * To delete a fire stations from its address.
      * @param station the station number of the fire station to be deleted
+     * @return the number of deleted record
      */
     public Integer deleteFireStationByStation(Integer station) {
         List<FireStation> fireStations = fireStationRepository.findByStation(station);
         int i = fireStations.size();
         if (i > 0) {
-            LOGGER.debug("deleteFireStation(station): " + i +
+            LOGGER.debug("deleteFireStation(" + station + "): " + i +
                     " fire stations deleted");
             fireStationRepository.deleteAll(fireStations);
         } else {
-            LOGGER.debug("deleteFireStation(station): no fire station deleted");
+            LOGGER.debug("deleteFireStation(" + station + "): no fire station deleted");
         }
         return i;
     }
@@ -116,11 +118,11 @@ public class FireStationService {
         List<Integer> stations = new ArrayList<>();
         int i = fireStations.size();
         if (i > 0) {
-            LOGGER.info("getStations: " + i + " fire station found for the address " + address);
+            LOGGER.debug("getStations(\"" + address + "\"): " + i + " fire station found");
             stations = fireStations.stream().map(FireStation::getStation)
                     .collect(Collectors.toList());
         } else {
-            LOGGER.error("getStations: No fire station found for the address " + address);
+            LOGGER.debug("getStations(\"" + address + "\"): No fire station found");
         }
         return stations;
     }
@@ -130,11 +132,11 @@ public class FireStationService {
         List<String> addresses = new ArrayList<>();
         int i = fireStations.size();
         if (i > 0) {
-            LOGGER.info("getAddresses: " + i + " addresses found for fire station " + station);
+            LOGGER.debug("getAddresses: " + i + " addresses found for fire station " + station);
             addresses = fireStations.stream().map(FireStation::getAddress)
                     .distinct().collect(Collectors.toList());
         } else {
-            LOGGER.error("getAddresses:  no address attached to this fire station " + station);
+            LOGGER.debug("getAddresses:  no address attached to this fire station " + station);
         }
         return addresses;
     }

@@ -26,7 +26,7 @@ public class PersonInfoControllerTest {
     public void getPersonInfoControllerTest() throws Exception {
         mockMvc.perform(get("/personInfo").param("firstName", "Jean")
                 .param("lastName", "JeanJean"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 
 }

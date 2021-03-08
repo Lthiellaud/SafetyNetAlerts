@@ -24,7 +24,7 @@ public class CommunityEmailControllerTest {
     @Test
     public void getEmailsTest() throws Exception {
         mockMvc.perform(get("/communityEmail").param("city", "City"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 
 }

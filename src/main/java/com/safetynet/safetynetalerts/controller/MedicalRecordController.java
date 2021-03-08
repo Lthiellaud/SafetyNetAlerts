@@ -1,7 +1,6 @@
 package com.safetynet.safetynetalerts.controller;
 
 import com.safetynet.safetynetalerts.model.MedicalRecord;
-import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.service.MedicalRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,23 +27,26 @@ public class MedicalRecordController {
     /**
      * To add a new medical record.
      * @param medicalRecord the medical record to be added
-     * @return the added medical record
+     * @return the added medical record and http status of the request
      */
-    @PostMapping(value="/medicalRecord")
-    public ResponseEntity<MedicalRecord> createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
+    @PostMapping(value = "/medicalRecord")
+    public ResponseEntity<MedicalRecord>
+                   createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
         if (!medicalRecord.getFirstName().equals("") && !medicalRecord.getLastName().equals("")) {
-            LOGGER.info("Endpoint /medicalRecord: creation of Medical Record request for " + medicalRecord.getFirstName() +
-                    " " + medicalRecord.getLastName() + " received");
-            Optional<MedicalRecord> medicalRecord1 = medicalRecordService.createMedicalRecord(medicalRecord);
+            LOGGER.info("Endpoint /medicalRecord: creation of Medical Record request for " +
+                    medicalRecord.getFirstName() + " " + medicalRecord.getLastName() + " received");
+            Optional<MedicalRecord> medicalRecord1 = medicalRecordService
+                    .createMedicalRecord(medicalRecord);
             if (medicalRecord1.isPresent()) {
                 LOGGER.info("Endpoint /medicalRecord: creation done");
                 return new ResponseEntity<>(medicalRecord1.get(), HttpStatus.CREATED);
             } else {
                 LOGGER.info("Endpoint /medicalRecord: medicalRecord already existing");
-                return new ResponseEntity(HttpStatus.CONFLICT);
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
             }
         } else {
-            LOGGER.error("Endpoint /medicalRecord Create request: firstname and lastname mandatory");
+            LOGGER.error("Endpoint /medicalRecord Create request: firstname and" +
+                    " lastname mandatory");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -54,47 +56,53 @@ public class MedicalRecordController {
      * To delete a medical record.
      * @param firstName the firstname of the person whose medical record must be deleted
      * @param lastName the lastname of the person whose medical record must be deleted
+     * @return http status of the request
      */
 
     @DeleteMapping("/medicalRecord/{firstName}:{lastName}")
     public ResponseEntity<?> deleteMedicalRecord(@PathVariable("firstName") String firstName,
-                                    @PathVariable("lastName") String lastName) {
+                                                 @PathVariable("lastName") String lastName) {
         if (!firstName.equals("")  && !lastName.equals("")) {
-            LOGGER.info("Endpoint /medicalRecord/{firstName}:{lastName}: Deletion of medical record for " +
-                    firstName + " " + lastName + " asked");
+            LOGGER.info("Endpoint /medicalRecord/{firstName}:{lastName}: Deletion of medical" +
+                    " record for " + firstName + " " + lastName + " asked");
             if (medicalRecordService.deleteMedicalRecord(firstName, lastName)) {
                 LOGGER.info("Endpoint /medicalRecord: deletion completed");
-                return new ResponseEntity(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
                 LOGGER.info("Endpoint /medicalRecord delete request: medical record not found");
-                return new ResponseEntity(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } else {
-            LOGGER.error("Endpoint /medicalRecord delete request: firstname and lastname mandatory");
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            LOGGER.error("Endpoint /medicalRecord delete request: firstname" +
+                    " and lastname mandatory");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     /**
      * To update a medical record.
-     * @return the updated medical record
+     * @param medicalRecord the medical record to be updated
+     * @return the updated medical record and http status of the request
      */
     @PutMapping("/medicalRecord/")
-    public ResponseEntity<MedicalRecord> updateMedicalRecord(@RequestBody MedicalRecord medicalRecord  ) {
+    public ResponseEntity<MedicalRecord>
+                updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
         if (!medicalRecord.getFirstName().equals("") && !medicalRecord.getLastName().equals("")) {
             LOGGER.info("Endpoint /medicalRecord: update asked for medicale record of " +
                     medicalRecord.getFirstName() + " " + medicalRecord.getLastName());
-            Optional<MedicalRecord> medicalRecord1 = medicalRecordService.updateMedicalRecord(medicalRecord);
+            Optional<MedicalRecord> medicalRecord1 = medicalRecordService
+                    .updateMedicalRecord(medicalRecord);
             if (medicalRecord1.isPresent()) {
                 LOGGER.info("Endpoint /medicalRecord: update done");
                 return new ResponseEntity<>(medicalRecord1.get(), HttpStatus.OK);
             } else {
                 LOGGER.info("Endpoint /medicalRecord update request: medical record not found");
-                return new ResponseEntity(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         } else {
-            LOGGER.error("Endpoint /medicalRecord update request: firstname and lastname mandatory");
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            LOGGER.error("Endpoint /medicalRecord update request: firstname" +
+                    " and lastname mandatory");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }

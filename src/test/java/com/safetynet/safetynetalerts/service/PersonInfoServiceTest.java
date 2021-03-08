@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(properties = "command.line.runner.enabled=false")
-@ActiveProfiles("test")
 public class PersonInfoServiceTest {
 
     @MockBean

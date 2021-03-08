@@ -113,6 +113,33 @@ public class FloodServiceTest {
     }
 
     @Test
+    public void getFloodList_nobodyFoundForAddressesTest() {
+        //GIVEN
+        List<String> addresses1 = Arrays.asList("address11", "address12");
+        List<String> addresses2 = Arrays.asList("address20");
+        List<PersonPhoneMedicalRecordDTO> persons1 = new ArrayList<>();
+        List<PersonPhoneMedicalRecordDTO> persons2 = new ArrayList<>();
+        List<PersonPhoneMedicalRecordDTO> persons3 = new ArrayList<>();
+        when(fireStationService.getAddresses(1)).thenReturn(addresses1);
+        when(fireStationService.getAddresses(2)).thenReturn(addresses2);
+        when(alertListsService.getPersonPhoneMedicalRecordDTO("address11")).thenReturn(persons1);
+        when(alertListsService.getPersonPhoneMedicalRecordDTO("address12")).thenReturn(persons2);
+        when(alertListsService.getPersonPhoneMedicalRecordDTO("address20")).thenReturn(persons3);
+
+        //WHEN
+        List<FloodDTO> persons = floodService.getFloodList(Arrays.asList(1,2));
+
+        //THEN
+        verify(fireStationService, times(1)).getAddresses(1);
+        verify(fireStationService, times(1)).getAddresses(2);
+        verify(alertListsService, times(1)).getPersonPhoneMedicalRecordDTO("address11");
+        verify(alertListsService, times(1)).getPersonPhoneMedicalRecordDTO("address12");
+        verify(alertListsService, times(1)).getPersonPhoneMedicalRecordDTO("address20");
+        assertThat(persons).isEmpty();
+
+    }
+
+    @Test
     public void getFloodList_noAddressFoundTest() {
         //GIVEN
         List<String> addresses1 = new ArrayList<>();

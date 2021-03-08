@@ -23,11 +23,15 @@ public class FloodControllerIT {
     @Test
     public void getFloodList_noAddressForStationIT() throws Exception {
         mockMvc.perform(get("/flood/stations").param("stations", "11"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].station", is(11)))
-                .andExpect(jsonPath("$[0].addresses[0].address", is("address with no inhabitants")))
-                .andExpect(jsonPath("$[0].addresses[0].persons", empty()))
-                .andDo(print());
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(""));
+    }
+
+    @Test
+    public void getFloodList_noStationGivenIT() throws Exception {
+        mockMvc.perform(get("/flood/stations").param("stations", ""))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(""));
     }
 
     @Test

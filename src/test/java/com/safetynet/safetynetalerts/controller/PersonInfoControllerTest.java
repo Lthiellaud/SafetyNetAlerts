@@ -19,14 +19,18 @@ public class PersonInfoControllerTest {
     @MockBean
     private PersonInfoService personInfoService;
 
-    @Autowired
-    private PersonInfoController personInfoController;
-
-   @Test
+    @Test
     public void getPersonInfoControllerTest() throws Exception {
         mockMvc.perform(get("/personInfo").param("firstName", "Jean")
                 .param("lastName", "JeanJean"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void getPersonInfoController_withNoLastNameTest() throws Exception {
+        mockMvc.perform(get("/personInfo").param("firstName", "Jean")
+                .param("lastName", ""))
+                .andExpect(status().isBadRequest());
     }
 
 }

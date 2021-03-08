@@ -47,56 +47,6 @@ public class FireStationControllerIT {
     }
 
     @Test
-    public void postExistingFireStationTest() throws Exception {
-        fireStation = new FireStation();
-        fireStation.setStation(1);
-        fireStation.setAddress("address1-st1");
-        RequestBuilder createRequest = MockMvcRequestBuilders
-                .post("/firestation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(fireStation));
-
-        mockMvc.perform(createRequest)
-                .andExpect(status().isConflict())
-                .andExpect(content().string(""));
-
-    }
-
-    @Test
-    public void postFireStationWithIdTest() throws Exception {
-        fireStation = new FireStation();
-        fireStation.setId(100L);
-        fireStation.setStation(40000);
-        fireStation.setAddress("address new");
-        RequestBuilder createRequest = MockMvcRequestBuilders
-                .post("/firestation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(fireStation));
-
-        mockMvc.perform(createRequest)
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(""));
-
-    }
-
-    @Test
-    public void postFireStationWithNoAddress() throws Exception {
-        fireStation = new FireStation();
-        fireStation.setStation(40000);
-        fireStation.setAddress("");
-        System.out.println(fireStation);
-        RequestBuilder createRequest = MockMvcRequestBuilders
-                .post("/firestation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(fireStation));
-
-        mockMvc.perform(createRequest)
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(""));
-
-    }
-
-    @Test
     public void updateFireStationTest() throws Exception {
         RequestBuilder Request = MockMvcRequestBuilders
                 .put("/firestation/Station to be updated-A1")
@@ -111,19 +61,6 @@ public class FireStationControllerIT {
     }
 
     @Test
-    public void updateNonExistingFireStationTest() throws Exception {
-        RequestBuilder Request = MockMvcRequestBuilders
-                .put("/firestation/Unknown address")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(String.valueOf(10));
-
-        mockMvc.perform(Request)
-                .andExpect(status().isNotFound())
-                .andExpect(content().string(""));
-
-    }
-
-    @Test
     public void deleteFireStationByAddressTest() throws Exception {
 
         mockMvc.perform(delete("/firestation/address=Address to be deleted"))
@@ -132,34 +69,10 @@ public class FireStationControllerIT {
     }
 
     @Test
-    public void deleteFireStationByAddress_NotFoundTest() throws Exception {
-
-        mockMvc.perform(delete("/firestation/address=Unknown address"))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void deleteFireStationByAddress_BadRequestTest() throws Exception {
-
-        mockMvc.perform(delete("/firestation/address="))
-                .andExpect(status().isBadRequest());
-
-
-    }
-
-    @Test
     public void deleteFireStationByStationTest() throws Exception {
 
         mockMvc.perform(delete("/firestation/station=80"))
                 .andExpect(status().isNoContent());
-
-    }
-
-    @Test
-    public void deleteFireStationByStation_NotFoundTest() throws Exception {
-
-        mockMvc.perform(delete("/firestation/station=800"))
-                .andExpect(status().isNotFound());
 
     }
 

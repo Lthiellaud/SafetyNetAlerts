@@ -29,20 +29,4 @@ public class ChildAlertControllerIT {
                 .andDo(print());
     }
 
-    @Test
-    public void getEmptyChildListIT() throws Exception {
-        mockMvc.perform(get("/childAlert").param("address", "given address"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string(""))
-                .andDo(print());
-    }
-
-    @Test
-    public void getChildList_noParamIT() throws Exception {
-        mockMvc.perform(get("/childAlert").param("address", ""))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(""))
-                .andDo(print());
-    }
-
 }

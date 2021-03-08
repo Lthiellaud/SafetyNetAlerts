@@ -47,6 +47,8 @@ public class PersonControllerTest {
     }
     @Test
     public void createExistingPersonTest() throws Exception {
+        //as PersonService is mocked, the method createPerson sends an empty optional
+        //as if the record for which we ask a creation was already existing => Conflict response
         person.setFirstName("Existing");
         person.setLastName("Boyd");
         person.setAddress("1509 Marinland St");
@@ -60,6 +62,25 @@ public class PersonControllerTest {
                 .content(mapper.writeValueAsString(person));
         mockMvc.perform(createRequest)
                 .andExpect(status().isConflict());
+    }
+
+    @Test
+    public void createPerson_withNoNameTest() throws Exception {
+        //as PersonService is mocked, the method createPerson sends an empty optional
+        //as if the record for which we ask a creation was already existing => Conflict response
+        person.setFirstName("");
+        person.setLastName("");
+        person.setAddress("1509 Marinland St");
+        person.setCity("Culver");
+        person.setZip(97451);
+        person.setPhone("841-874-0000" );
+        person.setEmail("existing2boyd@email.com");
+        RequestBuilder createRequest = MockMvcRequestBuilders
+                .post("/person")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(person));
+        mockMvc.perform(createRequest)
+                .andExpect(status().isBadRequest());
     }
 
     @Test

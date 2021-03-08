@@ -8,6 +8,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = FireController.class)
@@ -17,15 +19,18 @@ public class FireControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private FireController fireController;
-
-    @MockBean
     private FireService fireService;
 
     @Test
     public void getFirePersonsTest() throws Exception {
         mockMvc.perform(get("/fire").param("address", "Given Address"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void getFirePersonsForNullAddress_shouldReturnNull() throws Exception {
+        mockMvc.perform(get("/fire").param("address", ""))
+                .andExpect(status().isBadRequest());
     }
 
 }

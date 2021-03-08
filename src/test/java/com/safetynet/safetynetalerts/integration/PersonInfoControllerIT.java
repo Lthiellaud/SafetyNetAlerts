@@ -48,28 +48,5 @@ public class PersonInfoControllerIT {
                .andDo(print());
 
     }
-
-
-    @Test
-    public void getPersonInfoController_NoNameGivenIT() throws Exception {
-        mockMvc.perform(get("/personInfo")
-                .param("firstName", "John")
-                .param("lastName", ""))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(""));
-
-    }
-
-    @Test
-    public void getPersonInfoController_NobodyFoundIT() throws Exception {
-        mockMvc.perform(get("/personInfo")
-                .param("firstName", "John")
-                .param("lastName", "Unknown"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string(""));
-
-    }
-
-
 }
 

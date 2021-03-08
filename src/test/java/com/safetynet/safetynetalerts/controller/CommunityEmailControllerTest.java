@@ -18,13 +18,15 @@ public class CommunityEmailControllerTest {
     @MockBean
     private PersonService personService;
 
-    @Autowired
-    private CommunityEmailController communityEmailController;
-
     @Test
     public void getEmailsTest() throws Exception {
         mockMvc.perform(get("/communityEmail").param("city", "City"))
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void getEmails_nonParamTest() throws Exception {
+        mockMvc.perform(get("/communityEmail").param("city", ""))
+                .andExpect(status().isBadRequest());
+    }
 }

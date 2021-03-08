@@ -34,13 +34,4 @@ public class PersonAndCountByFireStationControllerIT {
                 .andExpect(jsonPath("$[0].personsByFireStation[*].phone", everyItem(endsWith("-st1"))))
                 .andDo(print());
     }
-
-    @Test
-    public void getPersonAndCountByFireStationController_emptyListIT() throws Exception {
-        mockMvc.perform(get("/firestation").param("stationNumber", "11"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string(""))
-                .andDo(print());
-    }
-
 }

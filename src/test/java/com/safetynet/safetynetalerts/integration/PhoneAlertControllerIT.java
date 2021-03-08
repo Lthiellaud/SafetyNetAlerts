@@ -31,12 +31,5 @@ public class PhoneAlertControllerIT {
                 .andExpect(content().string(containsString("\"phone\" : \"phone1-st1\"")));
     }
 
-    @Test
-    public void getPhoneAlert_station6_shouldReturnEmptyBody() throws Exception {
-        mockMvc.perform(get("/phoneAlert").param("firestation", "6"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string(""));
-    }
-
 }
 

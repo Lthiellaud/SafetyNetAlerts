@@ -27,21 +27,4 @@ public class CommunityEmailControllerIT {
                 .andExpect(content().string(containsString("\"email\" : \"email1.test1-1")));
     }
 
-    @Test
-    public void getEmailsForCityCulver_noParamIT() throws Exception {
-        mockMvc.perform(get("/communityEmail").param("city", ""))
-                .andExpect(status().isBadRequest())
-                .andDo(print())
-                .andExpect(content().string(""));
-    }
-
-    @Test
-    public void getEmailsForCityCity_shouldReturnEmptyBody() throws Exception {
-        mockMvc.perform(get("/communityEmail").param("city", "City"))
-                .andExpect(status().isNotFound())
-                .andDo(print())
-                .andExpect(content().string(""));
-    }
-
-
 }

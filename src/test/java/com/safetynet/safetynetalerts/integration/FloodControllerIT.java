@@ -21,20 +21,6 @@ public class FloodControllerIT {
     private MockMvc mockMvc;
 
     @Test
-    public void getFloodList_noAddressForStationIT() throws Exception {
-        mockMvc.perform(get("/flood/stations").param("stations", "11"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string(""));
-    }
-
-    @Test
-    public void getFloodList_noStationGivenIT() throws Exception {
-        mockMvc.perform(get("/flood/stations").param("stations", ""))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(""));
-    }
-
-    @Test
     public void getFloodListIT() throws Exception {
         mockMvc.perform(get("/flood/stations").param("stations", "1,2"))
                 .andExpect(status().isOk())

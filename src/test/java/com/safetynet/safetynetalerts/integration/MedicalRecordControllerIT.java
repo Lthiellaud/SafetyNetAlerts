@@ -15,14 +15,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
 
 import static java.util.Calendar.JANUARY;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -37,7 +37,6 @@ public class MedicalRecordControllerIT {
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
     private MedicalRecord medicalRecord;
-    private MedicalRecord medicalRecord1;
     private Calendar calendar = Calendar.getInstance();
 
     private PersonId personBabyId = new PersonId("Baby", "Boyd");
@@ -69,8 +68,6 @@ public class MedicalRecordControllerIT {
                 .andExpect(jsonPath("birthdate", is("01/17/2021")))
                 .andExpect(jsonPath("medications[0]", is("aznol:350mg")))
                 .andExpect(jsonPath("allergies[0]", is("peanut")));
-
-        assertThat(medicalRecordRepository.existsById(personBabyId)).isTrue();
     }
 
     @Test
@@ -90,7 +87,6 @@ public class MedicalRecordControllerIT {
                 .andExpect(content().string(containsString("\"allergies\" : [ ]")))
         ;
 
-        assertThat(medicalRecordRepository.existsById(personUpdateId)).isTrue();
     }
 
     @Test
@@ -98,7 +94,6 @@ public class MedicalRecordControllerIT {
         mockMvc.perform(delete("/medicalRecord/Delete:Boyd"))
                 .andExpect(status().isNoContent());
 
-        assertThat(medicalRecordRepository.existsById(personDeleteId)).isFalse();
     }
 
 }

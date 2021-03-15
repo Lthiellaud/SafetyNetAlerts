@@ -3,7 +3,6 @@ package com.safetynet.safetynetalerts.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.safetynetalerts.model.Person;
 import com.safetynet.safetynetalerts.model.PersonId;
-import com.safetynet.safetynetalerts.repository.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -31,8 +28,6 @@ public class PersonControllerIT {
     private MockMvc mockMvc;
     private ObjectMapper mapper = new ObjectMapper();
 
-    @Autowired
-    private PersonRepository personRepository;
 
     private Person person;
     private PersonId personBabyId = new PersonId("Baby", "Boyd");
@@ -65,7 +60,6 @@ public class PersonControllerIT {
                 .andExpect(jsonPath("address", is("1509 Culver St")))
                 .andExpect(jsonPath("email", is("jaboyd@email.com")));
 
-        assertThat(personRepository.existsById(personBabyId));
     }
 
     @Test
@@ -88,9 +82,6 @@ public class PersonControllerIT {
                 .andExpect(jsonPath("address", is("1508 Culver St")))
                 .andExpect(jsonPath("email", is("test.update@email.com")));
 
-        assertThat(personRepository.findById(personUpdateId).get().getEmail()).isEqualTo("test.update@email.com");
-        assertThat(personRepository.findById(personUpdateId).get().getAddress()).isEqualTo("1508 Culver St");
-        assertThat(personRepository.findById(personUpdateId).get().getPhone()).isEqualTo("841-874-6512");
 
     }
 
@@ -99,8 +90,6 @@ public class PersonControllerIT {
         //deleting M. Delete Boyd
         mockMvc.perform(delete("/person/Delete:Boyd"))
                 .andExpect(status().isNoContent());
-
-        assertThat(personRepository.existsById(personDeleteId)).isFalse();
 
     }
 

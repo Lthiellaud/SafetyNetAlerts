@@ -120,13 +120,13 @@ public class PersonControllerTest {
     @Test
     public void deleteNonExistingPersonTest() throws Exception {
         //deleting M. NonExisting Boyd
-        mockMvc.perform(delete("/person/NonExisting:Boyd"))
+        mockMvc.perform(delete("/person?firstName=NonExisting&lastName=Boyd"))
                 .andExpect(status().isNotFound());
 
     }
     @Test
     public void deleteBadRequestPersonTest() throws Exception {
-        mockMvc.perform(delete("/person/John:"))
+        mockMvc.perform(delete("/person?firstName=John&lastName="))
                 .andExpect(status().isBadRequest());
 
     }

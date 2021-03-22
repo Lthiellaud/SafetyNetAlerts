@@ -33,22 +33,24 @@ public class ChildAlertController {
     @GetMapping("/childAlert")
     public ResponseEntity<List<ChildAlertDTO>>
               getChildAlertList(@RequestParam("address") String address) {
+
         if (address.equals("")) {
             LOGGER.error("URL /childAlert Request: a parameter \"address\" is needed");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            LOGGER.info("URL /childAlert: request received for address " + address);
-            List<ChildAlertDTO> childAlertList = childAlertService.getChildAlertList(address);
-            int i = childAlertList.size();
-            if (i > 0) {
-                LOGGER.info("URL /childAlert: " + i + " homehood(s) with children for address "
-                        + address);
-                return new ResponseEntity<>(childAlertList, HttpStatus.OK);
-            } else {
-                LOGGER.info("URL /childAlert: no child found for address " + address);
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-
         }
+
+        LOGGER.info("URL /childAlert: request received for address " + address);
+        List<ChildAlertDTO> childAlertList = childAlertService.getChildAlertList(address);
+        int i = childAlertList.size();
+        if (i > 0) {
+            LOGGER.info("URL /childAlert: " + i + " homehood(s) with children for address "
+                    + address);
+            return new ResponseEntity<>(childAlertList, HttpStatus.OK);
+        } else {
+            LOGGER.info("URL /childAlert: no child found for address " + address);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
     }
 }

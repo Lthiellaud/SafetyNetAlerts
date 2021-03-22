@@ -39,11 +39,12 @@ public class PhoneAlertController {
             LOGGER.info("URL /phoneAlert request: List of inhabitants phone for fire station " +
                     fireStation + " sent");
             return new ResponseEntity<>(phones, HttpStatus.OK);
-        } else {
-            LOGGER.info("URL /phoneAlert request: no inhabitants found for fire station " +
-                    fireStation);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        LOGGER.info("URL /phoneAlert request: no inhabitants found for fire station " +
+                fireStation);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
 }

@@ -88,7 +88,7 @@ public class PersonControllerIT {
     @Test
     public void deletePersonTest() throws Exception {
         //deleting M. Delete Boyd
-        mockMvc.perform(delete("/person/Delete:Boyd"))
+        mockMvc.perform(delete("/person?firstName=Delete&lastName=Boyd"))
                 .andExpect(status().isNoContent());
 
     }

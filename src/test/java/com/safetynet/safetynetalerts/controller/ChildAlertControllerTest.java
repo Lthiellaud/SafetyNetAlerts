@@ -26,7 +26,7 @@ public class ChildAlertControllerTest {
     }
 
     @Test
-    public void getChildList_noParamIT() throws Exception {
+    public void getChildList_noParamTest() throws Exception {
         mockMvc.perform(get("/childAlert").param("address", ""))
                 .andExpect(status().isBadRequest());
     }

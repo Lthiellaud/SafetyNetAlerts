@@ -34,18 +34,19 @@ public class CommunityEmailController {
         if (city.equals("")) {
             LOGGER.error("URL /communityEmail Request: a parameter \"city\" is needed");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            LOGGER.info("URL /communityEmail: Request for " + city + " received");
-            List<ICommunityEmailDTO> communityEmailList = personService.getEmailList(city);
-            int i = communityEmailList.size();
-            if (i > 0) {
-                LOGGER.info("URL /communityEmail: " + i + " mail sent for " + city);
-                return new ResponseEntity<>(communityEmailList, HttpStatus.OK);
-            } else {
-                LOGGER.info("URL /communityEmail: no mail found for " + city);
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-
         }
+
+        LOGGER.info("URL /communityEmail: Request for " + city + " received");
+        List<ICommunityEmailDTO> communityEmailList = personService.getEmailList(city);
+        int i = communityEmailList.size();
+        if (i > 0) {
+            LOGGER.info("URL /communityEmail: " + i + " mail sent for " + city);
+            return new ResponseEntity<>(communityEmailList, HttpStatus.OK);
+        } else {
+            LOGGER.info("URL /communityEmail: no mail found for " + city);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
     }
 }

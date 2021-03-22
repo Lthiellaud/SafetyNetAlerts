@@ -33,20 +33,22 @@ public class FloodController {
     @GetMapping("/flood/stations")
     public ResponseEntity<List<FloodDTO>>
                    getFloodList(@RequestParam("stations") List<Integer> stations) {
-        if (stations != null && stations.size() > 0) {
-            LOGGER.info("URL /flood/stations : request for stations " + stations + " received");
-            List<FloodDTO> floodList = floodService.getFloodList(stations);
-            if (floodList.size() > 0) {
-                LOGGER.info("URL /flood/stations request: List sent for stations " + stations);
-                return new ResponseEntity<>(floodList, HttpStatus.OK);
-            } else {
-                LOGGER.info("URL /flood/stations request: nobody found for stations " + stations);
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } else {
+
+        if (stations == null || stations.size() == 0) {
             LOGGER.error("URL /flood/stations request: station list is needed");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        LOGGER.info("URL /flood/stations : request for stations " + stations + " received");
+        List<FloodDTO> floodList = floodService.getFloodList(stations);
+        if (floodList.size() > 0) {
+            LOGGER.info("URL /flood/stations request: List sent for stations " + stations);
+            return new ResponseEntity<>(floodList, HttpStatus.OK);
+        } else {
+            LOGGER.info("URL /flood/stations request: nobody found for stations " + stations);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
     }
 
 }

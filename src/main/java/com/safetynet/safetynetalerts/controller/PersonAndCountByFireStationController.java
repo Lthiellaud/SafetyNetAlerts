@@ -34,14 +34,17 @@ public class PersonAndCountByFireStationController {
     public ResponseEntity<List<PersonAndCountByFireStationDTO>>
                    getFireStationPerson(@RequestParam("stationNumber") Integer station) {
         LOGGER.info("URL /firestation: request received for fire station " + station);
+
         List<PersonAndCountByFireStationDTO> persons = personAndCountByFireStationService
                 .getPersonAndCountByFireStation(station);
+
         if (persons.size() > 0) {
             LOGGER.info("URL /firestation: List sent for fire station " + station);
             return new ResponseEntity<>(persons, HttpStatus.OK);
-        } else {
-            LOGGER.info("URL /firestation: nobody found for fire station " + station);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        LOGGER.info("URL /firestation: nobody found for fire station " + station);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 }

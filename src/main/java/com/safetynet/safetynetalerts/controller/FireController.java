@@ -30,20 +30,22 @@ public class FireController {
      */
     @GetMapping("/fire")
     public ResponseEntity<List<FireDTO>> getFirePersons(@RequestParam("address") String address) {
+
         if (address.equals("")) {
             LOGGER.error("URL /fire Request: a parameter \"address\" is needed");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else {
-            LOGGER.info("URL /fire: request received for address " + address);
-            List<FireDTO> fireList = fireService.getFirePersonList(address);
-            if (fireList.size() > 0) {
-                LOGGER.info("URL /fire: list sent for address " + address);
-                return new ResponseEntity<>(fireList, HttpStatus.OK);
-            } else {
-                LOGGER.info("URL /fire: nobody found for address " + address);
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
         }
+
+        LOGGER.info("URL /fire: request received for address " + address);
+        List<FireDTO> fireList = fireService.getFirePersonList(address);
+        if (fireList.size() > 0) {
+            LOGGER.info("URL /fire: list sent for address " + address);
+            return new ResponseEntity<>(fireList, HttpStatus.OK);
+        } else {
+            LOGGER.info("URL /fire: nobody found for address " + address);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
 

@@ -79,23 +79,23 @@ public class FireStationController {
      * @param address the address to be remove from the entity
      * @return http status of the request
      */
-    @DeleteMapping(value = "/firestation/address={address}")
-    public ResponseEntity<?> deleteFireStationByAddress(@PathVariable("address") String address) {
+    @DeleteMapping(value = "/firestation", params = "address")
+    public ResponseEntity<?> deleteFireStationByAddress(@RequestParam String address) {
         if (address != null && !address.equals("")) {
             LOGGER.info("Endpoint /firestation/address={address}: deletion asked for records " +
                     "FireStation for the address " + address);
             int nbFireStationFromAddress = fireStationService.deleteFireStationByAddress(address);
             if (nbFireStationFromAddress == 0) {
-                LOGGER.info("Endpoint /firestation/address={address} delete request:" +
+                LOGGER.info("Endpoint /firestation?address={address} delete request:" +
                         " no fire station found for the address");
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             } else {
-                LOGGER.info("Endpoint /firestation/address={address} :" + nbFireStationFromAddress +
+                LOGGER.info("Endpoint /firestation?address={address} :" + nbFireStationFromAddress +
                         " record deleted for the address");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
         } else {
-            LOGGER.error("Endpoint /firestation/address={address} delete request:" +
+            LOGGER.error("Endpoint /firestation?address={address} delete request:" +
                     " address is mandatory");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -106,17 +106,17 @@ public class FireStationController {
      * @param station the station to be remove
      * @return http status of the request
      */
-    @DeleteMapping(value = "/firestation/station={station}")
-    public ResponseEntity<?> deleteFireStation(@PathVariable("station") Integer station) {
-        LOGGER.info("Endpoint /firestation/station={station}: deletion of the records for " +
+    @DeleteMapping(value = "/firestation", params = "station")
+    public ResponseEntity<?> deleteFireStation(@RequestParam Integer station) {
+        LOGGER.info("Endpoint /firestation?station={station}: deletion of the records for " +
                 "fire station number " + station + " asked");
         int i = fireStationService.deleteFireStationByStation(station);
         if (i == 0) {
-            LOGGER.info("Endpoint /firestation/station={station} delete request:" +
+            LOGGER.info("Endpoint /firestation?station={station} delete request:" +
                     " no address attached to this station");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            LOGGER.info("Endpoint /firestation/station={station} delete request:" + i +
+            LOGGER.info("Endpoint /firestation?station={station} delete request:" + i +
                     " record deleted for the station");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

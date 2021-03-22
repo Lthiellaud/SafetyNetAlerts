@@ -116,13 +116,13 @@ public class MedicalRecordControllerTest {
 
     @Test
     public void deleteNonExistingMedicalRecordTest() throws Exception {
-        mockMvc.perform(delete("/medicalRecord/NonExisting:Boyd"))
+        mockMvc.perform(delete("/medicalRecord?firstName=NonExisting&lastName=Boyd"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void deleteMedicalRecordWithNoNameTest() throws Exception {
-        mockMvc.perform(delete("/medicalRecord/John:"))
+        mockMvc.perform(delete("/medicalRecord?firstName=John&lastName="))
                 .andExpect(status().isBadRequest());
     }
 }

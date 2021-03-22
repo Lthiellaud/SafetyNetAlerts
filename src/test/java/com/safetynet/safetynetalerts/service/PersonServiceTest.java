@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.*;
 
@@ -22,10 +24,10 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest(properties = "command.line.runner.enabled=false")
 public class PersonServiceTest {
-    @Mock
+    @MockBean
     private PersonRepository personRepository;
 
-    @InjectMocks
+    @Autowired
     private PersonServiceImpl personService;
 
     private static Person person1;

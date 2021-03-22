@@ -91,14 +91,14 @@ public class FireStationControllerTest {
     @Test
     public void deleteFireStationByAddress_NotFoundTest() throws Exception {
 
-        mockMvc.perform(delete("/firestation/address=Unknown address"))
+        mockMvc.perform(delete("/firestation?address=Unknown address"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void deleteFireStationByAddress_BadRequestTest() throws Exception {
 
-        mockMvc.perform(delete("/firestation/address="))
+        mockMvc.perform(delete("/firestation?address="))
                 .andExpect(status().isBadRequest());
 
 
@@ -107,7 +107,7 @@ public class FireStationControllerTest {
     @Test
     public void deleteFireStationByStation_NotFoundTest() throws Exception {
 
-        mockMvc.perform(delete("/firestation/station=800"))
+        mockMvc.perform(delete("/firestation?station=800"))
                 .andExpect(status().isNotFound());
     }
 

@@ -91,7 +91,7 @@ public class MedicalRecordControllerIT {
 
     @Test
     public void deleteMedicalRecordTest() throws Exception {
-        mockMvc.perform(delete("/medicalRecord/Delete:Boyd"))
+        mockMvc.perform(delete("/medicalRecord?firstName=Delete&lastName=Boyd"))
                 .andExpect(status().isNoContent());
 
     }

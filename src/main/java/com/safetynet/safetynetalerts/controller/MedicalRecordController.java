@@ -59,24 +59,27 @@ public class MedicalRecordController {
      * @return http status of the request
      */
 
-    @DeleteMapping("/medicalRecord/{firstName}:{lastName}")
-    public ResponseEntity<?> deleteMedicalRecord(@PathVariable("firstName") String firstName,
-                                                 @PathVariable("lastName") String lastName) {
-        if (!firstName.equals("")  && !lastName.equals("")) {
-            LOGGER.info("Endpoint /medicalRecord/{firstName}:{lastName}: Deletion of medical" +
-                    " record for " + firstName + " " + lastName + " asked");
-            if (medicalRecordService.deleteMedicalRecord(firstName, lastName)) {
-                LOGGER.info("Endpoint /medicalRecord: deletion completed");
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            } else {
-                LOGGER.info("Endpoint /medicalRecord delete request: medical record not found");
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } else {
+    @DeleteMapping("/medicalRecord")
+    public ResponseEntity<?> deleteMedicalRecord(@RequestParam("firstName") String firstName,
+                                                 @RequestParam("lastName") String lastName) {
+        if (firstName.equals("")  || lastName.equals("")) {
             LOGGER.error("Endpoint /medicalRecord delete request: firstname" +
                     " and lastname mandatory");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
+        LOGGER.info("Endpoint /medicalRecord/{firstName}:{lastName}: Deletion of medical" +
+                " record for " + firstName + " " + lastName + " asked");
+
+        if (medicalRecordService.deleteMedicalRecord(firstName, lastName)) {
+            LOGGER.info("Endpoint /medicalRecord: deletion completed");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            LOGGER.info("Endpoint /medicalRecord delete request: medical record not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
     }
 
     /**
@@ -87,22 +90,24 @@ public class MedicalRecordController {
     @PutMapping("/medicalRecord/")
     public ResponseEntity<MedicalRecord>
                 updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        if (!medicalRecord.getFirstName().equals("") && !medicalRecord.getLastName().equals("")) {
-            LOGGER.info("Endpoint /medicalRecord: update asked for medicale record of " +
-                    medicalRecord.getFirstName() + " " + medicalRecord.getLastName());
-            Optional<MedicalRecord> medicalRecord1 = medicalRecordService
-                    .updateMedicalRecord(medicalRecord);
-            if (medicalRecord1.isPresent()) {
-                LOGGER.info("Endpoint /medicalRecord: update done");
-                return new ResponseEntity<>(medicalRecord1.get(), HttpStatus.OK);
-            } else {
-                LOGGER.info("Endpoint /medicalRecord update request: medical record not found");
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } else {
+
+        if (medicalRecord.getFirstName().equals("") || medicalRecord.getLastName().equals("")) {
             LOGGER.error("Endpoint /medicalRecord update request: firstname" +
                     " and lastname mandatory");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        LOGGER.info("Endpoint /medicalRecord: update asked for medicale record of " +
+                medicalRecord.getFirstName() + " " + medicalRecord.getLastName());
+        Optional<MedicalRecord> medicalRecord1 = medicalRecordService
+                .updateMedicalRecord(medicalRecord);
+
+        if (medicalRecord1.isPresent()) {
+            LOGGER.info("Endpoint /medicalRecord: update done");
+            return new ResponseEntity<>(medicalRecord1.get(), HttpStatus.OK);
+        } else {
+            LOGGER.info("Endpoint /medicalRecord update request: medical record not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
     }

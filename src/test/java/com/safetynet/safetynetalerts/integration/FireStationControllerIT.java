@@ -63,7 +63,7 @@ public class FireStationControllerIT {
     @Test
     public void deleteFireStationByAddressTest() throws Exception {
 
-        mockMvc.perform(delete("/firestation/address=Address to be deleted"))
+        mockMvc.perform(delete("/firestation?address=Address to be deleted"))
                 .andExpect(status().isNoContent());
 
     }
@@ -71,7 +71,7 @@ public class FireStationControllerIT {
     @Test
     public void deleteFireStationByStationTest() throws Exception {
 
-        mockMvc.perform(delete("/firestation/station=80"))
+        mockMvc.perform(delete("/firestation?station=80"))
                 .andExpect(status().isNoContent());
 
     }

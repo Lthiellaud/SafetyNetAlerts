@@ -42,6 +42,7 @@ public class PersonInfoController {
             LOGGER.error("URL /personInfo request: value for lastName is mandatory");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
         LOGGER.info("URL /personInfo: request received for " + firstName + " " + lastName);
         List<PersonMedicalRecordDTO> persons =
                 personInfoService.getPersonInfo(firstName, lastName);
